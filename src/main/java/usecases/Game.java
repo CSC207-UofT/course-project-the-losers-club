@@ -12,15 +12,26 @@ public abstract class Game {
         void sendOutput();
     }
 
-    private ArrayList<Player> players;
-    private Deck deck;
-    private Player currPlayer;
+    protected Player[] players;
+    protected Deck deck;
+    protected Player currPlayer;
+    protected int currPlayerIndex;
 
-    public Game(ArrayList<Player> players){}
+    public Game(int numPlayers){
+        this.players = new Player[numPlayers];
+        for (int i=0; i < numPlayers; i++) {
+            Player newPlayer = new Player("Player " + i + 1);
+            this.players[i] = newPlayer;
+        }
+        this.currPlayer = this.players[0];
+        this.deck = new Deck();
+    }
 
-    public abstract void checkMove();
+    public abstract void startGame();
 
-    public abstract void makeMove(int move);
+    public abstract boolean checkMove(Card card);
+
+    public abstract void makeMove(Card card);
 
     public abstract boolean checkWin();
 
