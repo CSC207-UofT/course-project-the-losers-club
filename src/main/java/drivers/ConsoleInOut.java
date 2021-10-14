@@ -20,10 +20,10 @@ public class ConsoleInOut implements InOut {
     public String getCard() {
         String card = "";
 
+        String rank = this.getRank().toUpperCase();
         card += this.getSuit().toUpperCase();
-        card += this.getRank().toUpperCase();
 
-        return card;
+        return card + rank;
     }
 
     private String getSuit() {
@@ -31,7 +31,6 @@ public class ConsoleInOut implements InOut {
         do {
             System.out.print("Enter the suit of your card (\"C\", \"D\", \"H\", \"S\"): " );
             line = this.inp.nextLine();
-            System.out.println();
         } while (line.length() != 1 && !ConsoleInOut.SUITS.contains(line.charAt(0)));
 
         return line;
@@ -40,9 +39,8 @@ public class ConsoleInOut implements InOut {
     private String getRank() {
         String line;
         do {
-            System.out.print("Enter the rank of your card (\"A\", \"2\", \"3\", ..., \"10\", \"J\", \"Q\", \"K\"):" );
+            System.out.print("Enter the rank of your card (\"A\", \"2\", \"3\", ..., \"10\", \"J\", \"Q\", \"K\"): ");
             line = this.inp.nextLine();
-            System.out.println();
         } while (line.length() != 1 && line.length() != 2 && !ConsoleInOut.RANKS.contains(line));
 
         return line;

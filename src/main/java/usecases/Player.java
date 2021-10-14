@@ -5,6 +5,11 @@ import entities.Hand;
 
 public class Player {
     private Hand hand;
+
+    public String getName() {
+        return name;
+    }
+
     private String name;
 
     public Player(String name) {
@@ -17,7 +22,7 @@ public class Player {
     }
 
     public void removeFromHand(Card card) {
-        this.hand.removeCard();
+        this.hand.removeCard(card);
     }
 
     // Return this player's hand

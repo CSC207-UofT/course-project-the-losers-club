@@ -19,7 +19,7 @@ class ConsoleInOutTest {
 
     @BeforeEach
     void setUp() {
-        String data = "S\n10\n";
+        String data = "10\nS\n";
         this.stdin = System.in;
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         this.cio = new ConsoleInOut();

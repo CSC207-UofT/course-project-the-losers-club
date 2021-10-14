@@ -27,19 +27,18 @@ public class CrazyEights extends Game{
     @Override
     public void startGame() {
         while (!checkWin()) {
-//            System.out.print(currPlayer.getHand());
-//            System.out.print("Choose a card to play: ");
-//            Scanner s = new Scanner(System.in);
-//            int cardIndex = s.nextInt();
-//            Card card = currPlayer.getHand().getCards().get(cardIndex);
+            this.currPlayer = this.players[this.currPlayerIndex];
             Card card;
             String crd;
             do {
+                this.controller.sendOutput("Top card: " + this.playingField.peek());
+                this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHand().toString());
                 crd = this.controller.getCard();
                 card = new Card(crd.substring(1), crd.charAt(0));
             } while (!checkMove(card));
             makeMove(card);
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
+            this.controller.sendOutput("");
         }
     }
 
@@ -51,6 +50,7 @@ public class CrazyEights extends Game{
     @Override
     public void makeMove(Card card) {
         this.playingField.add(card);
+        this.currPlayer.removeFromHand(card);
     }
 
     @Override

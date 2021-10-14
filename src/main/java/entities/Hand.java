@@ -31,10 +31,32 @@ public class Hand {
         return cards.remove(0);
     }
 
-    // Removes the card specified by the hashcode if it is in the hand. Returns the card object if it is removed and null otherwise.
-    public Card removeCard(int hashcode) {
-        //TODO: implement remove card depending on hashcode format.
-        return new Card("5", 'H');
+    /**
+     * Remove and return the given card in this Hand.
+     *
+     * Assumes the card is in the hand.
+     *
+     * @param rank rank of the card
+     * @param suit suit of the card
+     * @return the removed Card
+     */
+    public Card removeCard(String rank, char suit) {
+        Card c = new Card(rank, suit);
+        this.removeCard(c);
+        return c;
+    }
+
+    /**
+     * Remove and return the given card in this Hand.
+     *
+     * Assumes the card is in the hand.
+     *
+     * @param c the card
+     * @return the removed Card
+     */
+    public Card removeCard(Card c) {
+        int i = this.cards.indexOf(c);
+        return this.cards.remove(i);
     }
 
     // Returns the size of the hand.
