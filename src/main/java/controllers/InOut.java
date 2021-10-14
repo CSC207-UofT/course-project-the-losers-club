@@ -4,6 +4,6 @@ public interface InOut {
 
     public String getCard();
 
-    public void sendOutput();
+    public void sendOutput(Object s);
 
 }
