@@ -39,7 +39,7 @@ public class CrazyEights extends Game{
                 }
             } while (card != null && !checkMove(card));
             if (card == null) {
-                //TODO: add draw from deck functionality
+                currPlayer.addToHand(deck.drawCard());
             } else {
                 makeMove(card);
             }
