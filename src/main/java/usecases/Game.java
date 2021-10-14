@@ -10,7 +10,7 @@ public abstract class Game {
     private Player currPlayer;
 
     public Game(){
-        
+
     }
 
 
