@@ -13,6 +13,13 @@ public interface InOut {
      */
     String getCard();
 
+    /**
+     * Implementations should return a boolean representing whether a card should be drawn from the deck.
+     *
+     * @return true if a card should be drawn, false otherwise
+     */
+    boolean drawCard();
+
 
     /**
      * Implementations should take the given Object s and handle it's output to the user.
