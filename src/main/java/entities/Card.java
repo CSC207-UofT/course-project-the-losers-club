@@ -35,4 +35,9 @@ public class Card {
         return this.isFace;
     }
 
+    public String toString() {
+        StringBuilder s = new StringBuilder().append(this.get_rank()).append(this.get_suit());
+        return s.toString();
+    }
+
 }

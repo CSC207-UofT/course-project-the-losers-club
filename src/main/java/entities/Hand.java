@@ -41,4 +41,8 @@ public class Hand {
     public int getSize() {
         return cards.size();
     }
+
+    public String toString() {
+        return this.cards.toString();
+    }
 }
