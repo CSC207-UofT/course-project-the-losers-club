@@ -44,7 +44,12 @@ public class CrazyEights extends Game{
 
     @Override
     public boolean checkMove(Card card) {
-        return (card.get_suit() == this.playingField.peek().get_suit()) || card.get_rank().equals(this.playingField.peek().get_rank());
+        int ind = currPlayer.getHand().getCards().indexOf(card);
+        if (ind == -1) {
+            return false;
+        } else {
+            return (card.get_suit() == this.playingField.peek().get_suit()) || card.get_rank().equals(this.playingField.peek().get_rank());
+        }
     }
 
     @Override
