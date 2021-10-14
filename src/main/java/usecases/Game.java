@@ -5,6 +5,13 @@ import entities.Deck;
 import entities.Card;
 
 public abstract class Game {
+
+    public interface InOut {
+        String getCard();
+
+        void sendOutput();
+    }
+
     private ArrayList<Player> players;
     private Deck deck;
     private Player currPlayer;
