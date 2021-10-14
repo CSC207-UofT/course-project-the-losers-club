@@ -28,15 +28,21 @@ public class CrazyEights extends Game{
     public void startGame() {
         while (!checkWin()) {
             this.currPlayer = this.players[this.currPlayerIndex];
-            Card card;
+            Card card = null;
             String crd;
             do {
                 this.controller.sendOutput("Top card: " + this.playingField.peek());
                 this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHand().toString());
-                crd = this.controller.getCard();
-                card = new Card(crd.substring(1), crd.charAt(0));
-            } while (!checkMove(card));
-            makeMove(card);
+                if (!controller.drawCard()) {
+                    crd = this.controller.getCard();
+                    card = new Card(crd.substring(1), crd.charAt(0));
+                }
+            } while (card != null && !checkMove(card));
+            if (card == null) {
+                //TODO: add draw from deck functionality
+            } else {
+                makeMove(card);
+            }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
             this.controller.sendOutput("");
         }
