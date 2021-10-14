@@ -6,12 +6,15 @@ import entities.Card;
 
 public abstract class Game {
     private ArrayList<Player> players;
-    private deck Deck;
+    private Deck deck;
     private Player currPlayer;
 
-    public Game(){
+    public Game(ArrayList<Player> players){}
 
-    }
+    public abstract void checkMove();
 
+    public abstract void makeMove(int move);
+
+    public abstract boolean checkWin();
 
 }
