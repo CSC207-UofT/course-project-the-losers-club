@@ -14,7 +14,7 @@ public abstract class Game {
     public Game(int numPlayers){
         this.players = new Player[numPlayers];
         for (int i=0; i < numPlayers; i++) {
-            Player newPlayer = new Player("Player " + i + 1);
+            Player newPlayer = new Player("Player " + (i + 1));
             this.players[i] = newPlayer;
         }
         this.currPlayer = this.players[0];
