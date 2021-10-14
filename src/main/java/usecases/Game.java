@@ -6,12 +6,6 @@ import entities.Card;
 
 public abstract class Game {
 
-    public interface InOut {
-        String getCard();
-
-        void sendOutput();
-    }
-
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
