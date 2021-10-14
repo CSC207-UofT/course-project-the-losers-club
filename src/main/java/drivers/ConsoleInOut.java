@@ -4,6 +4,7 @@ import controllers.InOut;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ConsoleInOut implements InOut {
@@ -20,8 +21,8 @@ public class ConsoleInOut implements InOut {
     public String getCard() {
         String card = "";
 
-        String rank = this.getRank().toUpperCase();
-        card += this.getSuit().toUpperCase();
+        String rank = this.getRank();
+        card += this.getSuit();
 
         return card + rank;
     }
@@ -30,7 +31,7 @@ public class ConsoleInOut implements InOut {
         String line;
         do {
             System.out.print("Enter the suit of your card (\"C\", \"D\", \"H\", \"S\"): " );
-            line = this.inp.nextLine();
+            line = this.inp.nextLine().trim().toUpperCase();
         } while (line.length() != 1 || !ConsoleInOut.SUITS.contains(line.charAt(0)));
 
         return line;
@@ -40,10 +41,21 @@ public class ConsoleInOut implements InOut {
         String line;
         do {
             System.out.print("Enter the rank of your card (\"A\", \"2\", \"3\", ..., \"10\", \"J\", \"Q\", \"K\"): ");
-            line = this.inp.nextLine();
+            line = this.inp.nextLine().trim().toUpperCase();
         } while ((line.length() != 1 && line.length() != 2) || !ConsoleInOut.RANKS.contains(line));
 
         return line;
+    }
+
+    @Override
+    public boolean drawCard() {
+        String line;
+        do {
+            System.out.print("Do you want to draw a card (\"Y\", \"N\"): ");
+            line = this.inp.nextLine().trim().toUpperCase();
+        } while (line.length() != 1 || (!line.equals("Y") && !line.equals("N")));
+
+        return line.equals("Y");
     }
 
     @Override
