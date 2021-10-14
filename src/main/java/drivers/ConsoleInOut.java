@@ -31,7 +31,7 @@ public class ConsoleInOut implements InOut {
         do {
             System.out.print("Enter the suit of your card (\"C\", \"D\", \"H\", \"S\"): " );
             line = this.inp.nextLine();
-        } while (line.length() != 1 && !ConsoleInOut.SUITS.contains(line.charAt(0)));
+        } while (line.length() != 1 || !ConsoleInOut.SUITS.contains(line.charAt(0)));
 
         return line;
     }
@@ -41,7 +41,7 @@ public class ConsoleInOut implements InOut {
         do {
             System.out.print("Enter the rank of your card (\"A\", \"2\", \"3\", ..., \"10\", \"J\", \"Q\", \"K\"): ");
             line = this.inp.nextLine();
-        } while (line.length() != 1 && line.length() != 2 && !ConsoleInOut.RANKS.contains(line));
+        } while ((line.length() != 1 && line.length() != 2) || !ConsoleInOut.RANKS.contains(line));
 
         return line;
     }
