@@ -1,9 +1,8 @@
 package drivers;
 
 import controllers.InOut;
+import helpers.CardCheck;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Scanner;
 
 
@@ -17,8 +16,6 @@ import java.util.Scanner;
 public class ConsoleInOut implements InOut {
 
     private final Scanner inp;
-    private static final HashSet<Character> SUITS = new HashSet<>(Arrays.asList('C', 'D', 'H', 'S'));
-    private static final HashSet<String> RANKS = new HashSet<>(Arrays.asList("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"));
 
     /**
      * Instantiate a new ConsoleInOut instance.
@@ -36,42 +33,17 @@ public class ConsoleInOut implements InOut {
      */
     @Override
     public String getCard() {
-        String card = "";
+        System.out.print("Enter the rank of your desired card followed by the suit (e.g. \"10s\" for the 10 of Spades): ");
+        String line = this.inp.nextLine().trim();
 
-        String rank = this.getRank();
-        card += this.getSuit();
+        // if invalid card
+        while (!CardCheck.checkCard(line)) {
+            System.out.print("Invalid selection: ");
+            line = this.inp.nextLine().trim();
+        }
 
-        return card + rank;
-    }
-
-    /**
-     * Prompt user to select a card suit.
-     *
-     * @return return an uppercase String representing the selected suit
-     */
-    private String getSuit() {
-        String line;
-        do {
-            System.out.print("Enter the suit of your card (\"C\", \"D\", \"H\", \"S\"): " );
-            line = this.inp.nextLine().trim().toUpperCase();
-        } while (line.length() != 1 || !ConsoleInOut.SUITS.contains(line.charAt(0)));
-
-        return line;
-    }
-
-    /**
-     * Prompt user to select a card rank.
-     *
-     * @return return an uppercase String representing the selected rank
-     */
-    private String getRank() {
-        String line;
-        do {
-            System.out.print("Enter the rank of your card (\"A\", \"2\", \"3\", ..., \"10\", \"J\", \"Q\", \"K\"): ");
-            line = this.inp.nextLine().trim().toUpperCase();
-        } while ((line.length() != 1 && line.length() != 2) || !ConsoleInOut.RANKS.contains(line));
-
-        return line;
+        line = line.toUpperCase();
+        return line.charAt(line.length() - 1) + line.substring(0, line.length() - 1);
     }
 
     /**
@@ -81,11 +53,14 @@ public class ConsoleInOut implements InOut {
      */
     @Override
     public boolean drawCard() {
-        String line;
-        do {
-            System.out.print("Do you want to draw a card (\"Y\", \"N\"): ");
+        System.out.print("Do you want to draw a card (\"Y\", \"N\"): ");
+        String line = this.inp.nextLine().trim().toUpperCase();
+
+        // if invalid card selection
+        while (line.length() != 1 || (!line.equals("Y") && !line.equals("N"))) {
+            System.out.print("Invalid selection (\"Y\", \"N\"): ");
             line = this.inp.nextLine().trim().toUpperCase();
-        } while (line.length() != 1 || (!line.equals("Y") && !line.equals("N")));
+        }
 
         return line.equals("Y");
     }
