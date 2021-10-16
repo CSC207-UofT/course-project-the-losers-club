@@ -33,7 +33,7 @@ class ConsoleInOutTest {
 
     @Test
     void getCardSimple() {
-        String data = "10\nS\n";
+        String data = "10S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         this.cio = new ConsoleInOut();
         assertEquals("S10", this.cio.getCard());
@@ -41,7 +41,7 @@ class ConsoleInOutTest {
 
     @Test
     void getCardInvalidRank() {
-        String data = "25\n404\n10\nS\n";
+        String data = "25d\n404c\n10S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         this.cio = new ConsoleInOut();
         assertEquals("S10", this.cio.getCard());
@@ -49,10 +49,10 @@ class ConsoleInOutTest {
 
     @Test
     void getCardInvalidSuit() {
-        String data = "10\nA\nB\nE\nS\n";
+        String data = "10x\n10y\n6A\n5S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         this.cio = new ConsoleInOut();
-        assertEquals("S10", this.cio.getCard());
+        assertEquals("S5", this.cio.getCard());
     }
 
     @Test
