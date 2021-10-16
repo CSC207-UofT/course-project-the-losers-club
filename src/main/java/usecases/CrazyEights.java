@@ -74,14 +74,14 @@ public class CrazyEights extends Game{
         if (ind == -1) {
             return false;
         } else {
-            return (card.getSuit() == this.playingField.peek().getSuit()) || card.getRank().equals(this.playingField.peek().getRank());
+            return (card.get_suit() == this.playingField.peek().get_suit()) || card.get_rank().equals(this.playingField.peek().get_rank());
         }
     }
 
     public boolean hasValidMove(Hand hand){
         List<Card> cards = hand.getCards();
         for (Card card : cards){
-            if (card.getSuit() == this.playingField.peek().getSuit() || card.getRank().equals(this.playingField.peek().getRank())){
+            if (card.get_suit() == this.playingField.peek().get_suit() || card.get_rank().equals(this.playingField.peek().get_rank())){
                 return true;
             }
         }
