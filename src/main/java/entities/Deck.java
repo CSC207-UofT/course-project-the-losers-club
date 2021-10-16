@@ -11,15 +11,15 @@ public class Deck {
     // Constants and instance attributes. RANKS is an array of all possible ranks,
     // SUITS is an array of all possible suits
     private List<Card> cards = new ArrayList<>();
-    private final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private final char[] SUITS = {'H', 'S', 'D', 'C'};
+    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
     /**
      * Constructs a deck and initializes it with all standard 52 playing cards
      */
     public Deck() {
-        for (String i : this.RANKS){
-            for (char j : this.SUITS){
+        for (String i : Deck.RANKS){
+            for (char j : Deck.SUITS){
                 this.cards.add(new Card(i, j));
             }
         }
