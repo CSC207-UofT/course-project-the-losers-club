@@ -4,7 +4,6 @@ import controllers.InOut;
 import entities.Card;
 import entities.Hand;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -34,8 +33,9 @@ public class CrazyEights extends Game{
             Card card = null;
             String crd;
             boolean looped = false;
-
+            this.controller.sendOutput("---------------------------------------");
             this.controller.sendOutput(this.currPlayer.getName() + "'s Turn");
+            this.controller.sendOutput("---------------------------------------");
             this.controller.sendOutput("Top card: " + this.playingField.peek());
             this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHand().toString());
 
