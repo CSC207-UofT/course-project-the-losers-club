@@ -2,7 +2,10 @@ package usecases;
 
 import controllers.InOut;
 import entities.Card;
+import entities.Hand;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class CrazyEights extends Game{
@@ -33,7 +36,11 @@ public class CrazyEights extends Game{
             do {
                 this.controller.sendOutput("Top card: " + this.playingField.peek());
                 this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHand().toString());
-                if (!controller.drawCard()) {
+                if (!hasValidMove(currPlayer.getHand())){
+                    card = null;
+                    this.controller.sendOutput("Card Drawn from Deck because there are no cards to play");
+                }
+                else if (!controller.drawCard()) {
                     crd = this.controller.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
                 }
@@ -56,6 +63,16 @@ public class CrazyEights extends Game{
         } else {
             return (card.get_suit() == this.playingField.peek().get_suit()) || card.get_rank().equals(this.playingField.peek().get_rank());
         }
+    }
+
+    public boolean hasValidMove(Hand hand){
+        List<Card> cards = hand.getCards();
+        for (Card card : cards){
+            if (card.get_suit() == this.playingField.peek().get_suit() || card.get_rank().equals(this.playingField.peek().get_rank())){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
