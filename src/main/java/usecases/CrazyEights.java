@@ -11,7 +11,11 @@ public class CrazyEights extends Game{
     private final Stack<Card> playingField;
     private final InOut controller;
 
-    // Creates a game of CrazyEights, numPlayers must be less than 6
+    /**
+     *
+     * @param numPlayers The number of players playing the game.
+     * @param controller An interface that communicates with the players through a command line.
+     */
     public CrazyEights(int numPlayers, InOut controller) {
         super(numPlayers);
         this.controller = controller;
@@ -26,6 +30,10 @@ public class CrazyEights extends Game{
         this.playingField.add(this.deck.drawCard());
     }
 
+    /**
+     * The main part of the game that shows players their hands, takes in their answers, determines if a move is valid
+     * or invalid, plays the move, and determines a winner.
+     */
     @Override
     public void startGame() {
         while (!checkWin()) {
@@ -68,6 +76,11 @@ public class CrazyEights extends Game{
         this.controller.sendOutput(this.currPlayer.getName() + " Wins!!!");
     }
 
+    /**
+     * Checks if the given card is a valid move or an invalid move
+     * @param card A card object that will be checked if it is a valid move
+     * @return true if card is a valid move, false otherwise
+     */
     @Override
     public boolean checkMove(Card card) {
         int ind = currPlayer.getHand().getCards().indexOf(card);
@@ -78,6 +91,11 @@ public class CrazyEights extends Game{
         }
     }
 
+    /**
+     * Checks if a hand has at least one card that is a valid move
+     * @param hand A hand object of a player playing the game
+     * @return true if the hand has a valid move, false otherwise
+     */
     public boolean hasValidMove(Hand hand){
         List<Card> cards = hand.getCards();
         for (Card card : cards){
@@ -88,12 +106,20 @@ public class CrazyEights extends Game{
         return false;
     }
 
+    /**
+     * Plays the given card into the playingField
+     * @param card A card object that will be played in the game
+     */
     @Override
     public void makeMove(Card card) {
         this.playingField.add(card);
         this.currPlayer.removeFromHand(card);
     }
 
+    /**
+     * Checks if a player has won the game, i.e. if the player has an empty hand
+     * @return true if player has an empty hand, false otherwise
+     */
     @Override
     public boolean checkWin() {
         return currPlayer.getHand().getSize() == 0;
