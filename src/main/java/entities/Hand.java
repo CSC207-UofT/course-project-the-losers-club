@@ -2,31 +2,53 @@ package entities;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Represents a player's hand during a card game. Each hand contains a list of Card objects, which represent the
+ * cards in such player's hand.
+ */
 public class Hand {
     // Instance attributes
     List<Card> cards;
 
-    // Constructs an empty hand.
+    /**
+     * Constructs an empty hand
+     */
     public Hand() {
         this.cards = new ArrayList<>();
     }
 
-    // Constructs a hand that contains the list of cards that is passed.
+    /**
+     * Constructs a hand with the list of cards that is passed
+     *
+     * @param cards a list of Card objects that is passed to be in the hand
+     */
     public Hand(List<Card> cards) {
         this.cards = cards;
     }
 
-    // Returns the cards in the hand.
+    /**
+     * Returns all the cards in the hand
+     *
+     * @return the instance attribute 'cards' - a list of card objects
+     */
     public List<Card> getCards() {
         return this.cards;
     }
 
-    // Adds a card to the hand.
+    /**
+     * Adds a card to the hand
+     *
+     * @param card the card to be added
+     */
     public void addCard(Card card) {
         cards.add(card);
     }
 
-    // Removes the first card in the hand and returns it.
+    /**
+     * Removes the first card in the hand and returns it
+     *
+     * @return the removed Card
+     */
     public Card removeCard() {
         return cards.remove(0);
     }
@@ -59,11 +81,20 @@ public class Hand {
         return this.cards.remove(i);
     }
 
-    // Returns the size of the hand.
+    /**
+     * Returns the number of cards in the hand
+     *
+     * @return the size of the instance attribute 'cards'
+     */
     public int getSize() {
         return cards.size();
     }
 
+    /**
+     * Returns all the cards in the hand as a string
+     *
+     * @return String representing all the cards in the hand
+     */
     public String toString() {
         return this.cards.toString();
     }
