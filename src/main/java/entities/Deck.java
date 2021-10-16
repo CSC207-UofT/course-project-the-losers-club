@@ -12,8 +12,8 @@ public class Deck {
 
     // Constructor. Initializes a deck containing all cards.
     public Deck() {
-        for (String i : this.RANKS){
-            for (char j : this.SUITS){
+        for (String i : Deck.RANKS){
+            for (char j : Deck.SUITS){
                 this.cards.add(new Card(i, j));
             }
         }
