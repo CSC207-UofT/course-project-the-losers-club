@@ -15,4 +15,3 @@ If `currPlayer` does not have any possible moves, they will be forced to draw a 
 We then check the sizes of the player's hands to check if `currPlayer` has won the game or not. If the game has been won, then the game loop exits and the current player wins.  
 
 If the current player did not win, then the `currPlayer`'s turn is over and `currPlayer` now switches to the other `Player` class, and runs through the same game logic for their turn.
-
