@@ -23,8 +23,8 @@ public class Card {
 
         // Checks if the card is a face card
         String[] faces = new String[]{"K", "Q", "J"};
-        for (String element : faces){
-            if (element.equals(this.rank)){
+        for (String element : faces) {
+            if (element.equals(this.rank)) {
                 this.isFace = true;
                 break;
             }
@@ -44,14 +44,14 @@ public class Card {
      *
      * @return the suit of the card
      */
-    public char getSuit(){ return this.suit; }
+    public char getSuit() { return this.suit; }
 
     /**
      * Returns whether the card is a face card
      *
      * @return a boolean representing if the card is a face card or not
      */
-    public boolean checkFace(){ return this.isFace; }
+    public boolean isFace() { return this.isFace; }
 
     /**
      * Returns the card as a String
