@@ -31,7 +31,7 @@ public class Card {
     }
 
     // Returns if the card is a face card or not
-    public boolean get_isFace(){
+    public boolean isFace(){
         return this.isFace;
     }
 
