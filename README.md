@@ -1,6 +1,32 @@
-## Replace this README.md!
+# Card Game Collection
 
-This is a standard README.md file for you to replace. You'll want to include your own content here!
+A collection of various card games played through a graphical user interface.
 
-MD (Markdown) files use [Markdown formatting](https://guides.github.com/features/mastering-markdown/): 
-these look very much like .txt files, so you can write them in a very similar way.
+
+
+## Implemented Games
+
+* Crazy Eights
+
+
+
+## Installation and Usage
+
+1. Clone the repository
+
+   ```sh
+   git clone https://github.com/CSC207-UofT/course-project-the-losers-club
+   ```
+
+2. Build the project using Gradle
+3. Run `src/main/java/drivers/Main.java`
+
+
+
+## Roadmap
+
+* Finish Crazy Eights implementation
+* Implement game selection menu in CLI
+* Implement other games (War, etc.)
+* Implement GUI
+
