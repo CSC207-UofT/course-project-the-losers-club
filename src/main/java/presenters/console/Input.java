@@ -1,26 +1,26 @@
-package drivers;
+package presenters.console;
 
-import controllers.InOut;
 import helpers.CardCheck;
+import usecases.Game;
 
 import java.util.Scanner;
 
 
 /**
- * ConsoleInOut uses System.in and System.out to gather input from the user and display information to the user.
+ * Input uses System.in to gather input from the user.
  *
  * It is intended to be used as a basic command line interface.
  *
- * @see InOut
+ * @see Game.Input
  */
-public class ConsoleInOut implements InOut {
+public class Input implements Game.Input {
 
     private final Scanner inp;
 
     /**
-     * Instantiate a new ConsoleInOut instance.
+     * Instantiate a new Input instance.
      */
-    public ConsoleInOut() {
+    public Input() {
         this.inp = new Scanner(System.in);
     }
 
@@ -63,16 +63,6 @@ public class ConsoleInOut implements InOut {
         }
 
         return line.equals("Y");
-    }
-
-    /**
-     * Prints the specified object to the system console by calling the <code>s.toString()</code> method.
-     *
-     * @param s An Object that can be somehow outputted to the user.
-     */
-    @Override
-    public void sendOutput(Object s) {
-        System.out.println(s.toString());
     }
 
 }

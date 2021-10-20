@@ -1,4 +1,4 @@
-package drivers;
+package presenters.console;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,73 +8,61 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsoleInOutTest {
+class InputTest {
 
     InputStream stdin = System.in;
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    OutputStream stdout = System.out;
 
-    ConsoleInOut cio;
+    Input cin;
 
     @BeforeEach
     void setUp() {
         this.stdin = System.in;
-        System.setOut(new PrintStream(outputStream));
-
-        this.cio = new ConsoleInOut();
+        this.cin = new Input();
     }
 
     @AfterEach
     void tearDown() {
         System.setIn(this.stdin);
-        System.setOut((PrintStream) this.stdout);
     }
 
     @Test
     void getCardSimple() {
         String data = "10S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        this.cio = new ConsoleInOut();
-        assertEquals("S10", this.cio.getCard());
+        this.cin = new Input();
+        assertEquals("S10", this.cin.getCard());
     }
 
     @Test
     void getCardInvalidRank() {
         String data = "25d\n404c\n10S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        this.cio = new ConsoleInOut();
-        assertEquals("S10", this.cio.getCard());
+        this.cin = new Input();
+        assertEquals("S10", this.cin.getCard());
     }
 
     @Test
     void getCardInvalidSuit() {
         String data = "10x\n10y\n6A\n5S\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        this.cio = new ConsoleInOut();
-        assertEquals("S5", this.cio.getCard());
+        this.cin = new Input();
+        assertEquals("S5", this.cin.getCard());
     }
-
-    @Test
-    void sendOutput() {
-        this.cio.sendOutput("hello world");
-        assertEquals("hello world", this.outputStream.toString().trim());
-    }
-
 
     @Test
     void drawCardYes() {
         String data = "y\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        this.cio = new ConsoleInOut();
-        assertTrue(this.cio.drawCard());
+        this.cin = new Input();
+        assertTrue(this.cin.drawCard());
     }
 
     @Test
     void drawCardNo() {
         String data = "n\n";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        this.cio = new ConsoleInOut();
-        assertFalse(this.cio.drawCard());
+        this.cin = new Input();
+        assertFalse(this.cin.drawCard());
     }
 }
