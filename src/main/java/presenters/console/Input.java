@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * Input uses System.in to gather input from the user.
- *
+ * <p>
  * It is intended to be used as a basic command line interface.
  *
  * @see Game.Input
@@ -28,8 +28,8 @@ public class Input implements Game.Input {
      * Prompt user to specify which card they wish to select.
      *
      * @return a String encoding the selected card. The first character of the String is always the suit
-     *  of the selected card (one of 'C', 'D', 'H', 'S'), while the remaining characters are used to signify the
-     *  rank of the selected card (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
+     * of the selected card (one of 'C', 'D', 'H', 'S'), while the remaining characters are used to signify the
+     * rank of the selected card (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
      */
     @Override
     public String getCard() {

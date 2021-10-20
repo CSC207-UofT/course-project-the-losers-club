@@ -1,14 +1,11 @@
 package presenters.console;
 
-import helpers.CardCheck;
 import usecases.Game;
-
-import java.util.Scanner;
 
 
 /**
  * Output uses System.out to display information to the user.
- *
+ * <p>
  * It is intended to be used as a basic command line interface.
  *
  * @see Game.Output

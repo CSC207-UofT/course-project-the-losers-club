@@ -12,7 +12,6 @@ class InputTest {
 
     InputStream stdin = System.in;
 
-
     Input cin;
 
     @BeforeEach
