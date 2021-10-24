@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
-    public List<Card> cards;
+    List<Card> cards;
 
     /**
      * Constructs an empty hand
@@ -99,6 +99,15 @@ public class Hand implements Iterable<Card> {
      */
     public String toString() {
         return this.cards.toString();
+    }
+
+    /**
+     * Returns if the deck is empty
+     *
+     * @return a boolean for if deck is empty or not
+     */
+    public boolean isEmpty() {
+        return cards.isEmpty();
     }
 
     @Override

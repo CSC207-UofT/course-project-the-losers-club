@@ -1,8 +1,6 @@
 package drivers;
 
 import controllers.InOut;
-import entities.Card;
-import entities.Hand;
 import usecases.CrazyEights;
 
 import java.util.List;

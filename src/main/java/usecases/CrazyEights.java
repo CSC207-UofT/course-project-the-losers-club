@@ -83,8 +83,8 @@ public class CrazyEights extends Game{
      */
     @Override
     public boolean checkMove(Card card) {
-        int ind = currPlayer.getHand().getCards().indexOf(card);
-        if (ind == -1) {
+        // int ind = currPlayer.getHand().getCards().indexOf(card);
+        if (this.currPlayer.getHand().isEmpty()) {
             return false;
         } else {
             return (card.getSuit() == this.playingField.peek().getSuit()) || card.getRank().equals(this.playingField.peek().getRank());
@@ -122,6 +122,6 @@ public class CrazyEights extends Game{
      */
     @Override
     public boolean checkWin() {
-        return currPlayer.getHand().getSize() == 0;
+        return currPlayer.getHand().isEmpty();
     }
 }
