@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
-    List<Card> cards;
+    private List<Card> cards;
 
     /**
      * Constructs an empty hand
