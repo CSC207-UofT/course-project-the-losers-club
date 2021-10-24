@@ -65,6 +65,12 @@ public class Input implements Game.Input {
         return line.equals("Y");
     }
 
+    /**
+     * Prompt user to select a suit.
+     *
+     * @return a character encoding the selected suit. The returned character will be one of {'C', 'D', 'H', 'S'}
+     * representing Clubs, Diamonds, Hearts, Spades respectively.
+     */
     @Override
     public char getSuit() {
         System.out.print("Pick a suit (one of 'C', 'D', 'H', 'S'): ");
