@@ -43,4 +43,12 @@ public class Player {
     public Hand getHand() {
         return this.hand;
     }
+
+    public boolean playerHandEmpty(){
+        return this.hand.isEmpty();
+    }
+
+    public String playerHandString(){
+        return this.hand.toString();
+    }
 }
