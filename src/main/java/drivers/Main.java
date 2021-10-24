@@ -1,7 +1,11 @@
 package drivers;
 
 import controllers.InOut;
+import entities.Card;
+import entities.Hand;
 import usecases.CrazyEights;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
