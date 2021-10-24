@@ -45,7 +45,7 @@ public class CrazyEights extends Game{
             this.controller.sendOutput(this.currPlayer.getName() + "'s Turn");
             this.controller.sendOutput("---------------------------------------");
             this.controller.sendOutput("Top card: " + this.playingField.peek());
-            this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.printHandString());
+            this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString());
 
             do {
                 if (looped){

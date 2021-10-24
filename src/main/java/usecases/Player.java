@@ -58,7 +58,7 @@ public class Player {
      *
      * @return the player's hand as a string
      */
-    public String printHandString(){
+    public String getHandString(){
         return this.hand.toString();
     }
 }
