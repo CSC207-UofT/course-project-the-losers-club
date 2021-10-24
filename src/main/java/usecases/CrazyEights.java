@@ -45,7 +45,7 @@ public class CrazyEights extends Game{
             this.controller.sendOutput(this.currPlayer.getName() + "'s Turn");
             this.controller.sendOutput("---------------------------------------");
             this.controller.sendOutput("Top card: " + this.playingField.peek());
-            this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.playerHandString());
+            this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.printHandString());
 
             do {
                 if (looped){
@@ -83,7 +83,7 @@ public class CrazyEights extends Game{
      */
     @Override
     public boolean checkMove(Card card) {
-        if (this.currPlayer.playerHandEmpty()) {
+        if (this.currPlayer.isHandEmpty()) {
             return false;
         } else {
             return (card.getSuit() == this.playingField.peek().getSuit()) || card.getRank().equals(this.playingField.peek().getRank());
@@ -121,6 +121,6 @@ public class CrazyEights extends Game{
      */
     @Override
     public boolean checkWin() {
-        return currPlayer.playerHandEmpty();
+        return currPlayer.isHandEmpty();
     }
 }

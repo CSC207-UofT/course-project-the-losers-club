@@ -44,11 +44,21 @@ public class Player {
         return this.hand;
     }
 
-    public boolean playerHandEmpty(){
+    /**
+     * Returns if the player's hand is empty
+     *
+     * @return a boolean for if the player's hand is empty or not
+     */
+    public boolean isHandEmpty(){
         return this.hand.isEmpty();
     }
 
-    public String playerHandString(){
+    /**
+     * Returns the player's hand as a string
+     *
+     * @return the player's hand as a string
+     */
+    public String printHandString(){
         return this.hand.toString();
     }
 }

@@ -3,8 +3,6 @@ package drivers;
 import controllers.InOut;
 import usecases.CrazyEights;
 
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         InOut cio = new ConsoleInOut();

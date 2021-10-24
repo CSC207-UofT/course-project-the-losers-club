@@ -102,13 +102,14 @@ public class Hand implements Iterable<Card> {
     }
 
     /**
-     * Returns if the deck is empty
+     * Returns if the hand is empty
      *
-     * @return a boolean for if deck is empty or not
+     * @return a boolean for if the hand is empty or not
      */
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+
 
     @Override
     public Iterator<Card> iterator() {
