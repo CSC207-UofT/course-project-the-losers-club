@@ -29,9 +29,9 @@ public class UserManager {
      * @param password password of the User
      * @return returns true if the user has been added and returns false when a user with a same username already exists
      */
-    public boolean addUser(String name, String username, String password){
+    public boolean addUser(String name, String username, String password) throws UserAlreadyExistsException {
         if (hasUser(username)){
-            return false;
+            throw new UserAlreadyExistsException("Already Existing User: " + username);
         }
         else {
             User new_user = new User(name, username, password);
@@ -136,8 +136,14 @@ public class UserManager {
         }
     }
 
-    public class UserNotFoundException extends Exception{
+    public class UserNotFoundException extends Exception {
         public UserNotFoundException(String errorMessage){
+            super(errorMessage);
+        }
+    }
+
+    public class UserAlreadyExistsException extends Exception {
+        public UserAlreadyExistsException(String errorMessage){
             super(errorMessage);
         }
     }

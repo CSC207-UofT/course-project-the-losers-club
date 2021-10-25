@@ -30,7 +30,11 @@ class UserManagerTest {
 
     @Test
     void addUser() {
-        usr_manager.addUser("User 3", "poggers", "pswd");
+        try {
+            usr_manager.addUser("User 3", "poggers", "pswd");
+        } catch (UserManager.UserAlreadyExistsException e) {
+            e.printStackTrace();
+        }
         assertEquals(true, usr_manager.hasUser("poggers"));
     }
 
