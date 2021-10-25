@@ -10,9 +10,9 @@ public abstract class Game {
     protected Player currPlayer;
     protected int currPlayerIndex;
 
-    public Game(int numPlayers){
+    public Game(int numPlayers) {
         this.players = new Player[numPlayers];
-        for (int i=0; i < numPlayers; i++) {
+        for (int i = 0; i < numPlayers; i++) {
             Player newPlayer = new Player("Player " + (i + 1));
             this.players[i] = newPlayer;
         }
@@ -35,7 +35,7 @@ public abstract class Game {
 
         /**
          * Implementations should return a String corresponding to a picked card.
-         *
+         * <p>
          * The first character of the String should be the suit (one of 'C', 'D', 'H', 'S'), while the
          * second and possibly third characters should be
          * the rank (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
@@ -50,6 +50,13 @@ public abstract class Game {
          * @return true if a card should be drawn, false otherwise
          */
         boolean drawCard();
+
+        /**
+         * Implementations should return a character corresponding to a picked suit.
+         * <p>
+         * The character must be one of {'C', 'D', 'H', 'S'} representing Clubs, Diamonds, Hearts, Spades respectively.
+         */
+        char getSuit();
 
     }
 
