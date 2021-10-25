@@ -1,26 +1,26 @@
-package drivers;
+package presenters.console;
 
-import controllers.InOut;
 import helpers.CardCheck;
+import usecases.Game;
 
 import java.util.Scanner;
 
 
 /**
- * ConsoleInOut uses System.in and System.out to gather input from the user and display information to the user.
- *
+ * Input uses System.in to gather input from the user.
+ * <p>
  * It is intended to be used as a basic command line interface.
  *
- * @see InOut
+ * @see Game.Input
  */
-public class ConsoleInOut implements InOut {
+public class Input implements Game.Input {
 
     private final Scanner inp;
 
     /**
-     * Instantiate a new ConsoleInOut instance.
+     * Instantiate a new Input instance.
      */
-    public ConsoleInOut() {
+    public Input() {
         this.inp = new Scanner(System.in);
     }
 
@@ -28,8 +28,8 @@ public class ConsoleInOut implements InOut {
      * Prompt user to specify which card they wish to select.
      *
      * @return a String encoding the selected card. The first character of the String is always the suit
-     *  of the selected card (one of 'C', 'D', 'H', 'S'), while the remaining characters are used to signify the
-     *  rank of the selected card (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
+     * of the selected card (one of 'C', 'D', 'H', 'S'), while the remaining characters are used to signify the
+     * rank of the selected card (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
      */
     @Override
     public String getCard() {
@@ -66,13 +66,23 @@ public class ConsoleInOut implements InOut {
     }
 
     /**
-     * Prints the specified object to the system console by calling the <code>s.toString()</code> method.
+     * Prompt user to select a suit.
      *
-     * @param s An Object that can be somehow outputted to the user.
+     * @return a character encoding the selected suit. The returned character will be one of {'C', 'D', 'H', 'S'}
+     * representing Clubs, Diamonds, Hearts, Spades respectively.
      */
     @Override
-    public void sendOutput(Object s) {
-        System.out.println(s.toString());
+    public char getSuit() {
+        System.out.print("Pick a suit (one of 'C', 'D', 'H', 'S'): ");
+        String line = this.inp.nextLine().trim().toUpperCase();
+
+        // check for invalid suit selection
+        while (line.length() != 1 || (line.charAt(0) != 'C' && line.charAt(0) != 'D' && line.charAt(0) != 'H' && line.charAt(0) != 'S')) {
+            System.out.print("Invalid selection ('C', 'D', 'H', 'S'): ");
+            line = this.inp.nextLine().trim().toUpperCase();
+        }
+
+        return line.charAt(0);
     }
 
 }

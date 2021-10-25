@@ -1,24 +1,26 @@
 package usecases;
 
-import controllers.InOut;
 import entities.Card;
 import entities.Hand;
 
 import java.util.List;
 import java.util.Stack;
 
-public class CrazyEights extends Game{
+public class CrazyEights extends Game {
     private final Stack<Card> playingField;
-    private final InOut controller;
+    private final Input gameInput;
+    private final Output gameOutput;
 
     /**
      *
      * @param numPlayers The number of players playing the game.
-     * @param controller An interface that communicates with the players through a command line.
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
      */
-    public CrazyEights(int numPlayers, InOut controller) {
+    public CrazyEights(int numPlayers, Input gameInput, Output gameOutput) {
         super(numPlayers);
-        this.controller = controller;
+        this.gameInput = gameInput;
+        this.gameOutput = gameOutput;
         this.currPlayerIndex = 0;
         this.playingField = new Stack<>();
         this.deck.shuffle();
@@ -41,23 +43,23 @@ public class CrazyEights extends Game{
             Card card = null;
             String crd;
             boolean looped = false;
-            this.controller.sendOutput("---------------------------------------");
-            this.controller.sendOutput(this.currPlayer.getName() + "'s Turn");
-            this.controller.sendOutput("---------------------------------------");
-            this.controller.sendOutput("Top card: " + this.playingField.peek());
-            this.controller.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString());
+            this.gameOutput.sendOutput("---------------------------------------");
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn");
+            this.gameOutput.sendOutput("---------------------------------------");
+            this.gameOutput.sendOutput("Top card: " + this.playingField.peek());
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString());
 
             do {
                 if (looped){
-                    this.controller.sendOutput("This is not a valid move.");
+                    this.gameOutput.sendOutput("This is not a valid move.");
                     card = null;
                 }
 
                 if (!hasValidMove(currPlayer.getHand())){
-                    this.controller.sendOutput("Card drawn from Deck because there are no cards to play.");
+                    this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.");
                 }
-                else if (!controller.drawCard()) {
-                    crd = this.controller.getCard();
+                else if (!this.gameInput.drawCard()) {
+                    crd = this.gameInput.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
                 }
 
@@ -71,9 +73,9 @@ public class CrazyEights extends Game{
                 makeMove(card);
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
-            this.controller.sendOutput("");
+            this.gameOutput.sendOutput("");
         }
-        this.controller.sendOutput(this.currPlayer.getName() + " Wins!!!");
+        this.gameOutput.sendOutput(this.currPlayer.getName() + " Wins!!!");
     }
 
     /**
