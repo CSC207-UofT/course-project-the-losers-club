@@ -141,10 +141,4 @@ public class UserManager {
             super(errorMessage);
         }
     }
-
-    public static void main(String[] args) {
-        UserManager test = new UserManager();
-        System.out.println(test.addUser("Test", "test", "password"));
-        System.out.println(test.hasUser("test"));
-    }
 }
