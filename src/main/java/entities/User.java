@@ -64,4 +64,16 @@ public class User {
         this.gamesPlayed += 1;
         return this.gamesPlayed;
     }
+
+    /**
+     * Returns this User's games won
+     * @return number of games won by the User
+     */
+    public int getGamesWon() { return this.gamesWon; }
+
+    /**
+     * Return this User's games played
+     * @return number of games played by the User
+     */
+    public int getGamesPlayed() { return this.gamesPlayed; }
 }
