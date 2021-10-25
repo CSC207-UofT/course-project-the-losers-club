@@ -85,4 +85,17 @@ public class Input implements Game.Input {
         return line.charAt(0);
     }
 
+    /**
+     * Prompt the user to press enter to continue.
+     *
+     * @return a boolean representing whether execution should continue. Note that this method will ALWAYS return true.
+     */
+    public boolean stall() {
+        System.out.print("Press enter to continue: ");
+        this.inp.nextLine();  // do nothing with input
+
+        return true;
+    }
+
+
 }

@@ -112,4 +112,20 @@ class InputTest {
         this.cin = new Input();
         assertEquals('C', this.cin.getSuit());
     }
+
+    @Test
+    void stallSimple() {
+        String data = "\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertTrue(this.cin.stall());
+    }
+
+    @Test
+    void stallWithText() {
+        String data = "adsflkuhysadf\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertTrue(this.cin.stall());
+    }
 }

@@ -71,6 +71,12 @@ public abstract class Game {
          */
         char getSuit();
 
+        /**
+         * Implementations should stall the output display. This can be used when the user needs to "click to continue"
+         * or in the case of a command line interface, "press enter to continue".
+         */
+        boolean stall();
+
     }
 
     /**
