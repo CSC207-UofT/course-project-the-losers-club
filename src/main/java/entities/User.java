@@ -40,8 +40,8 @@ public class User {
     }
 
     /**
-     * Returns the User's password
-     * @return the password of the User
+     * Checks if the given password matches the User's password
+     * @return true if password matches User's password, false otherwise
      */
     public boolean checkPassword(String password) {
         return this.password.equals(password);
