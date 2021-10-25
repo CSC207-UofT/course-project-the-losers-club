@@ -81,7 +81,7 @@ public class CrazyEights extends Game{
      * @param card A card object that will be checked if it is a valid move
      * @return true if card is a valid move, false otherwise
      */
-    @Override
+            @Override
     public boolean checkMove(Card card) {
         if (this.currPlayer.isHandEmpty()) {
             return false;

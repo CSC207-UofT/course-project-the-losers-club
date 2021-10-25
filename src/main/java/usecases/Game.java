@@ -1,5 +1,6 @@
 package usecases;
 import java.util.ArrayList;
+import java.util.List;
 
 import entities.Deck;
 import entities.Card;
@@ -10,6 +11,8 @@ public abstract class Game {
     protected Deck deck;
     protected Player currPlayer;
     protected int currPlayerIndex;
+    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
     public Game(int numPlayers){
         this.players = new Player[numPlayers];
@@ -18,7 +21,15 @@ public abstract class Game {
             this.players[i] = newPlayer;
         }
         this.currPlayer = this.players[0];
-        this.deck = new Deck();
+
+        // Creates a deck with the cards created outside the Deck class
+        List<Card> cardList = new ArrayList<>();
+        for (String i : RANKS){
+            for (char j : SUITS){
+                cardList.add(new Card(i, j));
+            }
+        }
+        this.deck = new Deck(cardList);
     }
 
     public abstract void startGame();
