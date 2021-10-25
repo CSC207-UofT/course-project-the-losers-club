@@ -8,7 +8,7 @@ public class UserManager {
     private HashMap<String, User> users;
 
     /**
-     * Constructs a UserManage with an empty hashmap of users
+     * Constructs a UserManager with an empty hashmap of users
      */
     public UserManager(){
         this.users = new HashMap<String, User>();
@@ -23,7 +23,7 @@ public class UserManager {
     }
 
     /**
-     * Adds a user to the hasmap
+     * Adds a user to the hashmap
      * @param name name of the User
      * @param username username of the User
      * @param password password of the User
