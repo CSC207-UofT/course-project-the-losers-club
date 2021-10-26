@@ -1,7 +1,7 @@
 package presenters.console;
 
 import helpers.CardCheck;
-import usecases.Game;
+import usecases.GameTemplate;
 
 import java.util.Scanner;
 
@@ -11,9 +11,9 @@ import java.util.Scanner;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
- * @see Game.Input
+ * @see GameTemplate.Input
  */
-public class Input implements Game.Input {
+public class Input implements GameTemplate.Input {
 
     private final Scanner inp;
 

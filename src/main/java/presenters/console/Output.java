@@ -1,6 +1,6 @@
 package presenters.console;
 
-import usecases.Game;
+import usecases.GameTemplate;
 
 
 /**
@@ -8,9 +8,9 @@ import usecases.Game;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
- * @see Game.Output
+ * @see GameTemplate.Output
  */
-public class Output implements Game.Output {
+public class Output implements GameTemplate.Output {
 
     /**
      * Instantiate a new Output instance.

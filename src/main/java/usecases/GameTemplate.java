@@ -3,14 +3,14 @@ package usecases;
 import entities.Deck;
 import entities.Card;
 
-public abstract class Game {
+public abstract class GameTemplate {
 
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
     protected int currPlayerIndex;
 
-    public Game(int numPlayers){
+    public GameTemplate(int numPlayers){
         this.players = new Player[numPlayers];
         for (int i=0; i < numPlayers; i++) {
             Player newPlayer = new Player("Player " + (i + 1));

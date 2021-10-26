@@ -6,7 +6,7 @@ import entities.Hand;
 import java.util.List;
 import java.util.Stack;
 
-public class CrazyEights extends Game {
+public class CrazyEights extends GameTemplate {
     private final Stack<Card> playingField;
     private final Input gameInput;
     private final Output gameOutput;
