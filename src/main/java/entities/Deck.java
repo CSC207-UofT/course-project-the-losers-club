@@ -10,20 +10,7 @@ import java.util.List;
 public class Deck {
     // Constants and instance attributes. RANKS is an array of all possible ranks,
     // SUITS is an array of all possible suits
-    private List<Card> cards = new ArrayList<>();
-    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
-
-    /**
-     * Constructs a deck and initializes it with all standard 52 playing cards
-     */
-    public Deck() {
-        for (String i : Deck.RANKS){
-            for (char j : Deck.SUITS){
-                this.cards.add(new Card(i, j));
-            }
-        }
-    }
+    private List<Card> cards;
 
     /**
      * Constructs a deck and initializes it with a list of Card objects passed to it
@@ -76,4 +63,5 @@ public class Deck {
     public void addCard(Card card) {
         cards.add(card);
     }
+
 }

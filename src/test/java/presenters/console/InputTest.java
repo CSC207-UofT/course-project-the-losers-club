@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InputTest {
 
-    InputStream stdin = System.in;
+    private InputStream stdin = System.in;
 
-    Input cin;
+    private Input cin;
 
     @BeforeEach
     void setUp() {
@@ -63,5 +63,69 @@ class InputTest {
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         this.cin = new Input();
         assertFalse(this.cin.drawCard());
+    }
+
+    @Test
+    void getSuitClubs() {
+        String data = "c\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('C', this.cin.getSuit());
+    }
+
+    @Test
+    void getSuitDiamonds() {
+        String data = "D\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('D', this.cin.getSuit());
+    }
+
+    @Test
+    void getSuitHearts() {
+        String data = "h\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('H', this.cin.getSuit());
+    }
+
+    @Test
+    void getSuitSpades() {
+        String data = "S\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('S', this.cin.getSuit());
+    }
+
+    @Test
+    void getSuitInvalidSuit() {
+        String data = "a\nb\nc\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('C', this.cin.getSuit());
+    }
+
+    @Test
+    void getSuitInvalidLength() {
+        String data = "abc\ncba\nc\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertEquals('C', this.cin.getSuit());
+    }
+
+    @Test
+    void stallSimple() {
+        String data = "\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertTrue(this.cin.stall());
+    }
+
+    @Test
+    void stallWithText() {
+        String data = "adsflkuhysadf\n";
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        this.cin = new Input();
+        assertTrue(this.cin.stall());
     }
 }

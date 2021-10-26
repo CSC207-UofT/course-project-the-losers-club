@@ -1,4 +1,5 @@
 package entities;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -6,9 +7,9 @@ import java.util.ArrayList;
  * Represents a player's hand during a card game. Each hand contains a list of Card objects, which represent the
  * cards in such player's hand.
  */
-public class Hand {
+public class Hand implements Iterable<Card> {
     // Instance attributes
-    List<Card> cards;
+    private List<Card> cards;
 
     /**
      * Constructs an empty hand
@@ -31,6 +32,7 @@ public class Hand {
      *
      * @return the instance attribute 'cards' - a list of card objects
      */
+
     public List<Card> getCards() {
         return this.cards;
     }
@@ -97,5 +99,20 @@ public class Hand {
      */
     public String toString() {
         return this.cards.toString();
+    }
+
+    /**
+     * Returns if the hand is empty
+     *
+     * @return a boolean for if the hand is empty or not
+     */
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+
+    @Override
+    public Iterator<Card> iterator() {
+        return cards.iterator();
     }
 }

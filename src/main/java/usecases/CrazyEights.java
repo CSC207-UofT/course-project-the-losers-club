@@ -10,6 +10,7 @@ public class CrazyEights extends GameTemplate {
     private final Stack<Card> playingField;
     private final Input gameInput;
     private final Output gameOutput;
+    private char suitTracker;
 
     /**
      *
@@ -30,6 +31,7 @@ public class CrazyEights extends GameTemplate {
             }
         }
         this.playingField.add(this.deck.drawCard());
+        this.suitTracker = this.playingField.peek().getSuit();
     }
 
     /**
@@ -46,8 +48,8 @@ public class CrazyEights extends GameTemplate {
             this.gameOutput.sendOutput("---------------------------------------");
             this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn");
             this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput("Top card: " + this.playingField.peek());
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHand().toString());
+            this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker);
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString());
 
             do {
                 if (looped){
@@ -61,6 +63,9 @@ public class CrazyEights extends GameTemplate {
                 else if (!this.gameInput.drawCard()) {
                     crd = this.gameInput.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
+                    if (card.getRank().equals("8")) {
+                        this.suitTracker = this.gameInput.getSuit();
+                    }
                 }
 
                 if (card != null && !checkMove(card)){
@@ -85,11 +90,17 @@ public class CrazyEights extends GameTemplate {
      */
     @Override
     public boolean checkMove(Card card) {
-        int ind = currPlayer.getHand().getCards().indexOf(card);
-        if (ind == -1) {
+        if (this.currPlayer.isHandEmpty()) {
             return false;
+        } else if (card.getRank().equals("8")) {
+            return true;
         } else {
-            return (card.getSuit() == this.playingField.peek().getSuit()) || card.getRank().equals(this.playingField.peek().getRank());
+            int ind = currPlayer.getHand().getCards().indexOf(card);
+            if (ind == -1) {
+                return false;
+            } else {
+                return (card.getSuit() == this.suitTracker) || card.getRank().equals(this.playingField.peek().getRank());
+            }
         }
     }
 
@@ -101,7 +112,7 @@ public class CrazyEights extends GameTemplate {
     public boolean hasValidMove(Hand hand){
         List<Card> cards = hand.getCards();
         for (Card card : cards){
-            if (card.getSuit() == this.playingField.peek().getSuit() || card.getRank().equals(this.playingField.peek().getRank())){
+            if (card.getSuit() == this.suitTracker || card.getRank().equals(this.playingField.peek().getRank()) || card.getRank().equals("8")){
                 return true;
             }
         }
@@ -116,6 +127,9 @@ public class CrazyEights extends GameTemplate {
     public void makeMove(Card card) {
         this.playingField.add(card);
         this.currPlayer.removeFromHand(card);
+        if (!card.getRank().equals("8")) {
+            this.suitTracker = card.getSuit();
+        }
     }
 
     /**
@@ -124,6 +138,6 @@ public class CrazyEights extends GameTemplate {
      */
     @Override
     public boolean checkWin() {
-        return currPlayer.getHand().getSize() == 0;
+        return currPlayer.isHandEmpty();
     }
 }
