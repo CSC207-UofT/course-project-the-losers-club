@@ -127,6 +127,9 @@ public class CrazyEights extends Game {
     public void makeMove(Card card) {
         this.playingField.add(card);
         this.currPlayer.removeFromHand(card);
+        if (!card.getRank().equals("8")) {
+            this.suitTracker = card.getSuit();
+        }
     }
 
     /**
