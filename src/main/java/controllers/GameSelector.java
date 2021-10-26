@@ -37,11 +37,44 @@ public class GameSelector {
         this.games = new GameTemplate[]{new CrazyEights(2, this.gameInput, this.gameOutput)};
     }
 
+    /**
+     * Run this GameSelector.
+     * <p>
+     * GameSelector allows a user to select the game they wish to play and runs that game.
+     */
     public void run() {
-        // display menu
-        // get user selection
-        // handle user selection
-        // repeat
+        displayMenu();
+
+        int sel = this.selectorInput.getUserSelection();
+
+        // check for exit case
+        if (sel == 0) {
+            return;
+        }
+
+        while (!handleUserSelection(sel)) {
+            this.selectorOutput.sendOutput("Invalid menu selection.");
+            sel = this.selectorInput.getUserSelection();
+        }
+    }
+
+    /**
+     * Display the game menu.
+     */
+    private void displayMenu() {
+        this.selectorOutput.sendOutput("---- MENU DISPLAY -----");
+    }
+
+    /**
+     * Handle the user's selection.
+     * <p>
+     * This method will be the main runner of the selected Game.
+     *
+     * @param sel the user's selection
+     * @return false when the selection is invalid or true when the execution completes
+     */
+    private boolean handleUserSelection(int sel) {
+        return true;
     }
 
     /**
