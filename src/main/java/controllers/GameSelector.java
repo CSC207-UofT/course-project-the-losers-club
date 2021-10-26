@@ -67,7 +67,7 @@ public class GameSelector {
          * Implementations should take the given Object s and handle it's output to the user.
          * How this is done depends on the implementation.
          *
-         * @param s An Object that can be somehow outputted to the user.
+         * @param o An Object that can be somehow outputted to the user.
          */
         void sendOutput(Object o);
 
