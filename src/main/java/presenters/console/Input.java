@@ -1,9 +1,11 @@
 package presenters.console;
 
+import controllers.GameSelector;
 import helpers.CardCheck;
 import usecases.GameTemplate;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 /**
@@ -11,9 +13,10 @@ import java.util.Scanner;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
+ * @see GameSelector.Input
  * @see GameTemplate.Input
  */
-public class Input implements GameTemplate.Input {
+public class Input implements GameSelector.Input, GameTemplate.Input {
 
     private final Scanner inp;
 
@@ -38,7 +41,7 @@ public class Input implements GameTemplate.Input {
 
         // if invalid card
         while (!CardCheck.checkCard(line)) {
-            System.out.print("Invalid selection: ");
+            System.out.print("Invalid selection, try again: ");
             line = this.inp.nextLine().trim();
         }
 
@@ -58,7 +61,7 @@ public class Input implements GameTemplate.Input {
 
         // if invalid card selection
         while (line.length() != 1 || (!line.equals("Y") && !line.equals("N"))) {
-            System.out.print("Invalid selection (\"Y\", \"N\"): ");
+            System.out.print("Invalid selection (\"Y\", \"N\"), try again: ");
             line = this.inp.nextLine().trim().toUpperCase();
         }
 
@@ -78,7 +81,7 @@ public class Input implements GameTemplate.Input {
 
         // check for invalid suit selection
         while (line.length() != 1 || (line.charAt(0) != 'C' && line.charAt(0) != 'D' && line.charAt(0) != 'H' && line.charAt(0) != 'S')) {
-            System.out.print("Invalid selection ('C', 'D', 'H', 'S'): ");
+            System.out.print("Invalid selection ('C', 'D', 'H', 'S'), try again: ");
             line = this.inp.nextLine().trim().toUpperCase();
         }
 
@@ -98,4 +101,21 @@ public class Input implements GameTemplate.Input {
     }
 
 
+    /***
+     * Prompt the user to enter a menu selection and return their selection.
+     *
+     * @return an integer representing the user's menu selection
+     */
+    @Override
+    public int getUserSelection() {
+        System.out.print("Make a selection: ");
+        String line = this.inp.nextLine().trim();
+
+        while (!Pattern.matches("^\\d+$", line)) {
+            System.out.print("Invalid selection, try again: ");
+            line = this.inp.nextLine().trim();
+        }
+
+        return Integer.parseInt(line);
+    }
 }
