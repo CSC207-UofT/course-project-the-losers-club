@@ -15,7 +15,7 @@ public abstract class GameTemplate {
     private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
-    public GameTemplate(int numPlayers){
+    protected GameTemplate(int numPlayers){
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
             Player newPlayer = new Player("Player " + (i + 1));
@@ -40,6 +40,19 @@ public abstract class GameTemplate {
     public abstract void makeMove(Card card);
 
     public abstract boolean checkWin();
+
+    public static GameTemplate GameFactory(String name, int numPlayers, Input input, Output output) {
+//        switch (name.toUpperCase()) {
+//            case "CRAZY EIGHTS":
+//                return new CrazyEights(numPlayers, input, output);
+////            case "WAR":
+////                return new War(...);  // TODO ADD WAR WHEN IMPLEMENTED
+//            default:
+//                return null;
+//        }
+
+        return new CrazyEights(numPlayers, input, output);
+    }
 
     /**
      * Input is an interface allowing Games to retrieve input from a user.
