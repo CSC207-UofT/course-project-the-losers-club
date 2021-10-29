@@ -13,8 +13,8 @@ public class GameSelector {
     private final GameSelector.Input selectorInput;
     private final GameSelector.Output selectorOutput;
 
-    private final GameTemplate.Input gameInput;
-    private final GameTemplate.Output gameOutput;
+    private static final int WIDTH = 39;
+    private final String dashes;
 
     /**
      * Instantiate a GameSelector.
@@ -31,10 +31,9 @@ public class GameSelector {
         this.selectorInput = selectorInput;
         this.selectorOutput = selectorOutput;
 
-        this.gameInput = gameInput;
-        this.gameOutput = gameOutput;
+        this.games = new GameTemplate[]{new CrazyEights(2, gameInput, gameOutput)};
 
-        this.games = new GameTemplate[]{new CrazyEights(2, this.gameInput, this.gameOutput)};
+        this.dashes = "=".repeat(WIDTH);
     }
 
     /**
@@ -43,18 +42,20 @@ public class GameSelector {
      * GameSelector allows a user to select the game they wish to play and runs that game.
      */
     public void run() {
-        displayMenu();
+        while (true) {
+            displayMenu();
 
-        int sel = this.selectorInput.getUserSelection();
+            int sel = this.selectorInput.getUserSelection();
 
-        // check for exit case
-        if (sel == 0) {
-            return;
-        }
+            // check for exit case
+            if (sel == 0) {
+                return;
+            }
 
-        while (!handleUserSelection(sel)) {
-            this.selectorOutput.sendOutput("Invalid menu selection.");
-            sel = this.selectorInput.getUserSelection();
+            while (!handleUserSelection(sel)) {
+                this.selectorOutput.sendOutput("Invalid menu selection.\n");
+                sel = this.selectorInput.getUserSelection();
+            }
         }
     }
 
@@ -62,7 +63,15 @@ public class GameSelector {
      * Display the game menu.
      */
     private void displayMenu() {
-        this.selectorOutput.sendOutput("---- MENU DISPLAY -----");
+        this.selectorOutput.sendOutput("\n\n\n\n\n" + this.dashes + "\n               MAIN MENU               \n" + this.dashes + "\n");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.games.length; i ++) {
+            // [#] GAME NAME
+            sb.append("[").append(i + 1).append("] ").append(this.games[i].toString()).append("\n");
+        }
+        this.selectorOutput.sendOutput(sb.toString());
+        this.selectorOutput.sendOutput("[0] EXIT\n");
+        this.selectorOutput.sendOutput(dashes + "\n");
     }
 
     /**
@@ -74,7 +83,18 @@ public class GameSelector {
      * @return false when the selection is invalid or true when the execution completes
      */
     private boolean handleUserSelection(int sel) {
-        return true;
+        if (sel < 0 || sel > this.games.length) {
+            return false;
+        } else {
+            GameTemplate game = this.games[sel - 1];
+            this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
+            String gameString = game.toString();
+
+            this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
+            this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
+            game.startGame();
+            return true;
+        }
     }
 
     /**

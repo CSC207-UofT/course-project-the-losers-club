@@ -27,7 +27,7 @@ public class Output implements GameSelector.Output, GameTemplate.Output {
      */
     @Override
     public void sendOutput(Object s) {
-        System.out.println(s.toString());
+        System.out.print(s.toString());
     }
 
 }
