@@ -15,7 +15,7 @@ public class UserManager {
     }
 
     /**
-     * Constructs a UserManage with a pre-existing hashmap of username to User
+     * Constructs a UserManager with a pre-existing hashmap of username to User
      * @param users hashmap that maps a username to an instance of User
      */
     public UserManager(HashMap<String, User> users){

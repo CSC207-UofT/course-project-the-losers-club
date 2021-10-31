@@ -35,7 +35,7 @@ class UserManagerTest {
         } catch (UserManager.UserAlreadyExistsException e) {
             e.printStackTrace();
         }
-        assertEquals(true, usr_manager.hasUser("poggers"));
+        assertTrue(usr_manager.hasUser("poggers"));
     }
 
     @Test
@@ -46,7 +46,7 @@ class UserManagerTest {
         catch (UserManager.UserNotFoundException e){
             e.printStackTrace();
         }
-        assertEquals(false, usr_manager.hasUser("gamerboy123"));
+        assertFalse(usr_manager.hasUser("gamerboy123"));
     }
 
     @Test
@@ -83,14 +83,14 @@ class UserManagerTest {
 
     @Test
     void hasUser() {
-        assertEquals(true, usr_manager.hasUser("gamerboy123"));
+        assertTrue(usr_manager.hasUser("gamerboy123"));
     }
 
     @Test
     void login() {
         try{
-            assertEquals(false, usr_manager.login("usrname", "5678"));
-            assertEquals(true, usr_manager.login("usrname", "1234"));
+            assertFalse(usr_manager.login("usrname", "5678"));
+            assertTrue(usr_manager.login("usrname", "1234"));
         } catch (UserManager.UserNotFoundException e){
             e.printStackTrace();
         }
