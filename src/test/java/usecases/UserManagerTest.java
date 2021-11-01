@@ -52,10 +52,11 @@ class UserManagerTest {
     @Test
     void addGamesPlayed() {
         try {
-            usr_manager.addGamesPlayed("usrname", true);
-            usr_manager.addGamesPlayed("usrname", false);
+            usr_manager.addGamesPlayed("usrname", true, false);
+            usr_manager.addGamesPlayed("usrname", false, true);
             assertEquals(2, usr_manager.getGamesPlayed("usrname"));
             assertEquals(1, usr_manager.getWins("usrname"));
+            assertEquals(1, usr_manager.getGamesTied("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -64,8 +65,8 @@ class UserManagerTest {
     @Test
     void getWins() {
         try {
-            usr_manager.addGamesPlayed("usrname", true);
-            usr_manager.addGamesPlayed("usrname", false);
+            usr_manager.addGamesPlayed("usrname", true, false);
+            usr_manager.addGamesPlayed("usrname", false, false);
             assertEquals(1, usr_manager.getWins("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
@@ -74,6 +75,15 @@ class UserManagerTest {
 
     @Test
     void getGamesPlayed() {
+        try {
+            assertEquals(0, usr_manager.getGamesPlayed("usrname"));
+        } catch (UserManager.UserNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void getGamesTied() {
         try {
             assertEquals(0, usr_manager.getGamesPlayed("usrname"));
         } catch (UserManager.UserNotFoundException e) {
