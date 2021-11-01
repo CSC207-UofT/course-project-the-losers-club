@@ -8,6 +8,7 @@ public class User {
     private String password;
     private int gamesWon;
     private int gamesPlayed;
+    private int gamesTied;
 
     /**
      * Constructs a User with the given name, username, and password.
@@ -21,6 +22,7 @@ public class User {
         this.password = password;
         this.gamesWon = 0;
         this.gamesPlayed = 0;
+        this.gamesTied = 0;
     }
 
     /**
@@ -66,6 +68,15 @@ public class User {
     }
 
     /**
+     * Add a tie to the User's statistics
+     * @return the current number of ties of the User
+     */
+    public int addTied() {
+        this.gamesTied += 1;
+        return this.gamesTied;
+    }
+
+    /**
      * Returns this User's games won
      * @return number of games won by the User
      */
@@ -76,4 +87,10 @@ public class User {
      * @return number of games played by the User
      */
     public int getGamesPlayed() { return this.gamesPlayed; }
+
+    /**
+     * Returns this User's games tied
+     * @return number of ties of the User
+     */
+    public int getGamesTied() { return this.gamesTied; }
 }

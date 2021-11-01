@@ -58,4 +58,24 @@ class UserTest {
     void addPlayed() {
         assertEquals(1, testUser.addPlayed());
     }
+
+    @Test
+    void addTie() {
+        assertEquals(1, testUser.addTied());
+    }
+
+    @Test
+    void getTie() {
+        assertEquals(0, testUser.getGamesTied());
+    }
+
+    @Test
+    void getPlayed() {
+        assertEquals(0, testUser.getGamesPlayed());
+    }
+
+    @Test
+    void getWon() {
+        assertEquals(0, testUser.getGamesWon());
+    }
 }
