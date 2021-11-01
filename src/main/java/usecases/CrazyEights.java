@@ -35,6 +35,16 @@ public class CrazyEights extends GameTemplate {
     }
 
     /**
+     * Return a String representation of this class.
+     *
+     * @return the String "Crazy Eights"
+     */
+    @Override
+    public String toString() {
+        return "Crazy Eights";
+    }
+
+    /**
      * The main part of the game that shows players their hands, takes in their answers, determines if a move is valid
      * or invalid, plays the move, and determines a winner.
      */
@@ -45,20 +55,20 @@ public class CrazyEights extends GameTemplate {
             Card card = null;
             String crd;
             boolean looped = false;
-            this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn");
-            this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker);
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString());
+            this.gameOutput.sendOutput("---------------------------------------\n");
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn\n");
+            this.gameOutput.sendOutput("---------------------------------------\n");
+            this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker + "\n");
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped){
-                    this.gameOutput.sendOutput("This is not a valid move.");
+                    this.gameOutput.sendOutput("This is not a valid move.\n");
                     card = null;
                 }
 
                 if (!hasValidMove(currPlayer.getHand())){
-                    this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.");
+                    this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.\n");
                 }
                 else if (!this.gameInput.drawCard()) {
                     crd = this.gameInput.getCard();
@@ -78,9 +88,9 @@ public class CrazyEights extends GameTemplate {
                 makeMove(card);
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
-            this.gameOutput.sendOutput("");
+            this.gameOutput.sendOutput("\n");
         }
-        this.gameOutput.sendOutput(this.currPlayer.getName() + " Wins!!!");
+        this.gameOutput.sendOutput(this.currPlayer.getName() + " Wins!!!\n");
     }
 
     /**

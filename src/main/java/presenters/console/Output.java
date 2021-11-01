@@ -1,6 +1,7 @@
 package presenters.console;
 
 import usecases.GameTemplate;
+import controllers.GameSelector;
 
 
 /**
@@ -8,9 +9,10 @@ import usecases.GameTemplate;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
+ * @see GameSelector.Output
  * @see GameTemplate.Output
  */
-public class Output implements GameTemplate.Output {
+public class Output implements GameSelector.Output, GameTemplate.Output {
 
     /**
      * Instantiate a new Output instance.
@@ -25,7 +27,7 @@ public class Output implements GameTemplate.Output {
      */
     @Override
     public void sendOutput(Object s) {
-        System.out.println(s.toString());
+        System.out.print(s.toString());
     }
 
 }
