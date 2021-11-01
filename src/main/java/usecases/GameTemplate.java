@@ -5,23 +5,23 @@ import java.util.List;
 
 import entities.Deck;
 import entities.Card;
+import helpers.CircularLinkedList;
+import helpers.CircularLinkedList.Node;
 
 public abstract class GameTemplate {
 
-    protected Player[] players;
+    protected CircularLinkedList players;
     protected Deck deck;
-    protected Player currPlayer;
-    protected int currPlayerIndex;
+    protected Node currNode;
     private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
     public GameTemplate(int numPlayers){
-        this.players = new Player[numPlayers];
+        this.players = new CircularLinkedList();
         for (int i = 0; i < numPlayers; i++) {
-            Player newPlayer = new Player("Player " + (i + 1));
-            this.players[i] = newPlayer;
+            players.addPlayer(new Player("Player " + (i + 1)));
         }
-        this.currPlayer = this.players[0];
+        this.currNode = players.first;
 
         // Creates a deck with the cards created outside the Deck class
         List<Card> cardList = new ArrayList<>();
