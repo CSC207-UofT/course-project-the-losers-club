@@ -56,18 +56,17 @@ public class UserManager {
 
     /**
      * Adds a game that has been played to a User's statistics
-     * @param username username for the a User
-     * @param win true if the game played was a win, false if not
-     * @param tie true if the game played was a tie, false if not (cannot be true if win is true)
+     * @param username username for a User
+     * @param result 1 if the User won, 0 if it was a tie, and -1 for a loss
      * @throws UserNotFoundException thrown when a user with a given username does not exist
      */
-    public void addGamesPlayed(String username, boolean win, boolean tie) throws UserNotFoundException {
+    public void addGamesPlayed(String username, int result) throws UserNotFoundException {
         if (hasUser(username)){
             User user = users.get(username);
             user.addPlayed();
-            if (win) {
+            if (result == 1) {
                 user.addWin();
-            } else if (tie) {
+            } else if (result == 0) {
                 user.addTied();
             }
         }
