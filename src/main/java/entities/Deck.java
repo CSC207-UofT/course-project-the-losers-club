@@ -1,16 +1,16 @@
 package entities;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A standard 52-card playing deck containing 52 Card objects, each representing 1 of the 52 unique cards in a
  * standard deck.
  */
 public class Deck {
-    // Constants and instance attributes. RANKS is an array of all possible ranks,
-    // SUITS is an array of all possible suits
-    private List<Card> cards;
+
+    private final List<Card> cards;
 
     /**
      * Constructs a deck and initializes it with a list of Card objects passed to it
@@ -34,7 +34,16 @@ public class Deck {
      * Shuffles the deck
      */
     public void shuffle() {
-        Collections.shuffle(this.cards);
+        this.shuffle(new Random());
+    }
+
+    /**
+     * Shuffles the deck with a pseudorandom seed.
+     *
+     * @param rand Random object used to seed the shuffle
+     */
+    public void shuffle(Random rand) {
+        Collections.shuffle(this.cards, rand);
     }
 
     /**
