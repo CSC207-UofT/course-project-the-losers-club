@@ -56,15 +56,19 @@ public class UserManager {
 
     /**
      * Adds a game that has been played to a User's statistics
-     * @param username username for the a User
-     * @param win true if the game played was a win, false if not
+     * @param username username for a User
+     * @param result 1 if the User won, 0 if it was a tie, and -1 for a loss
      * @throws UserNotFoundException thrown when a user with a given username does not exist
      */
-    public void addGamesPlayed(String username, boolean win) throws UserNotFoundException {
+    public void addGamesPlayed(String username, int result) throws UserNotFoundException {
         if (hasUser(username)){
             User user = users.get(username);
             user.addPlayed();
-            if (win) { user.addWin(); }
+            if (result == 1) {
+                user.addWin();
+            } else if (result == 0) {
+                user.addTied();
+            }
         }
         else {
             throw new UserNotFoundException("User Not Found: " + username);
@@ -101,18 +105,21 @@ public class UserManager {
         }
     }
 
+    public int getGamesTied(String username) throws UserNotFoundException {
+        if (hasUser(username)) {
+            return users.get(username).getGamesTied();
+        } else {
+            throw new UserNotFoundException("User Not Found: " + username);
+        }
+    }
+
     /**
      * Checks if a User with a given username already exists
      * @param username the username to check the existence of the user
      * @return true if the user exists, false if the user does not exist
      */
     public boolean hasUser(String username) {
-        if (users.containsKey(username)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return users.containsKey(username);
     }
 
     /**
@@ -124,12 +131,7 @@ public class UserManager {
      */
     public boolean login(String username, String password) throws UserNotFoundException {
         if (hasUser(username)){
-            if (users.get(username).checkPassword(password)){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return users.get(username).checkPassword(password);
         }
         else {
             throw new UserNotFoundException("User Not Found: " + username);
