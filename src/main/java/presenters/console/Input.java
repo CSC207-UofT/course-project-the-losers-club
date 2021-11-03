@@ -7,6 +7,8 @@ import usecases.GameTemplate;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import static helpers.UsernameCheck.checkUsername;
+
 
 /**
  * Input uses System.in to gather input from the user.
@@ -132,11 +134,10 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
 
         String line = this.inp.nextLine().trim();
 
-        //TODO: uncomment when check_username is implemented
-//        while (!check_username(line)){
-//            System.out.println("Invalid username, try again: ");
-//            line = this.inp.nextLine().trim();
-//        }
+        while (!checkUsername(line)){
+            System.out.print("Invalid username, try again: ");
+            line = this.inp.nextLine().trim();
+        }
 
         return line;
     }
