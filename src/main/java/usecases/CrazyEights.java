@@ -14,12 +14,13 @@ public class CrazyEights extends GameTemplate {
 
     /**
      *
-     * @param numPlayers The number of players playing the game.
+     * @param usernames the list of usernames of player that are playing the game
+     * @param userManager a usermanager that manages the user entities
      * @param gameInput A Game.Input object allowing for player input.
      * @param gameOutput A Game.Output object allowing for output to the player.
      */
-    public CrazyEights(int numPlayers, Input gameInput, Output gameOutput) {
-        super(numPlayers);
+    public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        super(usernames, userManager);
         this.gameInput = gameInput;
         this.gameOutput = gameOutput;
         this.currPlayerIndex = 0;
@@ -56,10 +57,10 @@ public class CrazyEights extends GameTemplate {
             String crd;
             boolean looped = false;
             this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn\n");
+            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
             this.gameOutput.sendOutput("---------------------------------------\n");
             this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker + "\n");
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped){
@@ -90,7 +91,22 @@ public class CrazyEights extends GameTemplate {
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
             this.gameOutput.sendOutput("\n");
         }
-        this.gameOutput.sendOutput(this.currPlayer.getName() + " Wins!!!\n");
+        for (String u : this.usernames) {
+            if (this.currPlayer.getUsername().equals(u)) {
+                try {
+                    this.userManager.addGamesPlayed(u, 1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        this.gameOutput.sendOutput(this.currPlayer.getUsername() + " Wins!!!\n");
     }
 
     /**

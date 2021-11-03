@@ -118,4 +118,26 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
 
         return Integer.parseInt(line);
     }
+
+
+    /**
+     * Promp the user to enter a username and return the username.
+     *
+     * @return a String representing the user's username
+     */
+    @Override
+    public String getUsername() {
+        System.out.println("Input all usernames for players playing the game. Enter 'done' to finish.");
+        System.out.print("Enter a Username: ");
+
+        String line = this.inp.nextLine().trim();
+
+        //TODO: uncomment when check_username is implemented
+//        while (!check_username(line)){
+//            System.out.println("Invalid username, try again: ");
+//            line = this.inp.nextLine().trim();
+//        }
+
+        return line;
+    }
 }
