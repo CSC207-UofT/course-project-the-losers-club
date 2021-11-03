@@ -9,16 +9,19 @@ import entities.Hand;
  */
 public class Player {
     private Hand hand;
+    private final String username;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    private String name;
-
-    public Player(String name) {
+    /**
+     *
+     * @param username username of the user that is attached to the player
+     */
+    public Player(String username) {
         this.hand = new Hand();
-        this.name = name;
+        this.username = username;
     }
 
     /**

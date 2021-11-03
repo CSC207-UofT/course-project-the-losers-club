@@ -24,17 +24,15 @@ public class UserManager {
 
     /**
      * Adds a user to the hashmap
-     * @param name name of the User
      * @param username username of the User
-     * @param password password of the User
      * @return returns true if the user has been added and returns false when a user with a same username already exists
      */
-    public boolean addUser(String name, String username, String password) throws UserAlreadyExistsException {
+    public boolean addUser(String username) throws UserAlreadyExistsException {
         if (hasUser(username)){
             throw new UserAlreadyExistsException("Already Existing User: " + username);
         }
         else {
-            User new_user = new User(name, username, password);
+            User new_user = new User(username);
             users.put(username, new_user);
             return true;
         }
@@ -123,18 +121,21 @@ public class UserManager {
     }
 
     /**
-     * Checks if the password is correct for a given user
+     * Checks if a User already exists, if not, creates and adds a User
      * @param username username for a User
-     * @param password password for a User
-     * @return true if password is correct, false if not
-     * @throws UserNotFoundException thrown when a user with a given username does not exist
+     * @return true if the User is already a user, false if a new User was created
      */
-    public boolean login(String username, String password) throws UserNotFoundException {
+    public boolean login(String username) {
         if (hasUser(username)){
-            return users.get(username).checkPassword(password);
+            return true;
         }
         else {
-            throw new UserNotFoundException("User Not Found: " + username);
+            try {
+                addUser(username);
+            } catch (UserAlreadyExistsException e) {
+                e.printStackTrace();
+            }
+            return false;
         }
     }
 

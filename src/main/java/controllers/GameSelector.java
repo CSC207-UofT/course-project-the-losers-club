@@ -1,6 +1,10 @@
 package controllers;
 
 import usecases.GameTemplate;
+import usecases.UserManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GameSelector is a class controlling the selection of games.
@@ -15,8 +19,6 @@ public class GameSelector {
     private final GameTemplate.Input gameInput;
     private final GameTemplate.Output gameOutput;
 
-    private final int numPlayers;
-
     private static final int WIDTH = 39;
     private final String dashes;
 
@@ -26,14 +28,12 @@ public class GameSelector {
      * @param selectorInput  implementor of GameSelector.Input used for gathering input from the user
      * @param selectorOutput implementor of GameSelector.Output used for sending output back to the user
      * @param games          Strings representing the Games to create
-     * @param numPlayers     number of players for a given game
      * @param gameInput      implementor of GameTemplate.Input used for gathering game specific input from the user
      * @param gameOutput     implementor of GameTemplate.Output used for sending output back to the user
      */
     public GameSelector(GameSelector.Input selectorInput,
                         GameSelector.Output selectorOutput,
                         String[] games,
-                        int numPlayers,
                         GameTemplate.Input gameInput,
                         GameTemplate.Output gameOutput) {
         this.selectorInput = selectorInput;
@@ -43,7 +43,6 @@ public class GameSelector {
         this.gameOutput = gameOutput;
 
         this.games = games;
-        this.numPlayers = numPlayers;
 
         this.dashes = "=".repeat(WIDTH);
     }
@@ -59,12 +58,23 @@ public class GameSelector {
 
             int sel = this.selectorInput.getUserSelection();
 
+            List<String> usernames = new ArrayList<>();
+
+            String username = this.selectorInput.getUsername();
+
+            while(!username.equalsIgnoreCase("done")) {
+                usernames.add(username);
+                username = this.selectorInput.getUsername();
+            }
+
+            UserManager userManager = new UserManager();
+
             // check for exit case
             if (sel == 0) {
                 return;
             }
 
-            while (!handleUserSelection(sel)) {
+            while (!handleUserSelection(sel, usernames, userManager)) {
                 this.selectorOutput.sendOutput("Invalid menu selection.\n");
                 sel = this.selectorInput.getUserSelection();
             }
@@ -94,7 +104,7 @@ public class GameSelector {
      * @param sel the user's selection. Must be greater than 0.
      * @return false when the selection is invalid or true when the execution completes
      */
-    private boolean handleUserSelection(int sel) {
+    private boolean handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
         if (sel > this.games.length) {
             return false;
         } else {
@@ -103,7 +113,7 @@ public class GameSelector {
 
             this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
             this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
-            GameTemplate game = GameTemplate.GameFactory(gameString, this.numPlayers, this.gameInput, this.gameOutput);
+            GameTemplate game = GameTemplate.GameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
             game.startGame();
             this.selectorOutput.sendOutput("\n\n\n\n\n");
             return true;
@@ -121,6 +131,8 @@ public class GameSelector {
          * @return an integer representing the selection
          */
         int getUserSelection();
+
+        String getUsername();
 
     }
 
