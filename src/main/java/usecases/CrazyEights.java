@@ -28,7 +28,8 @@ public class CrazyEights extends GameTemplate {
     /**
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
-     * @param numPlayers The number of players playing the game.
+     * @param usernames the list of usernames of player that are playing the game
+     * @param userManager a usermanager that manages the user entities
      * @param gameInput A Game.Input object allowing for player input.
      * @param gameOutput A Game.Output object allowing for output to the player.
      * @param rand a Random object for creating deterministic behaviour
