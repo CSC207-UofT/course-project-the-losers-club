@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Hand;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class CrazyEights extends GameTemplate {
@@ -13,18 +14,31 @@ public class CrazyEights extends GameTemplate {
     private char suitTracker;
 
     /**
+     * Instantiate a new CrazyEights game instance.
      *
      * @param numPlayers The number of players playing the game.
      * @param gameInput A Game.Input object allowing for player input.
      * @param gameOutput A Game.Output object allowing for output to the player.
      */
     public CrazyEights(int numPlayers, Input gameInput, Output gameOutput) {
+        this(numPlayers, gameInput, gameOutput, new Random());
+    }
+
+    /**
+     * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param numPlayers The number of players playing the game.
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param rand a Random object for creating deterministic behaviour
+     */
+    public CrazyEights(int numPlayers, Input gameInput, Output gameOutput, Random rand) {
         super(numPlayers);
         this.gameInput = gameInput;
         this.gameOutput = gameOutput;
         this.currPlayerIndex = 0;
         this.playingField = new Stack<>();
-        this.deck.shuffle();
+        this.deck.shuffle(rand);
         for (Player player : this.players) {
             for (int i=0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
