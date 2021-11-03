@@ -3,7 +3,6 @@ package controllers;
 import usecases.GameTemplate;
 import usecases.UserManager;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +58,11 @@ public class GameSelector {
 
             int sel = this.selectorInput.getUserSelection();
 
-            List<String> usernames = new ArrayList<String>();
+            List<String> usernames = new ArrayList<>();
 
             String username = this.selectorInput.getUsername();
 
-            while(!username.equals("done")) {
+            while(!username.equalsIgnoreCase("done")) {
                 usernames.add(username);
                 username = this.selectorInput.getUsername();
             }

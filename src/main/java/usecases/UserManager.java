@@ -121,7 +121,7 @@ public class UserManager {
     }
 
     /**
-     * Checks if a User is already an existing user, if not, creates and adds a User
+     * Checks if a User already exists, if not, creates and adds a User
      * @param username username for a User
      * @return true if the User is already a user, false if a new User was created
      */
