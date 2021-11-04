@@ -3,9 +3,12 @@ package presenters.console;
 import controllers.GameSelector;
 import helpers.CardCheck;
 import usecases.GameTemplate;
+import usecases.Player;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.HashMap;
 
 
 /**
@@ -86,6 +89,39 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
         }
 
         return line.charAt(0);
+    }
+
+
+    public String getRank() {
+        String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        System.out.print("Pick a rank (one of " + Arrays.toString(RANKS) + "): ");
+        String line = this.inp.nextLine().trim().toUpperCase();
+
+        while (!Arrays.asList(RANKS).contains(line)) {
+            System.out.print("Invalid selection (" + Arrays.toString(RANKS) + "), try again: ");
+            line = this.inp.nextLine().trim().toUpperCase();
+        }
+        return line;
+    }
+
+    public Player getPlayer(Player currPlayer, Player[] players) {
+        // use hashmap which maps player names to player objects.
+        HashMap<String, Player> dict = new HashMap<String, Player>();
+        for (Player player : players) {
+            if (!player.equals(currPlayer)) {
+                dict.put(player.getName(), player);
+            }
+        }
+        String[] playerNames = dict.keySet().toArray(new String[0]);
+        System.out.print("Pick a player (one of " + playerNames + "): ");
+        String line = this.inp.nextLine().trim();
+
+        while (!dict.containsKey(line)) {
+            System.out.print("Invalid selection (" + playerNames + "), try again: ");
+            line = this.inp.nextLine().trim();
+        }
+
+        return dict.get(line);
     }
 
     /**

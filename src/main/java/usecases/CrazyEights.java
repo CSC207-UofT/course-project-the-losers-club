@@ -98,7 +98,6 @@ public class CrazyEights extends GameTemplate {
      * @param card A card object that will be checked if it is a valid move
      * @return true if card is a valid move, false otherwise
      */
-    @Override
     public boolean checkMove(Card card) {
         if (this.currPlayer.isHandEmpty()) {
             return false;
@@ -133,7 +132,6 @@ public class CrazyEights extends GameTemplate {
      * Plays the given card into the playingField
      * @param card A card object that will be played in the game
      */
-    @Override
     public void makeMove(Card card) {
         this.playingField.add(card);
         this.currPlayer.removeFromHand(card);
@@ -146,7 +144,6 @@ public class CrazyEights extends GameTemplate {
      * Checks if a player has won the game, i.e. if the player has an empty hand
      * @return true if player has an empty hand, false otherwise
      */
-    @Override
     public boolean checkWin() {
         return currPlayer.isHandEmpty();
     }
