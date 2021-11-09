@@ -98,9 +98,12 @@ public class Hand implements Iterable<Card> {
      */
     public ArrayList<Card> removeCard(String rank) {
         ArrayList<Card> toReturn = new ArrayList<>();
-        for (Card card : this.cards) {
+        Iterator<Card> cardIterator = this.iterator();
+        while (cardIterator.hasNext()) {
+            Card card = cardIterator.next();
             if (card.getRank().equals(rank)) {
-                toReturn.add(removeCard(card));
+                toReturn.add(card);
+                cardIterator.remove();
             }
         }
         return toReturn;

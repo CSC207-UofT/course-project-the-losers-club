@@ -6,6 +6,7 @@ import usecases.GameTemplate;
 import usecases.Player;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.HashMap;
@@ -105,14 +106,14 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
     }
 
     public Player getPlayer(Player currPlayer, Player[] players) {
-        // use hashmap which maps player names to player objects.
-        HashMap<String, Player> dict = new HashMap<String, Player>();
+        HashMap<String, Player> dict = new HashMap<>();
+        ArrayList<String> playerNames = new ArrayList<>();
         for (Player player : players) {
             if (!player.equals(currPlayer)) {
                 dict.put(player.getName(), player);
+                playerNames.add(player.getName());
             }
         }
-        String[] playerNames = dict.keySet().toArray(new String[0]);
         System.out.print("Pick a player (one of " + playerNames + "): ");
         String line = this.inp.nextLine().trim();
 

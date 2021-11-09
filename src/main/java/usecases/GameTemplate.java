@@ -12,8 +12,8 @@ public abstract class GameTemplate {
     protected Deck deck;
     protected Player currPlayer;
     protected int currPlayerIndex;
-    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
+    protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
     protected GameTemplate(int numPlayers){
         this.players = new Player[numPlayers];
@@ -35,11 +35,6 @@ public abstract class GameTemplate {
 
     public abstract void startGame();
 
-    // public abstract boolean checkMove(Card card);
-
-    // public abstract void makeMove(Card card);
-
-    // public abstract boolean checkWin();
 
     public static GameTemplate GameFactory(String name, int numPlayers, Input input, Output output) {
 //        switch (name.toUpperCase()) {

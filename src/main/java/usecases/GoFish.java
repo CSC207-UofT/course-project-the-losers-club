@@ -2,6 +2,7 @@ package usecases;
 
 import entities.Card;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -40,13 +41,16 @@ public class GoFish extends GameTemplate {
             this.currPlayer = this.players[this.currPlayerIndex];
             if (!currPlayer.isHandEmpty()) {
                 fish();
-                if (bookPresent()) {
-                    scoreTracker.put(currPlayer, scoreTracker.get(currPlayer) + 1);
-                }
+                this.gameOutput.sendOutput("Go Fish! No matches.\n");
             }
             if (!this.deck.isEmpty()) {
                 this.currPlayer.addToHand(this.deck.drawCard());
+                this.gameOutput.sendOutput("Drawing a card from the deck. \n");
+                this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
             }
+
+            checkForBook();
+
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
         }
         outputWinner();
@@ -55,23 +59,26 @@ public class GoFish extends GameTemplate {
     public void fish() {
         String rank;
         Player chosenPlayer;
-        boolean loopedRankChoice = false;
         boolean loopedFish = false;
         int initialHandSize;
         this.gameOutput.sendOutput("---------------------------------------\n");
         this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn\n");
         this.gameOutput.sendOutput("---------------------------------------\n");
         do {
-            if (loopedFish) {
-                this.gameOutput.sendOutput("Successful catch! Your turn continues!");
-            }
+            checkForBook();
 
+            boolean loopedRankChoice = false;
+
+            if (loopedFish) {
+                this.gameOutput.sendOutput("Successful catch! Your turn continues!\n");
+            }
+            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
             do {
                 if (loopedRankChoice) {
-                    this.gameOutput.sendOutput("Invalid rank chosen. Try again.");
+                    this.gameOutput.sendOutput("Invalid rank chosen. Try again.\n");
                 }
 
-                this.gameOutput.sendOutput("Which card rank would you like to request?");
+                this.gameOutput.sendOutput("Which card rank would you like to request?\n");
                 rank = this.gameInput.getRank();
 
                 if (!validRank(rank)) {
@@ -80,7 +87,7 @@ public class GoFish extends GameTemplate {
 
             } while (!validRank(rank));
 
-            this.gameOutput.sendOutput("Who would like to request cards from?");
+            this.gameOutput.sendOutput("Who would like to request cards from?\n");
             chosenPlayer = this.gameInput.getPlayer(currPlayer, players);
 
             initialHandSize = this.currPlayer.getHand().getSize();
@@ -90,27 +97,60 @@ public class GoFish extends GameTemplate {
                 loopedFish = true;
             }
 
-            if (bookPresent()) {
-                scoreTracker.put(this.currPlayer, scoreTracker.get(this.currPlayer) + 1);
-            }
         } while (initialHandSize != this.currPlayer.getHand().getSize());
     }
 
-    public boolean bookPresent() {
-        return false;
+    public void checkForBook() {
+        HashMap<String, Integer> numRanks = new HashMap<>();
+        for (String rank : RANKS) {
+            numRanks.put(rank, 0);
+        }
+        for (Card card : currPlayer.getHand().getCards()) {
+            numRanks.put(card.getRank(), numRanks.get(card.getRank()) + 1);
+        }
+        for (String rank : RANKS) {
+            if (numRanks.get(rank) == 4) {
+                scoreTracker.put(this.currPlayer, scoreTracker.get(this.currPlayer) + 1);
+                currPlayer.removeFromHand(rank);
+                this.gameOutput.sendOutput("A book is found in the hand! The following cards are removed: " +
+                        rank + "H, " + rank + "S, " + rank + "D, " + rank + "C.");
+                this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            }
+        }
     }
 
 
     public boolean validRank(String rank) {
-        return false;
+        return currPlayer.getHandString().contains(rank);
     }
 
 
     public boolean gameEnd() {
-        return false;
+        if (!this.deck.isEmpty()) {
+            return false;
+        } else {
+            for (Player player : players) {
+                if (!player.isHandEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void outputWinner() {
+        ArrayList<Player> winners = new ArrayList<>();
+        int maxScore = 0;
+        for (Player player : players) {
+            if (scoreTracker.get(player) == maxScore) {
+                winners.add(player);
+            } else if (scoreTracker.get(player) > maxScore) {
+                maxScore = scoreTracker.get(player);
+                winners.clear();
+                winners.add(player);
+            }
+        }
+        System.out.println("Winner(s): " + winners + "\n");
     }
 
 }
