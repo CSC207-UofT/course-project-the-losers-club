@@ -42,7 +42,7 @@ public class CrazyEights extends GameTemplate {
         this.playingField = new Stack<>();
         this.deck.shuffle(rand);
         for (Player player : this.players) {
-            for (int i=0; i < 1; i++) {
+            for (int i=0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
             }
         }

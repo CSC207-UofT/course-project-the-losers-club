@@ -62,7 +62,7 @@ public class GameSelector {
                 return;
             }
 
-            while (!handleUserSelection(sel)) {
+            while (!checkValidity(sel)) {
                 this.selectorOutput.sendOutput("Invalid menu selection.\n");
                 sel = this.selectorInput.getUserSelection();
             }
@@ -79,10 +79,7 @@ public class GameSelector {
                 username = this.selectorInput.getUsername();
             }
 
-            while (!handleUserSelection(sel, usernames, userManager)) {
-                this.selectorOutput.sendOutput("Invalid menu selection.\n");
-                sel = this.selectorInput.getUserSelection();
-            }
+            handleUserSelection(sel, usernames, userManager);
         }
     }
 
@@ -107,25 +104,24 @@ public class GameSelector {
      * This method will be the main runner of the selected Game.
      *
      * @param sel the user's selection. Must be greater than 0.
-     * @return false when the selection is invalid or true when the execution completes
      */
-    private boolean handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
-        if (sel > this.games.length) {
-            return false;
-        } else {
-            String gameString = this.games[sel - 1];
-            this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
+    private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
+        String gameString = this.games[sel - 1];
+        this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
 
-            this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
-            this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
-            GameTemplate game = GameTemplate.GameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
-            game.startGame();
-            this.selectorOutput.sendOutput("\n\n\n\n\n");
-            return true;
-        }
+        this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
+        this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
+        GameTemplate game = GameTemplate.GameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
+        game.startGame();
+        this.selectorOutput.sendOutput("\n\n\n\n\n");
     }
 
-    private boolean handleUserSelection(int sel) {
+    /**
+     * Checks if the user's selection is a valid selection.
+     * @param sel the user's selection. Must be greater than 0.
+     * @return false when the selection is invalid or true when the selection is valid
+     */
+    private boolean checkValidity(int sel) {
         return sel <= this.games.length;
     }
 
