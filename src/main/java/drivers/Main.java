@@ -5,9 +5,10 @@ import presenters.console.Input;
 import presenters.console.Output;
 
 import usecases.GameTemplate;
+import usecases.UserManager;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserManager.UserAlreadyExistsException {
         GameSelector.Input selectorInput = new Input();
         GameSelector.Output selectorOutput = new Output();
 

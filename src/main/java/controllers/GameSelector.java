@@ -52,26 +52,31 @@ public class GameSelector {
      * <p>
      * GameSelector allows a user to select the game they wish to play and runs that game.
      */
-    public void run() {
+    public void run() throws UserManager.UserAlreadyExistsException {
         while (true) {
             displayMenu();
 
             int sel = this.selectorInput.getUserSelection();
 
+            if (sel == 0) {
+                return;
+            }
+
+            while (!handleUserSelection(sel)) {
+                this.selectorOutput.sendOutput("Invalid menu selection.\n");
+                sel = this.selectorInput.getUserSelection();
+            }
+
             List<String> usernames = new ArrayList<>();
+
+            UserManager userManager = new UserManager();
 
             String username = this.selectorInput.getUsername();
 
             while(!username.equalsIgnoreCase("done")) {
                 usernames.add(username);
+                userManager.addUser(username);
                 username = this.selectorInput.getUsername();
-            }
-
-            UserManager userManager = new UserManager();
-
-            // check for exit case
-            if (sel == 0) {
-                return;
             }
 
             while (!handleUserSelection(sel, usernames, userManager)) {
@@ -118,6 +123,10 @@ public class GameSelector {
             this.selectorOutput.sendOutput("\n\n\n\n\n");
             return true;
         }
+    }
+
+    private boolean handleUserSelection(int sel) {
+        return sel <= this.games.length;
     }
 
     /**
