@@ -127,15 +127,15 @@ public class GameSelector {
     }
 
     /**
-     * Import and return a <code>UserManager</code> serialized in the specified <code>inputFile</code>.
+     * Import and return a <code>UserManager</code> serialized in the specified <code>inputFilePath</code>.
      *
-     * @param inputFile file path to a serialized <code>UserManager</code>
+     * @param inputFilePath file path to a serialized <code>UserManager</code>
      * @return the deserialized <code>UserManager</code>
      */
-    private UserManager importUserManager(String inputFile) {
+    private UserManager importUserManager(String inputFilePath) {
         UserManager userManager;
         try {
-            userManager = UserManagerImporter.importUserManager(inputFile);
+            userManager = UserManagerImporter.importUserManager(inputFilePath);
         } catch (IOException | ClassNotFoundException ignored) {
             userManager = new UserManager();  // ignore input file if exception thrown
         }
@@ -143,19 +143,19 @@ public class GameSelector {
     }
 
     /**
-     * Export the given <code>UserManager</code> to the specified <code>outputFile</code>
+     * Export the given <code>UserManager</code> to the specified <code>outputFilePath</code>
      *
      * @param userManager the <code>UserManager</code> to serialize
-     * @param outputFile  the file to serialize to
+     * @param outputFilePath  the file to serialize to
      */
-    private void exportUserManager(UserManager userManager, String outputFile) {
+    private void exportUserManager(UserManager userManager, String outputFilePath) {
         try {
-            UserManagerExporter.export(userManager, outputFile);
+            UserManagerExporter.exportUserManager(userManager, outputFilePath);
         } catch (IOException e) {
             // dump UserManager to a unique file (should be unique since using current system time)
             Date currDate = new Date();
             try {
-                UserManagerExporter.export(userManager, "usermanager-" + currDate.getTime() + ".ser");
+                UserManagerExporter.exportUserManager(userManager, "usermanager-" + currDate.getTime() + ".ser");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
