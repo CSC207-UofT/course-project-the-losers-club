@@ -10,7 +10,11 @@ public class War extends Game{
     private final Output gameOutput;
     private final static String[] Hierarchy = new String[] {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
-
+    /**
+     *
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
+     */
     public War(Input gameInput, Output gameOutput) {
         super(2);
         this.gameInput = gameInput;
@@ -30,9 +34,10 @@ public class War extends Game{
      */
     @Override
     public void startGame() {
-        int turnCounter = 1;
+        int turnCounter = 0;
         boolean inWar = false;
         while (!checkWin()) {
+            turnCounter += 1;
             this.currPlayer = this.players[this.currPlayerIndex];
             this.gameOutput.sendOutput("---------------------------------------");
             this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField[0].size());
@@ -77,10 +82,10 @@ public class War extends Game{
             if (topCardHierarchy0 == topCardHierarchy1) {
                 if (inWar) {
                     this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war continues!");
+                } else {
+                    inWar = true;
+                    this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
                 }
-                inWar = true;
-                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
-
             } else if (topCardHierarchy0 < topCardHierarchy1) {
                 this.gameOutput.sendOutput( players[1].getName() + "'s card outranks their opponents and they win the battle!");
                 winner = 1;
@@ -92,10 +97,11 @@ public class War extends Game{
             if (winner < 2) {
                 for (int j = 0; j < 2; j++) {
                     for (int k = 0; k < playingField[j].size(); k++) {
-                        players[winner].addToHand((Card) playingField[j].get(k));
+                        players[winner].addToHand((Card) playingField[j].remove(k));
                     }
                 }
             }
+
             this.gameOutput.sendOutput("---------------------------------------");
 
             gameInput.stall();
@@ -112,16 +118,29 @@ public class War extends Game{
         }
     }
 
+
+    /**
+     * returns true as moves are predetermined in war
+     * @param card A card object
+     */
     @Override
     public boolean checkMove(Card card) {
         return true;
     }
 
+    /**
+     * Plays the given card into the playingField for the current player
+     * @param card A card object that will be played in the game
+     */
     @Override
     public void makeMove(Card card) {
         this.playingField[currPlayerIndex].add(card);
     }
 
+    /**
+     * Checks if the game has finished, i.e. if at least 1 player has an empty hand
+     * @return true if either player has an empty hand, false otherwise
+     */
     @Override
     public boolean checkWin() {
         return (players[0].isHandEmpty() || players[1].isHandEmpty());
