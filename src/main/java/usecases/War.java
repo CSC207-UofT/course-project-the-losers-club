@@ -24,6 +24,10 @@ public class War extends Game{
         }
     }
 
+    /**
+     * The main part of the game that shows players their hands, takes any input, and then acts according to the rules
+     * of the game of war. if/when the game finishes, the function also determines the winner.
+     */
     @Override
     public void startGame() {
         int turnCounter = 1;
@@ -95,6 +99,16 @@ public class War extends Game{
             this.gameOutput.sendOutput("---------------------------------------");
 
             gameInput.stall();
+        }
+
+        if (players[0].isHandEmpty() && players[1].isHandEmpty()) {
+            this.gameOutput.sendOutput("Somehow you two have mananged to end up in an extremely improbable draw. Congratulations!");
+        } else if (players[1].isHandEmpty()) {
+            this.gameOutput.sendOutput(players[1].getName() + " is out of cards and can no longer participate. " + players[0].getName() + " wins!");
+        } else if (players[0].isHandEmpty()) {
+            this.gameOutput.sendOutput(players[0].getName() + " is out of cards and can no longer participate. " + players[1].getName() + " wins!");
+        } else {
+            this.gameOutput.sendOutput("bruh how did you get here. " + playingField[0].size() + " " + playingField[1].size());
         }
     }
 
