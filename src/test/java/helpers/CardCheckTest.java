@@ -51,5 +51,14 @@ class CardCheckTest {
         assertFalse(CardCheck.checkCard("5dx"));
     }
 
+    @Test
+    void checkRankZero() {
+        assertFalse(CardCheck.checkCard("0s"));
+    }
+
+    @Test
+    void checkRankOne() {
+        assertFalse(CardCheck.checkCard("1s"));
+    }
 
 }
