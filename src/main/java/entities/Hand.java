@@ -59,7 +59,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Remove and return the given card in this Hand.
-     *
+     * <p>
      * Assumes the card is in the hand.
      *
      * @param rank rank of the card
@@ -74,7 +74,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Remove and return the given card in this Hand.
-     *
+     * <p>
      * Assumes the card is in the hand.
      *
      * @param c the card
@@ -120,19 +120,27 @@ public class Hand implements Iterable<Card> {
      * @param c A comparator implementation for Card, this describes how you want to sort the cards.
      * @return A new Hand in which all the cards are sorted as described above
      */
-    public Hand sortedHand(Comparator<Card> c){
+    public Hand sortedHand(Comparator<Card> c) {
         List<Card> clubs = new ArrayList<>();
         List<Card> spades = new ArrayList<>();
         List<Card> hearts = new ArrayList<>();
         List<Card> diamonds = new ArrayList<>();
 
         //Sorts the cards into groups based on their suits
-        for(Card card: this.cards){
-            switch (card.getSuit()){
-                case 'c': clubs.add(card); break;
-                case 's': spades.add(card); break;
-                case 'h': hearts.add(card); break;
-                case 'd': diamonds.add(card); break;
+        for (Card card : this.cards) {
+            switch (card.getSuit()) {
+                case 'c':
+                    clubs.add(card);
+                    break;
+                case 's':
+                    spades.add(card);
+                    break;
+                case 'h':
+                    hearts.add(card);
+                    break;
+                case 'd':
+                    diamonds.add(card);
+                    break;
             }
         }
 

@@ -11,16 +11,22 @@ import java.util.Comparator;
 public class SortByRankAceLow implements Comparator<Card> {
     /**
      * Converts the value of the String into a number to be used in the compare method
+     *
      * @param rank The rank of the card as a string
      * @return returns an int value for each rank
      */
-    private int rankToInt(String rank){
-        switch(rank){
-            case "j": return 11;
-            case "q": return 12;
-            case "k": return 13;
-            case "a": return 1;
-            default: return Integer.parseInt(rank);
+    private int rankToInt(String rank) {
+        switch (rank) {
+            case "j":
+                return 11;
+            case "q":
+                return 12;
+            case "k":
+                return 13;
+            case "a":
+                return 1;
+            default:
+                return Integer.parseInt(rank);
         }
     }
 
