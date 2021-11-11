@@ -52,7 +52,7 @@ public class GameSelector {
      * <p>
      * GameSelector allows a user to select the game they wish to play and runs that game.
      */
-    public void run() throws UserManager.UserAlreadyExistsException {
+    public void run() {
         while (true) {
             displayMenu();
 
@@ -67,16 +67,35 @@ public class GameSelector {
                 sel = this.selectorInput.getUserSelection();
             }
 
+            String gameString = this.games[sel - 1];
+
             List<String> usernames = new ArrayList<>();
 
             UserManager userManager = new UserManager();
 
-            String username = this.selectorInput.getUsername();
+            if (gameString.equals("Crazy Eights")) {
+                String username = this.selectorInput.getUsername(5);
 
-            while(!username.equalsIgnoreCase("done")) {
-                usernames.add(username);
-                userManager.addUser(username);
-                username = this.selectorInput.getUsername();
+                while (true) {
+                    if (username.equalsIgnoreCase("done")) {
+                        System.out.println("\nPlease enter at least one username!\n");
+                        username = this.selectorInput.getUsername(5);
+                    } else {
+                        break;
+                    }
+                }
+                int maxPlayers = 4;
+
+                while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+                    usernames.add(username);
+                    try {
+                        userManager.addUser(username);
+                    } catch (UserManager.UserAlreadyExistsException e) {
+                        e.printStackTrace();
+                    }
+                    username = this.selectorInput.getUsername(5);
+                    maxPlayers--;
+                }
             }
 
             handleUserSelection(sel, usernames, userManager);
@@ -137,7 +156,7 @@ public class GameSelector {
          */
         int getUserSelection();
 
-        String getUsername();
+        String getUsername(int maxPlayers);
 
     }
 
