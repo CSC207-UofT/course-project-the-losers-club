@@ -5,12 +5,13 @@ import helpers.CardCheck;
 import usecases.GameTemplate;
 import usecases.Player;
 
-import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.ArrayList;
 
+import static helpers.UsernameCheck.checkUsername;
 
 /**
  * Input uses System.in to gather input from the user.
@@ -92,7 +93,12 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
         return line.charAt(0);
     }
 
-
+    /**
+     * Prompt user to select a rank.
+     *
+     * @return a string encoding the selected rank. The returned string will be one of
+     * {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
+     */
     public String getRank() {
         String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         System.out.print("Pick a rank (one of " + Arrays.toString(RANKS) + "): ");
@@ -105,20 +111,27 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
         return line;
     }
 
+    /**
+     * Prompt user to select a player.
+     *
+     * @param currPlayer the current player in the game and is not in the list of players displayed to the user.
+     * @param players the list of all the players in the game.
+     * @return a Player object selected by the user. This Player object is in the list of all the players in the game.
+     */
     public Player getPlayer(Player currPlayer, Player[] players) {
         HashMap<String, Player> dict = new HashMap<>();
-        ArrayList<String> playerNames = new ArrayList<>();
+        ArrayList<String> playerUsernames = new ArrayList<>();
         for (Player player : players) {
             if (!player.equals(currPlayer)) {
-                dict.put(player.getName(), player);
-                playerNames.add(player.getName());
+                dict.put(player.getUsername(), player);
+                playerUsernames.add(player.getUsername());
             }
         }
-        System.out.print("Pick a player (one of " + playerNames + "): ");
+        System.out.print("Pick a player (one of " + playerUsernames + "): ");
         String line = this.inp.nextLine().trim();
 
         while (!dict.containsKey(line)) {
-            System.out.print("Invalid selection (" + playerNames + "), try again: ");
+            System.out.print("Invalid selection (" + playerUsernames + "), try again: ");
             line = this.inp.nextLine().trim();
         }
 
@@ -154,5 +167,25 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
         }
 
         return Integer.parseInt(line);
+    }
+
+    /**
+     * Promp the user to enter a username and return the username.
+     *
+     * @return a String representing the user's username
+     */
+    @Override
+    public String getUsername() {
+        System.out.println("Input all usernames for players playing the game. Enter 'done' to finish.");
+        System.out.print("Enter a Username: ");
+
+        String line = this.inp.nextLine().trim();
+
+        while (!checkUsername(line)){
+            System.out.print("Invalid username, try again: ");
+            line = this.inp.nextLine().trim();
+        }
+
+        return line;
     }
 }

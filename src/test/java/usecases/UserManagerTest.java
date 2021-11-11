@@ -15,8 +15,8 @@ class UserManagerTest {
 
     @BeforeEach
     void setUp() {
-        User usr1 = new User("User 1", "usrname", "1234");
-        User usr2 = new User("User 2", "gamerboy123", "5678");
+        User usr1 = new User("usrname");
+        User usr2 = new User("gamerboy123");
         HashMap<String, User> users = new HashMap<String, User>();
         users.put("usrname", usr1);
         users.put("gamerboy123", usr2);
@@ -31,7 +31,7 @@ class UserManagerTest {
     @Test
     void addUser() {
         try {
-            usr_manager.addUser("User 3", "poggers", "pswd");
+            usr_manager.addUser("poggers");
         } catch (UserManager.UserAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -121,11 +121,7 @@ class UserManagerTest {
 
     @Test
     void login() {
-        try{
-            assertFalse(usr_manager.login("usrname", "5678"));
-            assertTrue(usr_manager.login("usrname", "1234"));
-        } catch (UserManager.UserNotFoundException e){
-            e.printStackTrace();
-        }
+        assertTrue(usr_manager.login("usrname"));
+        assertFalse(usr_manager.login("random"));
     }
 }

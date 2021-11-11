@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Hand;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class CrazyEights extends GameTemplate {
@@ -13,18 +14,33 @@ public class CrazyEights extends GameTemplate {
     private char suitTracker;
 
     /**
+     * Instantiate a new CrazyEights game instance.
      *
-     * @param numPlayers The number of players playing the game.
+     * @param usernames the list of usernames of player that are playing the game
+     * @param userManager a usermanager that manages the user entities
      * @param gameInput A Game.Input object allowing for player input.
      * @param gameOutput A Game.Output object allowing for output to the player.
      */
-    public CrazyEights(int numPlayers, Input gameInput, Output gameOutput) {
-        super(numPlayers);
+    public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        this(usernames, userManager, gameInput, gameOutput, new Random());
+    }
+
+    /**
+     * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param usernames the list of usernames of player that are playing the game
+     * @param userManager a usermanager that manages the user entities
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param rand a Random object for creating deterministic behaviour
+     */
+    public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
+        super(usernames, userManager);
         this.gameInput = gameInput;
         this.gameOutput = gameOutput;
         this.currPlayerIndex = 0;
         this.playingField = new Stack<>();
-        this.deck.shuffle();
+        this.deck.shuffle(rand);
         for (Player player : this.players) {
             for (int i=0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
@@ -56,21 +72,20 @@ public class CrazyEights extends GameTemplate {
             String crd;
             boolean looped = false;
             this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Turn\n");
+            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
             this.gameOutput.sendOutput("---------------------------------------\n");
             this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker + "\n");
-            this.gameOutput.sendOutput(this.currPlayer.getName() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
-                if (looped){
+                if (looped) {
                     this.gameOutput.sendOutput("This is not a valid move.\n");
                     card = null;
                 }
 
-                if (!hasValidMove(currPlayer.getHand())){
+                if (!hasValidMove(currPlayer.getHand())) {
                     this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.\n");
-                }
-                else if (!this.gameInput.drawCard()) {
+                } else if (!this.gameInput.drawCard()) {
                     crd = this.gameInput.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
                     if (card.getRank().equals("8")) {
@@ -78,7 +93,7 @@ public class CrazyEights extends GameTemplate {
                     }
                 }
 
-                if (card != null && !checkMove(card)){
+                if (card != null && !checkMove(card)) {
                     looped = true;
                 }
             } while (card != null && !checkMove(card));
@@ -90,7 +105,22 @@ public class CrazyEights extends GameTemplate {
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
             this.gameOutput.sendOutput("\n");
         }
-        this.gameOutput.sendOutput(this.currPlayer.getName() + " Wins!!!\n");
+        for (String u : this.usernames) {
+            if (this.currPlayer.getUsername().equals(u)) {
+                try {
+                    this.userManager.addGamesPlayed(u, 1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        this.gameOutput.sendOutput(this.currPlayer.getUsername() + " Wins!!!\n");
     }
 
     /**

@@ -11,14 +11,18 @@ public abstract class GameTemplate {
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
+    protected UserManager userManager;
+    protected List<String> usernames;
     protected int currPlayerIndex;
     protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
-    protected GameTemplate(int numPlayers){
-        this.players = new Player[numPlayers];
-        for (int i = 0; i < numPlayers; i++) {
-            Player newPlayer = new Player("Player " + (i + 1));
+    protected GameTemplate(List<String> usernames, UserManager userManager){
+        this.userManager = userManager;
+        this.usernames = usernames;
+        this.players = new Player[usernames.size()];
+        for (int i = 0; i < players.length; i++) {
+            Player newPlayer = new Player(usernames.get(i));
             this.players[i] = newPlayer;
         }
         this.currPlayer = this.players[0];
@@ -36,7 +40,7 @@ public abstract class GameTemplate {
     public abstract void startGame();
 
 
-    public static GameTemplate GameFactory(String name, int numPlayers, Input input, Output output) {
+    public static GameTemplate GameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
 //        switch (name.toUpperCase()) {
 //            case "CRAZY EIGHTS":
 //                return new CrazyEights(numPlayers, input, output);
@@ -46,7 +50,7 @@ public abstract class GameTemplate {
 //                return null;
 //        }
 
-        return new CrazyEights(numPlayers, input, output);
+        return new CrazyEights(usernames, userManager, input, output);
     }
 
     /**
