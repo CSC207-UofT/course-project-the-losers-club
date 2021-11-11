@@ -41,16 +41,14 @@ public abstract class GameTemplate {
 
 
     public static GameTemplate GameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
-//        switch (name.toUpperCase()) {
-//            case "CRAZY EIGHTS":
-//                return new CrazyEights(numPlayers, input, output);
-////            case "WAR":
-////                return new War(...);  // TODO ADD WAR WHEN IMPLEMENTED
-//            default:
-//                return null;
-//        }
-
-        return new CrazyEights(usernames, userManager, input, output);
+        switch (name.toUpperCase()) {
+            case "CRAZY EIGHTS":
+                return new CrazyEights(usernames, userManager, input, output);
+            case "GO FISH":
+                return new GoFish(usernames, userManager, input, output);
+            default:
+                return null;
+        }
     }
 
     /**

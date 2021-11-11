@@ -33,6 +33,10 @@ public class GoFish extends GameTemplate {
         }
     }
 
+    public String toString() {
+        return "Go Fish";
+    }
+
     @Override
     public void startGame() {
         checkEveryoneForBook();
@@ -166,6 +170,21 @@ public class GoFish extends GameTemplate {
                 maxScore = scoreTracker.get(player);
                 winners.clear();
                 winners.add(player.getUsername());
+            }
+        }
+        for (String username : this.usernames) {
+            if (winners.contains(username)) {
+                try {
+                    this.userManager.addGamesPlayed(username, 1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    this.userManager.addGamesPlayed(username, -1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         System.out.println(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
