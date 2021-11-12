@@ -3,22 +3,27 @@ package usecases;
 import entities.Card;
 import entities.Hand;
 
+import java.util.Comparator;
+
 /***
  * Player class represents a player that plays implementations of Game. Each player contains a hand,
  * which is the cards the player holds at a given moment.
  */
 public class Player {
-    private Hand hand;
+    private final Hand hand;
+    private final String username;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    private String name;
-
-    public Player(String name) {
+    /**
+     *
+     * @param username username of the user that is attached to the player
+     */
+    public Player(String username) {
         this.hand = new Hand();
-        this.name = name;
+        this.username = username;
     }
 
     /**
@@ -61,4 +66,15 @@ public class Player {
     public String getHandString(){
         return this.hand.toString();
     }
+
+    /**
+     * Returns the player's sorted hand as a string with respect to the Comparator implementation c.
+     *
+     * @param c A comparator implementation for Card, this describes how you want to sort the cards.
+     * @return The sorted version of the players hand as a string
+     */
+    public String getSortedHandString(Comparator<Card> c){
+        return this.hand.sortedHand(c).toString();
+    }
+
 }

@@ -29,8 +29,14 @@ class OutputTest {
 
 
     @Test
-    void sendOutput() {
+    void sendOutputNewLine() {
+        this.cOut.sendOutput("hello world\n");
+        assertEquals("hello world\n", this.outputStream.toString());
+    }
+
+    @Test
+    void sendOutputBlank() {
         this.cOut.sendOutput("hello world");
-        assertEquals("hello world", this.outputStream.toString().trim());
+        assertEquals("hello world", this.outputStream.toString());
     }
 }

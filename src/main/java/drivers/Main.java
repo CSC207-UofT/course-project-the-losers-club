@@ -1,16 +1,20 @@
 package drivers;
 
+import controllers.GameSelector;
 import presenters.console.Input;
 import presenters.console.Output;
-import usecases.CrazyEights;
-import usecases.Game;
+import usecases.GameTemplate;
 
 public class Main {
     public static void main(String[] args) {
-        Game.Input cIn = new Input();
-        Game.Output cOut = new Output();
+        GameSelector.Input selectorInput = new Input();
+        GameSelector.Output selectorOutput = new Output();
 
-        CrazyEights cEight = new CrazyEights(2, cIn, cOut);
-        cEight.startGame();
+        GameSelector selector = new GameSelector(selectorInput, selectorOutput, new String[]{"Crazy Eights"},
+                (GameTemplate.Input) selectorInput, (GameTemplate.Output) selectorOutput);
+
+        String inputFile = "userManager.ser";
+        String outputFile = "userManager.ser";
+        selector.run(inputFile, outputFile);
     }
 }

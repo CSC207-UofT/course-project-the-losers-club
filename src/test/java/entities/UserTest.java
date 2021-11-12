@@ -12,21 +12,11 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        this.testUser = new User("Ted", "jigglewagon", "abcd");
+        this.testUser = new User("jigglewagon");
     }
 
     @AfterEach
     void tearDown() {
-    }
-
-    @Test
-    void getName() {
-        assertEquals("Ted", testUser.getName());
-    }
-
-    @Test
-    void getNameWrong() {
-        assertNotEquals("Teddy", testUser.getName());
     }
 
     @Test
@@ -40,16 +30,6 @@ class UserTest {
     }
 
     @Test
-    void checkPassword() {
-        assertTrue(testUser.checkPassword("abcd"));
-    }
-
-    @Test
-    void checkPasswordWrong() {
-        assertFalse(testUser.checkPassword("blahblah"));
-    }
-
-    @Test
     void addWin() {
         assertEquals(1, testUser.addWin());
     }
@@ -57,5 +37,25 @@ class UserTest {
     @Test
     void addPlayed() {
         assertEquals(1, testUser.addPlayed());
+    }
+
+    @Test
+    void addTie() {
+        assertEquals(1, testUser.addTied());
+    }
+
+    @Test
+    void getTie() {
+        assertEquals(0, testUser.getGamesTied());
+    }
+
+    @Test
+    void getPlayed() {
+        assertEquals(0, testUser.getGamesPlayed());
+    }
+
+    @Test
+    void getWon() {
+        assertEquals(0, testUser.getGamesWon());
     }
 }
