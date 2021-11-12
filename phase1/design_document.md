@@ -35,7 +35,7 @@
 ### What each group member has been working on
 
 * Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows
-* Teddy:
+* Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
 * Brian:
 * Bradley:
 * Daniel:
@@ -45,7 +45,7 @@
 
 ### What each group member plans to work on next
 * Raymond:
-* Teddy:
+* Teddy: Improve user functionality, add more features or work on a new game
 * Brian:
 * Bradley:
 * Daniel:
