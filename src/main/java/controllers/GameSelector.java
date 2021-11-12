@@ -85,14 +85,21 @@ public class GameSelector {
                 username = this.selectorInput.getUsername();
             }
 
-            while (!username.equalsIgnoreCase("done") && maxPlayers != 1) {
-                usernames.add(username);
-                try {
-                    userManager.addUser(username);
-                } catch (UserManager.UserAlreadyExistsException ignored) {
+            while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+                if (usernames.contains(username)) {
+                    System.out.println("This username has already been added. Please enter a new username!");
+                    username = this.selectorInput.getUsername();
+                } else {
+                    usernames.add(username);
+                    try {
+                        userManager.addUser(username);
+                    } catch (UserManager.UserAlreadyExistsException ignored) {
+                    }
+                    if (maxPlayers != 1) {
+                        username = this.selectorInput.getUsername();
+                    }
+                    maxPlayers--;
                 }
-                username = this.selectorInput.getUsername();
-                maxPlayers--;
             }
 
             handleUserSelection(sel, usernames, userManager);
