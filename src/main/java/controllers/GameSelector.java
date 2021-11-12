@@ -73,29 +73,31 @@ public class GameSelector {
 
             UserManager userManager = new UserManager();
 
-            if (gameString.equals("Crazy Eights")) {
-                String username = this.selectorInput.getUsername(5);
+            int maxPlayers = GameTemplate.GetMaxPlayers(gameString);
 
-                while (true) {
-                    if (username.equalsIgnoreCase("done")) {
-                        System.out.println("\nPlease enter at least one username!\n");
-                        username = this.selectorInput.getUsername(5);
-                    } else {
-                        break;
-                    }
-                }
-                int maxPlayers = 4;
+            System.out.println("Input up to " + maxPlayers + " usernames for " +
+                    "players playing the game. Enter 'done' to finish.");
 
-                while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
-                    usernames.add(username);
-                    try {
-                        userManager.addUser(username);
-                    } catch (UserManager.UserAlreadyExistsException e) {
-                        e.printStackTrace();
-                    }
-                    username = this.selectorInput.getUsername(5);
-                    maxPlayers--;
+            String username = this.selectorInput.getUsername();
+
+            while (true) {
+                if (username.equalsIgnoreCase("done")) {
+                    System.out.println("\nPlease enter at least one username!\n");
+                    username = this.selectorInput.getUsername();
+                } else {
+                    break;
                 }
+            }
+
+            while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+                usernames.add(username);
+                try {
+                    userManager.addUser(username);
+                } catch (UserManager.UserAlreadyExistsException e) {
+                    e.printStackTrace();
+                }
+                username = this.selectorInput.getUsername();
+                maxPlayers--;
             }
 
             handleUserSelection(sel, usernames, userManager);
@@ -137,6 +139,7 @@ public class GameSelector {
 
     /**
      * Checks if the user's selection is a valid selection.
+     *
      * @param sel the user's selection. Must be greater than 0.
      * @return false when the selection is invalid or true when the selection is valid
      */
@@ -156,7 +159,7 @@ public class GameSelector {
          */
         int getUserSelection();
 
-        String getUsername(int maxPlayers);
+        String getUsername();
 
     }
 

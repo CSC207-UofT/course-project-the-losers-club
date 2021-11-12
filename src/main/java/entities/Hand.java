@@ -1,4 +1,5 @@
 package entities;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
-    private List<Card> cards;
+    private final List<Card> cards;
 
     /**
      * Constructs an empty hand
@@ -57,7 +58,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Remove and return the given card in this Hand.
-     *
+     * <p>
      * Assumes the card is in the hand.
      *
      * @param rank rank of the card
@@ -72,7 +73,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Remove and return the given card in this Hand.
-     *
+     * <p>
      * Assumes the card is in the hand.
      *
      * @param c the card

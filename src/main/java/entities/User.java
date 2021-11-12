@@ -3,7 +3,7 @@ package entities;
 
 public class User {
 
-    private String username;
+    private final String username;
     private int gamesWon;
     private int gamesPlayed;
     private int gamesTied;

@@ -58,6 +58,18 @@ public abstract class GameTemplate {
         return new CrazyEights(usernames, userManager, input, output);
     }
 
+    public static int GetMaxPlayers(String name) {
+//        switch (name.toUpperCase()) {
+//            case "CRAZY EIGHTS":
+//                return CrazyEights.getMaxPlayers();
+////          case "WAR":
+////                return War.getMaxPlayers();  // TODO ADD WAR WHEN IMPLEMENTED
+//            default:
+//                return 0;
+//        }
+        return CrazyEights.getMaxPlayers();
+    }
+
     /**
      * Input is an interface allowing Games to retrieve input from a user.
      */

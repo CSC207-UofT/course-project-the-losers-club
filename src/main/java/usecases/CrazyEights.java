@@ -13,6 +13,12 @@ public class CrazyEights extends GameTemplate {
     private final Output gameOutput;
     private char suitTracker;
 
+    protected static int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    private static final int maxPlayers = 5;
+
     /**
      * Instantiate a new CrazyEights game instance.
      *

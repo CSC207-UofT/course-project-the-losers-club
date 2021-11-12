@@ -208,7 +208,7 @@ class InputTest {
             String data = "a";
             System.setIn(new ByteArrayInputStream(data.getBytes()));
             cin = new Input();
-            assertEquals("a", cin.getUsername(5));
+            assertEquals("a", cin.getUsername());
         }
 
         @Test
@@ -216,7 +216,7 @@ class InputTest {
             String data = "abcdefghikj";
             System.setIn(new ByteArrayInputStream(data.getBytes()));
             cin = new Input();
-            assertEquals("abcdefghikj", cin.getUsername(5));
+            assertEquals("abcdefghikj", cin.getUsername());
         }
     }
 

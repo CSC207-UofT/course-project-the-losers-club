@@ -128,8 +128,7 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
      * @return a String representing the user's username
      */
     @Override
-    public String getUsername(int maxPlayers) {
-        System.out.println("Input up to " + maxPlayers + " usernames for players playing the game. Enter 'done' to finish.");
+    public String getUsername() {
         System.out.print("Enter a Username: ");
 
         String line = this.inp.nextLine().trim();
