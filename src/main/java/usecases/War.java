@@ -55,22 +55,13 @@ public class War extends GameTemplate {
             }
             gameInput.stall();
 
-            makeMove(currPlayer.getHand().removeCard());
-            currPlayerIndex = 1;
-            currPlayer = players[currPlayerIndex];
-            makeMove(currPlayer.getHand().removeCard());
-            currPlayerIndex = 0;
-            currPlayer = players[currPlayerIndex];
+            flipCards();
             if (!checkWin()) {
                 if (inWar) {
-                    makeMove(currPlayer.getHand().removeCard());
-                    currPlayerIndex = 1;
-                    currPlayer = players[currPlayerIndex];
-                    makeMove(currPlayer.getHand().removeCard());
-                    currPlayerIndex = 0;
-                    currPlayer = players[currPlayerIndex];
+                    flipCards();
                 }
             }
+
             Card topCard0 = (Card) playingField[0].get(playingField[0].size() - 1);
             Card topCard1 = (Card) playingField[1].get(playingField[1].size() - 1);
 
@@ -78,26 +69,11 @@ public class War extends GameTemplate {
             this.gameOutput.sendOutput(players[0].getUsername() + " flipped the card " + topCard0);
             this.gameOutput.sendOutput(players[1].getUsername() + " flipped the card " + topCard1);
 
-            int topCardHierarchy0 = java.util.Arrays.asList(Hierarchy).indexOf(topCard0.getRank());
-            int topCardHierarchy1 = java.util.Arrays.asList(Hierarchy).indexOf(topCard1.getRank());
-            int winner = 2;
+            int winner = decideRoundWinner(topCard0, topCard1, inWar);
 
-            if (topCardHierarchy0 == topCardHierarchy1) {
-                if (inWar) {
-                    this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war continues!");
-                } else {
-                    inWar = true;
-                    this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
-                }
-            } else if (topCardHierarchy0 < topCardHierarchy1) {
-                this.gameOutput.sendOutput(players[1].getUsername() + "'s card outranks their opponents and they win the battle!");
-                winner = 1;
-            } else {
-                this.gameOutput.sendOutput(players[0].getUsername() + "'s card outranks their opponents and they win the battle!");
-                winner = 0;
-            }
-
-            if (winner < 2) {
+            if (winner == 2) {
+                inWar = true;
+            } else if (winner < 2) {
                 for (int j = 0; j < 2; j++) {
                     for (int k = 0; k < playingField[j].size(); k++) {
                         players[winner].addToHand((Card) playingField[j].remove(k));
@@ -121,9 +97,44 @@ public class War extends GameTemplate {
         }
     }
 
+    /**
+     * Flips a card for each player
+     */
+    public void flipCards() {
+        makeMove(currPlayer.getHand().removeCard());
+        currPlayerIndex = 1;
+        currPlayer = players[currPlayerIndex];
+        makeMove(currPlayer.getHand().removeCard());
+        currPlayerIndex = 0;
+        currPlayer = players[currPlayerIndex];
+    }
 
     /**
-     * returns true as moves are predetermined in war
+     * Uses Hierarchy to decide which player wins a round of War. returns which player has won (0 or 1) or a 2 if
+     * the players tie. Outputs a message accordingly.
+     */
+    public int decideRoundWinner (Card topCard0, Card topCard1, boolean inWar) {
+        int topCardHierarchy0 = java.util.Arrays.asList(Hierarchy).indexOf(topCard0.getRank());
+        int topCardHierarchy1 = java.util.Arrays.asList(Hierarchy).indexOf(topCard1.getRank());
+
+        if (topCardHierarchy0 == topCardHierarchy1) {
+            if (inWar) {
+                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war continues!");
+            } else {
+                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
+            }
+            return 2;
+        } else if (topCardHierarchy0 < topCardHierarchy1) {
+            this.gameOutput.sendOutput(players[1].getUsername() + "'s card outranks their opponents and they win the battle!");
+            return 1;
+        } else {
+            this.gameOutput.sendOutput(players[0].getUsername() + "'s card outranks their opponents and they win the battle!");
+            return 0;
+        }
+    }
+
+    /**
+     * Returns true as moves are predetermined in war
      *
      * @param card A card object
      */
