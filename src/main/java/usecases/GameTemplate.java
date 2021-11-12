@@ -45,7 +45,7 @@ public abstract class GameTemplate {
 
     public abstract boolean checkWin();
 
-    public static GameTemplate GameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
 //        switch (name.toUpperCase()) {
 //            case "CRAZY EIGHTS":
 //                return new CrazyEights(numPlayers, input, output);

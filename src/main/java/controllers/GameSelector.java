@@ -2,8 +2,12 @@ package controllers;
 
 import usecases.GameTemplate;
 import usecases.UserManager;
+import usecases.UserManagerExporter;
+import usecases.UserManagerImporter;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,15 +15,12 @@ import java.util.List;
  */
 public class GameSelector {
 
+    private static final int WIDTH = 39;
     private final String[] games;
-
     private final GameSelector.Input selectorInput;
     private final GameSelector.Output selectorOutput;
-
     private final GameTemplate.Input gameInput;
     private final GameTemplate.Output gameOutput;
-
-    private static final int WIDTH = 39;
     private final String dashes;
 
     /**
@@ -51,8 +52,14 @@ public class GameSelector {
      * Run this GameSelector.
      * <p>
      * GameSelector allows a user to select the game they wish to play and runs that game.
+     *
+     * @param userManagerInputFile  a String representing a file with a serialized <code>UserManager</code> to import
+     * @param userManagerOutputFile a String representing a file to serialize a <code>UserManager</code> to
      */
-    public void run() {
+    public void run(String userManagerInputFile, String userManagerOutputFile) {
+
+        UserManager userManager = this.importUserManager(userManagerInputFile);
+
         while (true) {
             displayMenu();
 
@@ -147,6 +154,42 @@ public class GameSelector {
      */
     private boolean checkValidity(int sel) {
         return sel <= this.games.length;
+    }
+
+    /**
+     * Import and return a <code>UserManager</code> serialized in the specified <code>inputFilePath</code>.
+     *
+     * @param inputFilePath file path to a serialized <code>UserManager</code>
+     * @return the deserialized <code>UserManager</code>
+     */
+    private UserManager importUserManager(String inputFilePath) {
+        UserManager userManager;
+        try {
+            userManager = UserManagerImporter.importUserManager(inputFilePath);
+        } catch (IOException | ClassNotFoundException ignored) {
+            userManager = new UserManager();  // ignore input file if exception thrown
+        }
+        return userManager;
+    }
+
+    /**
+     * Export the given <code>UserManager</code> to the specified <code>outputFilePath</code>
+     *
+     * @param userManager the <code>UserManager</code> to serialize
+     * @param outputFilePath  the file to serialize to
+     */
+    private void exportUserManager(UserManager userManager, String outputFilePath) {
+        try {
+            UserManagerExporter.exportUserManager(userManager, outputFilePath);
+        } catch (IOException e) {
+            // dump UserManager to a unique file (should be unique since using current system time)
+            Date currDate = new Date();
+            try {
+                UserManagerExporter.exportUserManager(userManager, "usermanager-" + currDate.getTime() + ".ser");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     /**
