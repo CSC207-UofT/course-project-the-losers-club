@@ -2,25 +2,28 @@ package usecases;
 
 import entities.Card;
 
-import java.util.*;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
-public class War extends Game{
-    private final ArrayList[] playingField = new ArrayList[] {new ArrayList<Card>(), new ArrayList<Card>()};
+public class War extends GameTemplate {
+    private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
     private final Input gameInput;
     private final Output gameOutput;
-    private final static String[] Hierarchy = new String[] {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+    private final static String[] Hierarchy = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
     /**
+     * Constructor for War. Note that usernames must be a List of length 2
      *
-     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameInput  A Game.Input object allowing for player input.
      * @param gameOutput A Game.Output object allowing for output to the player.
      */
-    public War(Input gameInput, Output gameOutput) {
-        super(2);
+    public War(Input gameInput, Output gameOutput, List<String> usernames, UserManager userManager, Random random) {
+        super(usernames, userManager);
         this.gameInput = gameInput;
         this.gameOutput = gameOutput;
         this.currPlayerIndex = 0;
-        this.deck.shuffle();
+        this.deck.shuffle(random);
         for (Player player : this.players) {
             for (int i = 0; i < 26; i++) {
                 player.addToHand(this.deck.drawCard());
@@ -44,9 +47,9 @@ public class War extends Game{
             this.gameOutput.sendOutput("---------------------------------------");
             for (int i = 0; i < 2; i++) {
                 if (playingField[i].isEmpty()) {
-                    this.gameOutput.sendOutput(players[i].getName() + "'s Pile is empty");
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Pile is empty");
                 } else {
-                    this.gameOutput.sendOutput(players[i].getName() + "'s Top Card is: " + playingField[i].get(playingField[i].size() - 1));
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField[i].get(playingField[i].size() - 1));
                 }
                 this.gameOutput.sendOutput("---------------------------------------");
             }
@@ -72,8 +75,8 @@ public class War extends Game{
             Card topCard1 = (Card) playingField[1].get(playingField[1].size() - 1);
 
             this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput(players[0].getName() + " flipped the card " + topCard0);
-            this.gameOutput.sendOutput(players[1].getName() + " flipped the card " + topCard1);
+            this.gameOutput.sendOutput(players[0].getUsername() + " flipped the card " + topCard0);
+            this.gameOutput.sendOutput(players[1].getUsername() + " flipped the card " + topCard1);
 
             int topCardHierarchy0 = java.util.Arrays.asList(Hierarchy).indexOf(topCard0.getRank());
             int topCardHierarchy1 = java.util.Arrays.asList(Hierarchy).indexOf(topCard1.getRank());
@@ -87,10 +90,10 @@ public class War extends Game{
                     this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
                 }
             } else if (topCardHierarchy0 < topCardHierarchy1) {
-                this.gameOutput.sendOutput( players[1].getName() + "'s card outranks their opponents and they win the battle!");
+                this.gameOutput.sendOutput(players[1].getUsername() + "'s card outranks their opponents and they win the battle!");
                 winner = 1;
             } else {
-                this.gameOutput.sendOutput( players[0].getName() + "'s card outranks their opponents and they win the battle!");
+                this.gameOutput.sendOutput(players[0].getUsername() + "'s card outranks their opponents and they win the battle!");
                 winner = 0;
             }
 
@@ -108,19 +111,20 @@ public class War extends Game{
         }
 
         if (players[0].isHandEmpty() && players[1].isHandEmpty()) {
-            this.gameOutput.sendOutput("Somehow you two have mananged to end up in an extremely improbable draw. Congratulations!");
+            this.gameOutput.sendOutput("Somehow you two have managed to end up in an extremely improbable draw. Congratulations!");
         } else if (players[1].isHandEmpty()) {
-            this.gameOutput.sendOutput(players[1].getName() + " is out of cards and can no longer participate. " + players[0].getName() + " wins!");
+            this.gameOutput.sendOutput(players[1].getUsername() + " is out of cards and can no longer participate. " + players[0].getUsername() + " wins!");
         } else if (players[0].isHandEmpty()) {
-            this.gameOutput.sendOutput(players[0].getName() + " is out of cards and can no longer participate. " + players[1].getName() + " wins!");
+            this.gameOutput.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!");
         } else {
-            this.gameOutput.sendOutput("bruh how did you get here. " + playingField[0].size() + " " + playingField[1].size());
+            this.gameOutput.sendOutput("how did you get here. " + playingField[0].size() + " " + playingField[1].size());
         }
     }
 
 
     /**
      * returns true as moves are predetermined in war
+     *
      * @param card A card object
      */
     @Override
@@ -130,6 +134,7 @@ public class War extends Game{
 
     /**
      * Plays the given card into the playingField for the current player
+     *
      * @param card A card object that will be played in the game
      */
     @Override
@@ -139,6 +144,7 @@ public class War extends Game{
 
     /**
      * Checks if the game has finished, i.e. if at least 1 player has an empty hand
+     *
      * @return true if either player has an empty hand, false otherwise
      */
     @Override
