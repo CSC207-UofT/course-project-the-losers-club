@@ -119,7 +119,7 @@ public class GameSelector {
 
             this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
             this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
-            GameTemplate game = GameTemplate.GameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
+            GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
             game.startGame();
             this.selectorOutput.sendOutput("\n\n\n\n\n");
             return true;
