@@ -73,28 +73,23 @@ public class GameSelector {
 
             UserManager userManager = new UserManager();
 
-            int maxPlayers = GameTemplate.GetMaxPlayers(gameString);
+            int maxPlayers = GameTemplate.getMaxPlayers(gameString);
 
             System.out.println("Input up to " + maxPlayers + " usernames for " +
                     "players playing the game. Enter 'done' to finish.");
 
             String username = this.selectorInput.getUsername();
 
-            while (true) {
-                if (username.equalsIgnoreCase("done")) {
-                    System.out.println("\nPlease enter at least one username!\n");
-                    username = this.selectorInput.getUsername();
-                } else {
-                    break;
-                }
+            while (username.equalsIgnoreCase("done")) {
+                System.out.println("\nPlease enter at least one username!\n");
+                username = this.selectorInput.getUsername();
             }
 
-            while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+            while (!username.equalsIgnoreCase("done") && maxPlayers != 1) {
                 usernames.add(username);
                 try {
                     userManager.addUser(username);
-                } catch (UserManager.UserAlreadyExistsException e) {
-                    e.printStackTrace();
+                } catch (UserManager.UserAlreadyExistsException ignored) {
                 }
                 username = this.selectorInput.getUsername();
                 maxPlayers--;

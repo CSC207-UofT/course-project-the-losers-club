@@ -12,20 +12,15 @@ public class CrazyEights extends GameTemplate {
     private final Input gameInput;
     private final Output gameOutput;
     private char suitTracker;
-
-    protected static int getMaxPlayers() {
-        return maxPlayers;
-    }
-
     private static final int maxPlayers = 5;
 
     /**
      * Instantiate a new CrazyEights game instance.
      *
-     * @param usernames the list of usernames of player that are playing the game
+     * @param usernames   the list of usernames of player that are playing the game
      * @param userManager a usermanager that manages the user entities
-     * @param gameInput A Game.Input object allowing for player input.
-     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param gameInput   A Game.Input object allowing for player input.
+     * @param gameOutput  A Game.Output object allowing for output to the player.
      */
     public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this(usernames, userManager, gameInput, gameOutput, new Random());
@@ -34,11 +29,11 @@ public class CrazyEights extends GameTemplate {
     /**
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
-     * @param usernames the list of usernames of player that are playing the game
+     * @param usernames   the list of usernames of player that are playing the game
      * @param userManager a usermanager that manages the user entities
-     * @param gameInput A Game.Input object allowing for player input.
-     * @param gameOutput A Game.Output object allowing for output to the player.
-     * @param rand a Random object for creating deterministic behaviour
+     * @param gameInput   A Game.Input object allowing for player input.
+     * @param gameOutput  A Game.Output object allowing for output to the player.
+     * @param rand        a Random object for creating deterministic behaviour
      */
     public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
         super(usernames, userManager);
@@ -48,7 +43,7 @@ public class CrazyEights extends GameTemplate {
         this.playingField = new Stack<>();
         this.deck.shuffle(rand);
         for (Player player : this.players) {
-            for (int i=0; i < 5; i++) {
+            for (int i = 0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
             }
         }
@@ -84,15 +79,14 @@ public class CrazyEights extends GameTemplate {
             this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
-                if (looped){
+                if (looped) {
                     this.gameOutput.sendOutput("This is not a valid move.\n");
                     card = null;
                 }
 
-                if (!hasValidMove(currPlayer.getHand())){
+                if (!hasValidMove(currPlayer.getHand())) {
                     this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.\n");
-                }
-                else if (!this.gameInput.drawCard()) {
+                } else if (!this.gameInput.drawCard()) {
                     crd = this.gameInput.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
                     if (card.getRank().equals("8")) {
@@ -100,7 +94,7 @@ public class CrazyEights extends GameTemplate {
                     }
                 }
 
-                if (card != null && !checkMove(card)){
+                if (card != null && !checkMove(card)) {
                     looped = true;
                 }
             } while (card != null && !checkMove(card));
@@ -132,6 +126,7 @@ public class CrazyEights extends GameTemplate {
 
     /**
      * Checks if the given card is a valid move or an invalid move
+     *
      * @param card A card object that will be checked if it is a valid move
      * @return true if card is a valid move, false otherwise
      */
@@ -152,14 +147,23 @@ public class CrazyEights extends GameTemplate {
     }
 
     /**
+     * Return's this game's maximum number of players.
+     * @return the maximum number of players.
+     */
+    protected static int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    /**
      * Checks if a hand has at least one card that is a valid move
+     *
      * @param hand A hand object of a player playing the game
      * @return true if the hand has a valid move, false otherwise
      */
-    public boolean hasValidMove(Hand hand){
+    public boolean hasValidMove(Hand hand) {
         List<Card> cards = hand.getCards();
-        for (Card card : cards){
-            if (card.getSuit() == this.suitTracker || card.getRank().equals(this.playingField.peek().getRank()) || card.getRank().equals("8")){
+        for (Card card : cards) {
+            if (card.getSuit() == this.suitTracker || card.getRank().equals(this.playingField.peek().getRank()) || card.getRank().equals("8")) {
                 return true;
             }
         }
@@ -168,6 +172,7 @@ public class CrazyEights extends GameTemplate {
 
     /**
      * Plays the given card into the playingField
+     *
      * @param card A card object that will be played in the game
      */
     @Override
@@ -181,6 +186,7 @@ public class CrazyEights extends GameTemplate {
 
     /**
      * Checks if a player has won the game, i.e. if the player has an empty hand
+     *
      * @return true if player has an empty hand, false otherwise
      */
     @Override

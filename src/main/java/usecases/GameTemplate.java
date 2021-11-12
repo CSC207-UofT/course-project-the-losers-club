@@ -58,7 +58,12 @@ public abstract class GameTemplate {
         return new CrazyEights(usernames, userManager, input, output);
     }
 
-    public static int GetMaxPlayers(String name) {
+    /**
+     * Returns a maximum number of players based on the given game.
+     * @param name The name of a possible game.
+     * @return an integer of the maximum number of players allowed to play the game.
+     */
+    public static int getMaxPlayers(String name) {
 //        switch (name.toUpperCase()) {
 //            case "CRAZY EIGHTS":
 //                return CrazyEights.getMaxPlayers();
