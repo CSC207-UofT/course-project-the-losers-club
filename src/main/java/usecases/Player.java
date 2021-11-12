@@ -10,7 +10,7 @@ import java.util.Comparator;
  * which is the cards the player holds at a given moment.
  */
 public class Player {
-    private Hand hand;
+    private final Hand hand;
     private final String username;
 
     public String getUsername() {

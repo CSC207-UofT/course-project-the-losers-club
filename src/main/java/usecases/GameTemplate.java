@@ -59,6 +59,23 @@ public abstract class GameTemplate {
     }
 
     /**
+     * Returns a maximum number of players based on the given game.
+     * @param name The name of a possible game.
+     * @return an integer of the maximum number of players allowed to play the game.
+     */
+    public static int getMaxPlayers(String name) {
+//        switch (name.toUpperCase()) {
+//            case "CRAZY EIGHTS":
+//                return CrazyEights.getMaxPlayers();
+////          case "WAR":
+////                return War.getMaxPlayers();  // TODO ADD WAR WHEN IMPLEMENTED
+//            default:
+//                return 0;
+//        }
+        return CrazyEights.getMaxPlayers();
+    }
+
+    /**
      * Input is an interface allowing Games to retrieve input from a user.
      */
     public interface Input {

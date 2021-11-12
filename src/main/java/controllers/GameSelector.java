@@ -65,25 +65,49 @@ public class GameSelector {
 
             int sel = this.selectorInput.getUserSelection();
 
-            List<String> usernames = new ArrayList<>();
-
-            String username = this.selectorInput.getUsername();
-
-            while (!username.equalsIgnoreCase("done")) {
-                usernames.add(username);
-                username = this.selectorInput.getUsername();
-            }
-
-            // check for exit case
             if (sel == 0) {
-                this.exportUserManager(userManager, userManagerOutputFile);
                 return;
             }
 
-            while (!handleUserSelection(sel, usernames, userManager)) {
+            while (!checkValidity(sel)) {
                 this.selectorOutput.sendOutput("Invalid menu selection.\n");
                 sel = this.selectorInput.getUserSelection();
             }
+
+            String gameString = this.games[sel - 1];
+
+            List<String> usernames = new ArrayList<>();
+
+            int maxPlayers = GameTemplate.getMaxPlayers(gameString);
+
+            System.out.println("Input up to " + maxPlayers + " usernames for " +
+                    "players playing the game. Enter 'done' to finish.");
+
+            String username = this.selectorInput.getUsername();
+
+            while (username.equalsIgnoreCase("done")) {
+                System.out.println("\nPlease enter at least one username!\n");
+                username = this.selectorInput.getUsername();
+            }
+
+            while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+                if (usernames.contains(username)) {
+                    System.out.println("This username has already been added. Please enter a new username!");
+                    username = this.selectorInput.getUsername();
+                } else {
+                    usernames.add(username);
+                    try {
+                        userManager.addUser(username);
+                    } catch (UserManager.UserAlreadyExistsException ignored) {
+                    }
+                    if (maxPlayers != 1) {
+                        username = this.selectorInput.getUsername();
+                    }
+                    maxPlayers--;
+                }
+            }
+
+            handleUserSelection(sel, usernames, userManager);
         }
     }
 
@@ -108,22 +132,26 @@ public class GameSelector {
      * This method will be the main runner of the selected Game.
      *
      * @param sel the user's selection. Must be greater than 0.
-     * @return false when the selection is invalid or true when the execution completes
      */
-    private boolean handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
-        if (sel > this.games.length) {
-            return false;
-        } else {
-            String gameString = this.games[sel - 1];
-            this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
+    private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
+        String gameString = this.games[sel - 1];
+        this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
 
-            this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
-            this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
-            GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
-            game.startGame();
-            this.selectorOutput.sendOutput("\n\n\n\n\n");
-            return true;
-        }
+        this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
+        this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
+        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
+        game.startGame();
+        this.selectorOutput.sendOutput("\n\n\n\n\n");
+    }
+
+    /**
+     * Checks if the user's selection is a valid selection.
+     *
+     * @param sel the user's selection. Must be greater than 0.
+     * @return false when the selection is invalid or true when the selection is valid
+     */
+    private boolean checkValidity(int sel) {
+        return sel <= this.games.length;
     }
 
     /**

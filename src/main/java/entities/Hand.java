@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -11,7 +13,7 @@ import java.util.Iterator;
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
-    private List<Card> cards;
+    private final List<Card> cards;
 
     /**
      * Constructs an empty hand

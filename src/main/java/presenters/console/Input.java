@@ -129,7 +129,6 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
      */
     @Override
     public String getUsername() {
-        System.out.println("Input all usernames for players playing the game. Enter 'done' to finish.");
         System.out.print("Enter a Username: ");
 
         String line = this.inp.nextLine().trim();
