@@ -1,18 +1,17 @@
 package usecases;
 
 import entities.Card;
-import presenters.console.Input;
-import presenters.console.Output;
 
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
 public class War extends GameTemplate {
-    public final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
+    private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
+    // private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
     private final Input gameInput;
     private final Output gameOutput;
-    private final static String[] Hierarchy = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private final static String[] HIERARCHY = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
     /**
      * Constructor for War. Note that usernames must be a List of length 2
@@ -34,6 +33,18 @@ public class War extends GameTemplate {
     }
 
     /**
+     * Instantiate a new War game instance.
+     *
+     * @param usernames   the list of usernames of player that are playing the game
+     * @param userManager a usermanager that manages the user entities
+     * @param gameInput   A Game.Input object allowing for player input.
+     * @param gameOutput  A Game.Output object allowing for output to the player.
+     */
+    public War(Input gameInput, Output gameOutput, List<String> usernames, UserManager userManager) {
+        this(gameInput, gameOutput, usernames, userManager, new Random());
+    }
+
+    /**
      * The main part of the game that shows players their hands, takes any input, and then acts according to the rules
      * of the game of war. if/when the game finishes, the function also determines the winner.
      */
@@ -44,16 +55,16 @@ public class War extends GameTemplate {
         while (!checkWin()) {
             turnCounter += 1;
             this.currPlayer = this.players[this.currPlayerIndex];
-            this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField[0].size());
-            this.gameOutput.sendOutput("---------------------------------------");
+            this.gameOutput.sendOutput("---------------------------------------\n");
+            this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField[0].size() + "\n");
+            this.gameOutput.sendOutput("---------------------------------------\n");
             for (int i = 0; i < 2; i++) {
                 if (playingField[i].isEmpty()) {
-                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Pile is empty");
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Pile is empty\n");
                 } else {
-                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField[i].get(playingField[i].size() - 1));
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField[i].get(playingField[i].size() - 1) + "\n");
                 }
-                this.gameOutput.sendOutput("---------------------------------------");
+                this.gameOutput.sendOutput("---------------------------------------\n");
             }
             gameInput.stall();
 
@@ -64,12 +75,12 @@ public class War extends GameTemplate {
                 }
             }
 
-            Card topCard0 = (Card) playingField[0].get(playingField[0].size() - 1);
-            Card topCard1 = (Card) playingField[1].get(playingField[1].size() - 1);
+            Card topCard0 = this.returnTopCard(0);
+            Card topCard1 = this.returnTopCard(1);
 
-            this.gameOutput.sendOutput("---------------------------------------");
-            this.gameOutput.sendOutput(players[0].getUsername() + " flipped the card " + topCard0);
-            this.gameOutput.sendOutput(players[1].getUsername() + " flipped the card " + topCard1);
+            this.gameOutput.sendOutput("---------------------------------------\n");
+            this.gameOutput.sendOutput(players[0].getUsername() + " flipped the card " + topCard0 + "\n");
+            this.gameOutput.sendOutput(players[1].getUsername() + " flipped the card " + topCard1 + "\n");
 
             int winner = decideRoundWinner(topCard0, topCard1, inWar);
 
@@ -83,19 +94,19 @@ public class War extends GameTemplate {
                 }
             }
 
-            this.gameOutput.sendOutput("---------------------------------------");
+            this.gameOutput.sendOutput("---------------------------------------\n");
 
             gameInput.stall();
         }
 
         if (players[0].isHandEmpty() && players[1].isHandEmpty()) {
-            this.gameOutput.sendOutput("Somehow you two have managed to end up in an extremely improbable draw. Congratulations!");
+            this.gameOutput.sendOutput("Somehow you two have managed to end up in an extremely improbable draw. Congratulations!\n");
         } else if (players[1].isHandEmpty()) {
-            this.gameOutput.sendOutput(players[1].getUsername() + " is out of cards and can no longer participate. " + players[0].getUsername() + " wins!");
+            this.gameOutput.sendOutput(players[1].getUsername() + " is out of cards and can no longer participate. " + players[0].getUsername() + " wins!\n");
         } else if (players[0].isHandEmpty()) {
-            this.gameOutput.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!");
+            this.gameOutput.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!\n");
         } else {
-            this.gameOutput.sendOutput("how did you get here. " + playingField[0].size() + " " + playingField[1].size());
+            this.gameOutput.sendOutput("how did you get here. " + playingField[0].size() + " " + playingField[1].size() + "\n");
         }
     }
 
@@ -112,25 +123,34 @@ public class War extends GameTemplate {
     }
 
     /**
+     * Returns the top card of the player's pile
+     *
+     * @param playerIndex the index representing the player's pile we want to return
+     */
+    public Card returnTopCard(int playerIndex) {
+        return (Card) this.playingField[playerIndex].get(playingField[playerIndex].size() - 1);
+    }
+
+    /**
      * Uses Hierarchy to decide which player wins a round of War. returns which player has won (0 or 1) or a 2 if
      * the players tie. Outputs a message accordingly.
      */
-    public int decideRoundWinner (Card topCard0, Card topCard1, boolean inWar) {
-        int topCardHierarchy0 = java.util.Arrays.asList(Hierarchy).indexOf(topCard0.getRank());
-        int topCardHierarchy1 = java.util.Arrays.asList(Hierarchy).indexOf(topCard1.getRank());
+    public int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
+        int topCardHierarchy0 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard0.getRank());
+        int topCardHierarchy1 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard1.getRank());
 
         if (topCardHierarchy0 == topCardHierarchy1) {
             if (inWar) {
-                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war continues!");
+                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war continues!\n");
             } else {
-                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!");
+                this.gameOutput.sendOutput("Both players have flipped the same rank of card, so war begins!\n");
             }
             return 2;
         } else if (topCardHierarchy0 < topCardHierarchy1) {
-            this.gameOutput.sendOutput(players[1].getUsername() + "'s card outranks their opponents and they win the battle!");
+            this.gameOutput.sendOutput(players[1].getUsername() + "'s card outranks their opponents and they win the battle!\n");
             return 1;
         } else {
-            this.gameOutput.sendOutput(players[0].getUsername() + "'s card outranks their opponents and they win the battle!");
+            this.gameOutput.sendOutput(players[0].getUsername() + "'s card outranks their opponents and they win the battle!\n");
             return 0;
         }
     }
