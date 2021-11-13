@@ -74,36 +74,7 @@ public class GameSelector {
                         (UserDisplay.Output) this.selectorOutput);
                 userDisplay.run();
             } else {
-                String gameString = this.games[sel - 1];
-
-                List<String> usernames = new ArrayList<>();
-                int maxPlayers = GameTemplate.getMaxPlayers(gameString);
-
-                this.selectorOutput.sendOutput("Input up to " + maxPlayers + " usernames for " +
-                        "players playing the game. Enter 'done' to finish.\n");
-                String username = this.selectorInput.getUsername();
-
-                while (username.equalsIgnoreCase("done")) {
-                    this.selectorOutput.sendOutput("\nPlease enter at least one username!\n");
-                    username = this.selectorInput.getUsername();
-                }
-
-                while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
-                    if (usernames.contains(username)) {
-                        this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!\n");
-                        username = this.selectorInput.getUsername();
-                    } else {
-                        usernames.add(username);
-                        try {
-                            userManager.addUser(username);
-                        } catch (UserManager.UserAlreadyExistsException ignored) {
-                        }
-                        if (maxPlayers != 1) {
-                            username = this.selectorInput.getUsername();
-                        }
-                        maxPlayers--;
-                    }
-                }
+                List<String> usernames = getUsernames(userManager, this.games[sel - 1]);
 
                 handleUserSelection(sel, usernames, userManager);
                 this.exportUserManager(userManager, userManagerOutputFile);
@@ -153,6 +124,48 @@ public class GameSelector {
      */
     private boolean checkValidity(int sel) {
         return (sel == 0 || sel == 9) || (sel <= this.games.length && sel > 0);
+    }
+
+    /**
+     * Prompt the user for the usernames of the <code>User</code>s that playing the game
+     *
+     * @param userManager <code>UserManager</code> to add users to
+     * @param game        the game that is to be played. Used to enforce minimum and maximum number of players
+     * @return a list of usernames
+     */
+    private List<String> getUsernames(UserManager userManager, String game) {
+        List<String> usernames = new ArrayList<>();
+
+        int maxPlayers = GameTemplate.getMaxPlayers(game);
+        int minPlayers = GameTemplate.getMinPlayers(game);
+
+        if (maxPlayers == minPlayers) {
+            this.selectorOutput.sendOutput("Input " + maxPlayers + " usernames for " +
+                    "players playing the game. Enter 'done' to finish.\n");
+        } else {
+            this.selectorOutput.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
+                    "players playing the game. Enter 'done' to finish.\n");
+        }
+
+        String username = this.selectorInput.getUsername();
+        while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
+            if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
+                this.selectorOutput.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
+            } else if (usernames.contains(username)) {
+                this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!\n");
+            } else {
+                usernames.add(username);
+                try {
+                    userManager.addUser(username);
+                } catch (UserManager.UserAlreadyExistsException ignored) {
+                }
+            }
+
+            if (usernames.size() != maxPlayers) {
+                username = this.selectorInput.getUsername();
+            }
+        }
+        return usernames;
     }
 
     /**

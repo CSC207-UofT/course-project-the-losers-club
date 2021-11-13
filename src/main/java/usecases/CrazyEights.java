@@ -8,11 +8,12 @@ import java.util.Random;
 import java.util.Stack;
 
 public class CrazyEights extends GameTemplate {
-    private final Stack<Card> playingField;
-    private final Input gameInput;
-    private final Output gameOutput;
+    private static final int MAX_PLAYERS = 5;
+    private static final int MIN_PLAYERS = 2;
+    private final Stack<Card> PLAYING_FIELD;
+    private final Input GAME_INPUT;
+    private final Output GAME_OUTPUT;
     private char suitTracker;
-    private static final int maxPlayers = 5;
 
     /**
      * Instantiate a new CrazyEights game instance.
@@ -37,18 +38,36 @@ public class CrazyEights extends GameTemplate {
      */
     public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
         super(usernames, userManager);
-        this.gameInput = gameInput;
-        this.gameOutput = gameOutput;
+        this.GAME_INPUT = gameInput;
+        this.GAME_OUTPUT = gameOutput;
         this.currPlayerIndex = 0;
-        this.playingField = new Stack<>();
+        this.PLAYING_FIELD = new Stack<>();
         this.deck.shuffle(rand);
         for (Player player : this.players) {
             for (int i = 0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
             }
         }
-        this.playingField.add(this.deck.drawCard());
-        this.suitTracker = this.playingField.peek().getSuit();
+        this.PLAYING_FIELD.add(this.deck.drawCard());
+        this.suitTracker = this.PLAYING_FIELD.peek().getSuit();
+    }
+
+    /**
+     * Return's this game's maximum number of players.
+     *
+     * @return the maximum number of players.
+     */
+    protected static int getMaxPlayers() {
+        return MAX_PLAYERS;
+    }
+
+    /**
+     * Return's this game's minimum number of players required to play the game.
+     *
+     * @return the maximum number of players.
+     */
+    protected static int getMinPlayers() {
+        return MIN_PLAYERS;
     }
 
     /**
@@ -72,25 +91,25 @@ public class CrazyEights extends GameTemplate {
             Card card = null;
             String crd;
             boolean looped = false;
-            this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
-            this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput("Top card: " + this.playingField.peek().getRank() + this.suitTracker + "\n");
-            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
+            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
+            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped) {
-                    this.gameOutput.sendOutput("This is not a valid move.\n");
+                    this.GAME_OUTPUT.sendOutput("This is not a valid move.\n");
                     card = null;
                 }
 
                 if (!hasValidMove(currPlayer.getHand())) {
-                    this.gameOutput.sendOutput("Card drawn from Deck because there are no cards to play.\n");
-                } else if (!this.gameInput.drawCard()) {
-                    crd = this.gameInput.getCard();
+                    this.GAME_OUTPUT.sendOutput("Card drawn from Deck because there are no cards to play.\n");
+                } else if (!this.GAME_INPUT.drawCard()) {
+                    crd = this.GAME_INPUT.getCard();
                     card = new Card(crd.substring(1), crd.charAt(0));
                     if (card.getRank().equals("8")) {
-                        this.suitTracker = this.gameInput.getSuit();
+                        this.suitTracker = this.GAME_INPUT.getSuit();
                     }
                 }
 
@@ -104,7 +123,7 @@ public class CrazyEights extends GameTemplate {
                 makeMove(card);
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
-            this.gameOutput.sendOutput("\n");
+            this.GAME_OUTPUT.sendOutput("\n");
         }
         for (String u : this.usernames) {
             if (this.currPlayer.getUsername().equals(u)) {
@@ -121,7 +140,7 @@ public class CrazyEights extends GameTemplate {
                 }
             }
         }
-        this.gameOutput.sendOutput(this.currPlayer.getUsername() + " Wins!!!\n");
+        this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + " Wins!!!\n");
     }
 
     /**
@@ -140,17 +159,9 @@ public class CrazyEights extends GameTemplate {
             if (ind == -1) {
                 return false;
             } else {
-                return (card.getSuit() == this.suitTracker) || card.getRank().equals(this.playingField.peek().getRank());
+                return (card.getSuit() == this.suitTracker) || card.getRank().equals(this.PLAYING_FIELD.peek().getRank());
             }
         }
-    }
-
-    /**
-     * Return's this game's maximum number of players.
-     * @return the maximum number of players.
-     */
-    protected static int getMaxPlayers() {
-        return maxPlayers;
     }
 
     /**
@@ -162,7 +173,7 @@ public class CrazyEights extends GameTemplate {
     public boolean hasValidMove(Hand hand) {
         List<Card> cards = hand.getCards();
         for (Card card : cards) {
-            if (card.getSuit() == this.suitTracker || card.getRank().equals(this.playingField.peek().getRank()) || card.getRank().equals("8")) {
+            if (card.getSuit() == this.suitTracker || card.getRank().equals(this.PLAYING_FIELD.peek().getRank()) || card.getRank().equals("8")) {
                 return true;
             }
         }
@@ -175,7 +186,7 @@ public class CrazyEights extends GameTemplate {
      * @param card A card object that will be played in the game
      */
     public void makeMove(Card card) {
-        this.playingField.add(card);
+        this.PLAYING_FIELD.add(card);
         this.currPlayer.removeFromHand(card);
         if (!card.getRank().equals("8")) {
             this.suitTracker = card.getSuit();
