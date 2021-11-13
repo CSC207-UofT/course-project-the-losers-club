@@ -1,5 +1,7 @@
 package usecases;
 
+import java.text.DecimalFormat;
+
 /**
  * UserDisplay is a class that displays the stats for a given user
  */
@@ -8,6 +10,8 @@ public class UserDisplay {
     private final UserDisplay.Input displayInput;
     private final UserDisplay.Output displayOutput;
     private final UserManager userManager;
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public UserDisplay(UserManager userManager, UserDisplay.Input displayInput, UserDisplay.Output displayOutput){
         this.userManager = userManager;
@@ -27,14 +31,19 @@ public class UserDisplay {
                 int gamesPlayed = this.userManager.getGamesPlayed(usrname);
                 int wins = this.userManager.getWins(usrname);
                 int ties = this.userManager.getGamesTied(usrname);
-                double wpct = Math.round(((double) wins / (double) gamesPlayed) * 100);
+                double wpct;
+                if (gamesPlayed == 0) {
+                    wpct = 0.00;
+                } else {
+                    wpct = ((double) wins / (double) gamesPlayed) * 100.0;
+                }
 
                 this.displayOutput.sendOutput("\n\n\n\n\n");
                 this.displayOutput.sendOutput(usrname + "'s Stats\n");
                 this.displayOutput.sendOutput("Games Played: " + gamesPlayed + "\n");
                 this.displayOutput.sendOutput("Games Won: " + wins + "\n");
                 this.displayOutput.sendOutput("Games Tied: " + ties + "\n");
-                this.displayOutput.sendOutput("Win Percentage: " + wpct + "%\n");
+                this.displayOutput.sendOutput("Win Percentage: " + df.format(wpct) + "%\n");
 
                 usrname = this.displayInput.getUsername();
             } catch (UserManager.UserNotFoundException e) {
