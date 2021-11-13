@@ -24,7 +24,7 @@ public class CrazyEights extends GameTemplate {
      * @param gameOutput  A Game.Output object allowing for output to the player.
      */
     public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random(12345));
+        this(usernames, userManager, gameInput, gameOutput, new Random());
     }
 
     /**
@@ -44,7 +44,7 @@ public class CrazyEights extends GameTemplate {
         this.playingField = new Stack<>();
         this.deck.shuffle(rand);
         for (Player player : this.players) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 5; i++) {
                 player.addToHand(this.deck.drawCard());
             }
         }
