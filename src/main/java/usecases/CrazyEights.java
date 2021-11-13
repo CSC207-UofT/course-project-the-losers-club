@@ -24,7 +24,7 @@ public class CrazyEights extends GameTemplate {
      * @param gameOutput  A Game.Output object allowing for output to the player.
      */
     public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+        this(usernames, userManager, gameInput, gameOutput, new Random(12345));
     }
 
     /**
@@ -44,7 +44,7 @@ public class CrazyEights extends GameTemplate {
         this.playingField = new Stack<>();
         this.deck.shuffle(rand);
         for (Player player : this.players) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 1; i++) {
                 player.addToHand(this.deck.drawCard());
             }
         }
@@ -131,7 +131,6 @@ public class CrazyEights extends GameTemplate {
      * @param card A card object that will be checked if it is a valid move
      * @return true if card is a valid move, false otherwise
      */
-    @Override
     public boolean checkMove(Card card) {
         if (this.currPlayer.isHandEmpty()) {
             return false;
@@ -184,7 +183,6 @@ public class CrazyEights extends GameTemplate {
      *
      * @param card A card object that will be played in the game
      */
-    @Override
     public void makeMove(Card card) {
         this.playingField.add(card);
         this.currPlayer.removeFromHand(card);
@@ -198,7 +196,6 @@ public class CrazyEights extends GameTemplate {
      *
      * @return true if player has an empty hand, false otherwise
      */
-    @Override
     public boolean checkWin() {
         return currPlayer.isHandEmpty();
     }

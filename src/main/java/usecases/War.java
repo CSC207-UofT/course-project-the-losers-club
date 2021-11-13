@@ -179,7 +179,6 @@ public class War extends GameTemplate {
      *
      * @param card A card object
      */
-    @Override
     public boolean checkMove(Card card) {
         return true;
     }
@@ -189,7 +188,6 @@ public class War extends GameTemplate {
      *
      * @param card A card object that will be played in the game
      */
-    @Override
     public void makeMove(Card card) {
         this.playingField.get(currPlayerIndex).push(card);
     }
@@ -199,7 +197,6 @@ public class War extends GameTemplate {
      *
      * @return true if either player has an empty hand, false otherwise
      */
-    @Override
     public boolean checkWin() {
         return (players[0].isHandEmpty() || players[1].isHandEmpty());
     }

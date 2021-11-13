@@ -1,21 +1,21 @@
 package usecases;
 
+import entities.Card;
+import entities.Deck;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Deck;
-import entities.Card;
-
 public abstract class GameTemplate {
 
+    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
     protected UserManager userManager;
     protected List<String> usernames;
     protected int currPlayerIndex;
-    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
     protected GameTemplate(List<String> usernames, UserManager userManager) {
         this.userManager = userManager;
@@ -37,14 +37,16 @@ public abstract class GameTemplate {
         this.deck = new Deck(cardList);
     }
 
-    public abstract void startGame();
-
-    public abstract boolean checkMove(Card card);
-
-    public abstract void makeMove(Card card);
-
-    public abstract boolean checkWin();
-
+    /**
+     * Create a new <code>GameTemplate</code> instance based on the given game name
+     *
+     * @param name        the game to create
+     * @param usernames   list of usernames to play the game
+     * @param userManager <code>UserManager</code> that has users for each of the given usernames
+     * @param input       an object implementing <code>GameTemplate.Input</code>
+     * @param output      an object implementing <code>GameTemplate.output</code>
+     * @return the requested game instance
+     */
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
             case "CRAZY EIGHTS":
@@ -52,15 +54,15 @@ public abstract class GameTemplate {
             case "WAR":
                 return new War(input, output, usernames, userManager);
             default:
-                return null;
+                throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
     }
 
     /**
      * Returns a maximum number of players based on the given game.
      *
-     * @param name The name of a possible game.
-     * @return an integer of the maximum number of players allowed to play the game.
+     * @param name The name of a possible game
+     * @return an integer of the maximum number of players allowed to play the game
      */
     public static int getMaxPlayers(String name) {
         switch (name.toUpperCase()) {
@@ -69,15 +71,15 @@ public abstract class GameTemplate {
             case "WAR":
                 return War.getMaxPlayers();
             default:
-                return 0;
+                throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
     }
 
     /**
-     * Returns a maximum number of players based on the given game.
+     * Returns a minimum number of players based on the given game.
      *
-     * @param name The name of a possible game.
-     * @return an integer of the maximum number of players allowed to play the game.
+     * @param name the name of a possible game
+     * @return an integer of the maximum number of players allowed to play the game
      */
     public static int getMinPlayers(String name) {
         switch (name.toUpperCase()) {
@@ -86,9 +88,11 @@ public abstract class GameTemplate {
             case "WAR":
                 return War.getMinPlayers();
             default:
-                return 0;
+                throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
     }
+
+    public abstract void startGame();
 
     /**
      * Input is an interface allowing Games to retrieve input from a user.
