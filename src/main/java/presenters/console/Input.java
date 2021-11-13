@@ -5,11 +5,8 @@ import helpers.CardCheck;
 import usecases.GameTemplate;
 import usecases.Player;
 
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.ArrayList;
 
 import static helpers.UsernameCheck.checkUsername;
 
@@ -114,28 +111,25 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
     /**
      * Prompt user to select a player.
      *
-     * @param currPlayer the current player in the game and is not in the list of players displayed to the user.
-     * @param players the list of all the players in the game.
-     * @return a Player object selected by the user. This Player object is in the list of all the players in the game.
+     * @param currPlayerUsername the current player username in the game and is not in the list of player usernames displayed to the user.
+     * @param usernames the list of all the player usernames in the game.
+     * @return a String representing the username selected by the user. This username is in the list of all usernames.
      */
-    public Player getPlayer(Player currPlayer, Player[] players) {
-        HashMap<String, Player> dict = new HashMap<>();
-        ArrayList<String> playerUsernames = new ArrayList<>();
-        for (Player player : players) {
-            if (!player.equals(currPlayer)) {
-                dict.put(player.getUsername(), player);
-                playerUsernames.add(player.getUsername());
+    public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
+        List<String> usernamesForDisplay = new ArrayList<>();
+        for (String username : usernames) {
+            if (!username.equals(currPlayerUsername)) {
+                usernamesForDisplay.add(username);
             }
         }
-        System.out.print("Pick a player (one of " + playerUsernames + "): ");
-        String line = this.inp.nextLine().trim();
+        System.out.print("Pick a player (one of " + usernamesForDisplay + "): ");
+        String username = this.inp.nextLine().trim();
 
-        while (!dict.containsKey(line)) {
-            System.out.print("Invalid selection (" + playerUsernames + "), try again: ");
-            line = this.inp.nextLine().trim();
+        while (!usernamesForDisplay.contains(username)) {
+            System.out.print("Invalid selection (" + usernamesForDisplay + "), try again: ");
+            username = this.inp.nextLine().trim();
         }
-
-        return dict.get(line);
+        return username;
     }
 
     /**

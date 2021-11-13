@@ -11,7 +11,7 @@ public class GoFish extends GameTemplate {
     private final Input gameInput;
     private final Output gameOutput;
     private HashMap<Player, Integer> scoreTracker;
-    private Integer handSize;
+    private final Integer handSize;
 
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         super(usernames, userManager);
@@ -63,7 +63,7 @@ public class GoFish extends GameTemplate {
         outputWinner();
     }
 
-    public boolean fish() {
+    private boolean fish() {
         String rank;
         Player chosenPlayer;
         ArrayList<Card> cardCatch;
@@ -91,8 +91,7 @@ public class GoFish extends GameTemplate {
 
             } while (!validRank(rank));
 
-            this.gameOutput.sendOutput("Who would like to request cards from?\n");
-            chosenPlayer = this.gameInput.getPlayer(currPlayer, players);
+            chosenPlayer = requestPlayer();
 
             initialHandSize = this.currPlayer.getHand().getSize();
             cardCatch = chosenPlayer.removeFromHand(rank);
@@ -111,14 +110,25 @@ public class GoFish extends GameTemplate {
         return initialHandSize != finalHandSize;
     }
 
-    public void checkEveryoneForBook() {
+    private Player requestPlayer() {
+        this.gameOutput.sendOutput("Who would like to request cards from?\n");
+        String chosenUsername = this.gameInput.getPlayerUsername(this.currPlayer.getUsername(), this.usernames);
+        for (Player player : this.players) {
+            if (player.getUsername().equals(chosenUsername)) {
+                return player;
+            }
+        }
+        throw new RuntimeException();
+    }
+
+    private void checkEveryoneForBook() {
         for (Player player : players) {
             this.currPlayer = player;
             checkForBook();
         }
     }
 
-    public void checkForBook() {
+    private void checkForBook() {
         HashMap<String, Integer> numRanks = new HashMap<>();
         for (String rank : RANKS) {
             numRanks.put(rank, 0);
@@ -142,12 +152,12 @@ public class GoFish extends GameTemplate {
     }
 
 
-    public boolean validRank(String rank) {
+    private boolean validRank(String rank) {
         return currPlayer.getHandString().contains(rank);
     }
 
 
-    public boolean gameEnd() {
+    private boolean gameEnd() {
         if (!this.deck.isEmpty()) {
             return false;
         } else {
@@ -160,7 +170,7 @@ public class GoFish extends GameTemplate {
         return true;
     }
 
-    public void outputWinner() {
+    private void outputWinner() {
         ArrayList<String> winners = new ArrayList<>();
         int maxScore = 0;
         for (Player player : players) {

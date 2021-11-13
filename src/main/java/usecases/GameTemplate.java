@@ -91,7 +91,7 @@ public abstract class GameTemplate {
          * Implementation should return a Player object corresponding to a picked player.
          * @return a Player that is chosen by the user.
          */
-        Player getPlayer(Player currPlayer, Player[] players);
+        String getPlayerUsername(String currPlayerUsername, List<String> usernames);
 
         /**
          * Implementations should stall the output display. This can be used when the user needs to "click to continue"
