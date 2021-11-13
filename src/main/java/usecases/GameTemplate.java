@@ -17,7 +17,7 @@ public abstract class GameTemplate {
     private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private static final char[] SUITS = {'H', 'S', 'D', 'C'};
 
-    protected GameTemplate(List<String> usernames, UserManager userManager){
+    protected GameTemplate(List<String> usernames, UserManager userManager) {
         this.userManager = userManager;
         this.usernames = usernames;
         this.players = new Player[usernames.size()];
@@ -29,8 +29,8 @@ public abstract class GameTemplate {
 
         // Creates a deck with the cards created outside the Deck class
         List<Card> cardList = new ArrayList<>();
-        for (String i : RANKS){
-            for (char j : SUITS){
+        for (String i : RANKS) {
+            for (char j : SUITS) {
                 cardList.add(new Card(i, j));
             }
         }
@@ -46,33 +46,31 @@ public abstract class GameTemplate {
     public abstract boolean checkWin();
 
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
-//        switch (name.toUpperCase()) {
-//            case "CRAZY EIGHTS":
-//                return new CrazyEights(numPlayers, input, output);
-////            case "WAR":
-////                return new War(...);  // TODO ADD WAR WHEN IMPLEMENTED
-//            default:
-//                return null;
-//        }
-
-        return new CrazyEights(usernames, userManager, input, output);
+        switch (name.toUpperCase()) {
+            case "CRAZY EIGHTS":
+                return new CrazyEights(usernames, userManager, input, output);
+            case "WAR":
+                return new War(input, output, usernames, userManager);
+            default:
+                return null;
+        }
     }
 
     /**
      * Returns a maximum number of players based on the given game.
+     *
      * @param name The name of a possible game.
      * @return an integer of the maximum number of players allowed to play the game.
      */
     public static int getMaxPlayers(String name) {
-//        switch (name.toUpperCase()) {
-//            case "CRAZY EIGHTS":
-//                return CrazyEights.getMaxPlayers();
-////          case "WAR":
-////                return War.getMaxPlayers();  // TODO ADD WAR WHEN IMPLEMENTED
-//            default:
-//                return 0;
-//        }
-        return CrazyEights.getMaxPlayers();
+        switch (name.toUpperCase()) {
+            case "CRAZY EIGHTS":
+                return CrazyEights.getMaxPlayers();
+            case "WAR":
+                return 2;
+            default:
+                return 0;
+        }
     }
 
     /**

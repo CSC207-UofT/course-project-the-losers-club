@@ -10,7 +10,7 @@ public class Main {
         GameSelector.Input selectorInput = new Input();
         GameSelector.Output selectorOutput = new Output();
 
-        GameSelector selector = new GameSelector(selectorInput, selectorOutput, new String[]{"Crazy Eights"},
+        GameSelector selector = new GameSelector(selectorInput, selectorOutput, new String[]{"Crazy Eights", "War"},
                 (GameTemplate.Input) selectorInput, (GameTemplate.Output) selectorOutput);
 
         String inputFile = "userManager.ser";
