@@ -61,57 +61,53 @@ public class GameSelector {
             displayMenu();
 
             int sel = this.selectorInput.getUserSelection();
-
-            if (sel == 0) {
-                return;
-            }
-
-            if (sel == 9) {
-                new UserDisplay(userManager, (UserDisplay.Input) this.selectorInput,
-                        (UserDisplay.Output) this.selectorOutput).run();
-                displayMenu();
-                sel = this.selectorInput.getUserSelection();
-            }
-
             while (!checkValidity(sel)) {
                 this.selectorOutput.sendOutput("Invalid menu selection.\n");
                 sel = this.selectorInput.getUserSelection();
             }
 
-            String gameString = this.games[sel - 1];
+            if (sel == 0) {
+                this.exportUserManager(userManager, userManagerOutputFile);
+                return;
+            } else if (sel == 9) {
+                UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.selectorInput,
+                        (UserDisplay.Output) this.selectorOutput);
+                userDisplay.run();
+            } else {
+                String gameString = this.games[sel - 1];
 
-            List<String> usernames = new ArrayList<>();
+                List<String> usernames = new ArrayList<>();
+                int maxPlayers = GameTemplate.getMaxPlayers(gameString);
 
-            int maxPlayers = GameTemplate.getMaxPlayers(gameString);
+                this.selectorOutput.sendOutput("Input up to " + maxPlayers + " usernames for " +
+                        "players playing the game. Enter 'done' to finish.\n");
+                String username = this.selectorInput.getUsername();
 
-            this.selectorOutput.sendOutput("Input up to " + maxPlayers + " usernames for " +
-                    "players playing the game. Enter 'done' to finish. ");
-
-            String username = this.selectorInput.getUsername();
-
-            while (username.equalsIgnoreCase("done")) {
-                this.selectorOutput.sendOutput("\nPlease enter at least one username!\n");
-                username = this.selectorInput.getUsername();
-            }
-
-            while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
-                if (usernames.contains(username)) {
-                    this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!");
+                while (username.equalsIgnoreCase("done")) {
+                    this.selectorOutput.sendOutput("\nPlease enter at least one username!\n");
                     username = this.selectorInput.getUsername();
-                } else {
-                    usernames.add(username);
-                    try {
-                        userManager.addUser(username);
-                    } catch (UserManager.UserAlreadyExistsException ignored) {
-                    }
-                    if (maxPlayers != 1) {
-                        username = this.selectorInput.getUsername();
-                    }
-                    maxPlayers--;
                 }
-            }
 
-            handleUserSelection(sel, usernames, userManager);
+                while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
+                    if (usernames.contains(username)) {
+                        this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!\n");
+                        username = this.selectorInput.getUsername();
+                    } else {
+                        usernames.add(username);
+                        try {
+                            userManager.addUser(username);
+                        } catch (UserManager.UserAlreadyExistsException ignored) {
+                        }
+                        if (maxPlayers != 1) {
+                            username = this.selectorInput.getUsername();
+                        }
+                        maxPlayers--;
+                    }
+                }
+
+                handleUserSelection(sel, usernames, userManager);
+                this.exportUserManager(userManager, userManagerOutputFile);
+            }
         }
     }
 
@@ -156,7 +152,7 @@ public class GameSelector {
      * @return false when the selection is invalid or true when the selection is valid
      */
     private boolean checkValidity(int sel) {
-        return sel <= this.games.length;
+        return (sel == 0 || sel == 9) || (sel <= this.games.length && sel > 0);
     }
 
     /**
@@ -178,8 +174,8 @@ public class GameSelector {
     /**
      * Export the given <code>UserManager</code> to the specified <code>outputFilePath</code>
      *
-     * @param userManager the <code>UserManager</code> to serialize
-     * @param outputFilePath  the file to serialize to
+     * @param userManager    the <code>UserManager</code> to serialize
+     * @param outputFilePath the file to serialize to
      */
     private void exportUserManager(UserManager userManager, String outputFilePath) {
         try {
