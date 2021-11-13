@@ -2,13 +2,13 @@ package usecases;
 
 import entities.Card;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
 public class War extends GameTemplate {
-    private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
-    // private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
+    private final ArrayList<ArrayList<Card>> playingField = new ArrayList<>(Arrays.asList(new ArrayList<>(), new ArrayList<>()));
     private final Input gameInput;
     private final Output gameOutput;
     private final static String[] HIERARCHY = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
@@ -56,13 +56,13 @@ public class War extends GameTemplate {
             turnCounter += 1;
             this.currPlayer = this.players[this.currPlayerIndex];
             this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField[0].size() + "\n");
+            this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField.get(0).size() + "\n");
             this.gameOutput.sendOutput("---------------------------------------\n");
             for (int i = 0; i < 2; i++) {
-                if (playingField[i].isEmpty()) {
+                if (playingField.get(i).isEmpty()) {
                     this.gameOutput.sendOutput(players[i].getUsername() + "'s Pile is empty\n");
                 } else {
-                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField[i].get(playingField[i].size() - 1) + "\n");
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField.get(i).get(playingField.get(i).size() - 1) + "\n");
                 }
                 this.gameOutput.sendOutput("---------------------------------------\n");
             }
@@ -88,8 +88,8 @@ public class War extends GameTemplate {
                 inWar = true;
             } else if (winner < 2) {
                 for (int j = 0; j < 2; j++) {
-                    for (int k = 0; k < playingField[j].size(); k++) {
-                        players[winner].addToHand((Card) playingField[j].remove(k));
+                    for (int k = 0; k < playingField.get(j).size(); k++) {
+                        players[winner].addToHand(playingField.get(j).remove(k));
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class War extends GameTemplate {
         } else if (players[0].isHandEmpty()) {
             this.gameOutput.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!\n");
         } else {
-            this.gameOutput.sendOutput("how did you get here. " + playingField[0].size() + " " + playingField[1].size() + "\n");
+            this.gameOutput.sendOutput("how did you get here. " + playingField.get(0).size() + " " + playingField.get(1).size() + "\n");
         }
     }
 
@@ -128,7 +128,7 @@ public class War extends GameTemplate {
      * @param playerIndex the index representing the player's pile we want to return
      */
     public Card returnTopCard(int playerIndex) {
-        return (Card) this.playingField[playerIndex].get(playingField[playerIndex].size() - 1);
+        return this.playingField.get(playerIndex).get(playingField.get(playerIndex).size() - 1);
     }
 
     /**
@@ -172,7 +172,7 @@ public class War extends GameTemplate {
      */
     @Override
     public void makeMove(Card card) {
-        this.playingField[currPlayerIndex].add(card);
+        this.playingField.get(currPlayerIndex).add(card);
     }
 
     /**
