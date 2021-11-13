@@ -5,6 +5,7 @@ import entities.Card;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 
 public class GoFish extends GameTemplate {
@@ -13,13 +14,34 @@ public class GoFish extends GameTemplate {
     private HashMap<Player, Integer> scoreTracker;
     private final Integer handSize;
 
+    /**
+     * Instantiate a new GoFish game instance.
+     *
+     * @param usernames the list of usernames of players that are playing the game.
+     * @param userManager a usermanager that manages the user entities
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
+     */
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        this(usernames, userManager, gameInput, gameOutput, new Random());
+    }
+
+    /**
+     * Instantiate a new GoFish game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param usernames the list of usernames of players that are playing the game.
+     * @param userManager a usermanager that manages the user entities
+     * @param gameInput A Game.Input object allowing for player input.
+     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param rand a Random object for creating deterministic behaviour.
+     */
+    public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
         super(usernames, userManager);
         this.gameInput = gameInput;
         this.gameOutput = gameOutput;
         this.scoreTracker = new HashMap<>();
         this.currPlayerIndex = 0;
-        this.deck.shuffle();
+        this.deck.shuffle(rand);
         if (usernames.size() <= 3) {
             handSize = 7;
         } else {
@@ -33,10 +55,19 @@ public class GoFish extends GameTemplate {
         }
     }
 
+    /**
+     * Return a String representation of this class.
+     *
+     * @return the String "Go Fish"
+     */
     public String toString() {
         return "Go Fish";
     }
 
+    /**
+     * The main part of the game that prompts the player to "fish" for cards, check for book in player's hand, iterate
+     * over the players, and finally output winner(s).
+     */
     @Override
     public void startGame() {
         checkEveryoneForBook();
@@ -63,6 +94,12 @@ public class GoFish extends GameTemplate {
         outputWinner();
     }
 
+    /**
+     * Prompts the user to select a card rank and a player to request the cards from. If there's a catch (requested
+     * player has cards of the chosen rank in hand), then those cards are transferred to current player's hand. Also
+     * checks for book after each attempt at "fishing".
+     * @return true if there is a catch and false if there is no catch.
+     */
     private boolean fish() {
         String rank;
         Player chosenPlayer;
@@ -110,6 +147,10 @@ public class GoFish extends GameTemplate {
         return initialHandSize != finalHandSize;
     }
 
+    /**
+     * Prompts the user to choose a username (from a list of usernames) that they would like to request cards from.
+     * @return a Player object corresponding to the username chosen by the user.
+     */
     private Player requestPlayer() {
         this.gameOutput.sendOutput("Who would like to request cards from?\n");
         String chosenUsername = this.gameInput.getPlayerUsername(this.currPlayer.getUsername(), this.usernames);
@@ -121,7 +162,10 @@ public class GoFish extends GameTemplate {
         throw new RuntimeException();
     }
 
-
+    /**
+     * Checks every player's hand for books (4 cards of the same rank) and removes if any present. This method is
+     * executed at the very beginning of the game to remove the books from hands after cards have been dealt.
+     */
     private void checkEveryoneForBook() {
         for (Player player : players) {
             this.currPlayer = player;
@@ -129,6 +173,10 @@ public class GoFish extends GameTemplate {
         }
     }
 
+    /**
+     * Checks for book (4 cards of the same rank) in current player's hand. If book is found, removes those cards. If
+     * hand is empty after removing a book of cards, draw a card from the deck.
+     */
     private void checkForBook() {
         HashMap<String, Integer> numRanks = new HashMap<>();
         for (String rank : RANKS) {
@@ -152,12 +200,21 @@ public class GoFish extends GameTemplate {
         }
     }
 
-
+    /**
+     * Checks whether the chosen rank of card is valid. Rank is valid if the current player's hand contains at least one
+     * card of the chosen rank.
+     * @param rank the rank of the cards that the user wants to request from other player.
+     * @return true if the rank is valid (hand contains a card of the said rank); otherwise, return false.
+     */
     private boolean validRank(String rank) {
-        return currPlayer.getHandString().contains(rank);
+        return this.currPlayer.getHandString().contains(rank);
     }
 
-
+    /**
+     * Checks whether the game has ended. Game ends when all players' hands are empty AND the deck is empty.
+     * @return true if the game has ended; otherwise, return false (if deck is not empty or there are players with cards
+     * in their hands).
+     */
     private boolean gameEnd() {
         if (!this.deck.isEmpty()) {
             return false;
@@ -171,6 +228,10 @@ public class GoFish extends GameTemplate {
         return true;
     }
 
+    /**
+     * Outputs the winner(s) based on number of points (books) collected. Also updates user statistics by incrementing
+     * games played by 1 and whether it's a win or a loss.
+     */
     private void outputWinner() {
         ArrayList<String> winners = new ArrayList<>();
         int maxScore = 0;
@@ -198,7 +259,6 @@ public class GoFish extends GameTemplate {
                 }
             }
         }
-        System.out.println(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
+        this.gameOutput.sendOutput(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
     }
-
 }
