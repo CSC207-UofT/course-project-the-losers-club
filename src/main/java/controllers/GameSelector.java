@@ -131,6 +131,7 @@ public class GameSelector {
                     userManager.addUser(username);
                 } catch (UserManager.UserAlreadyExistsException ignored) {
                 }
+
             }
 
             handleUserSelection(sel, usernames, userManager);
