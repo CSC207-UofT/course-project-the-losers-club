@@ -111,7 +111,8 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
     /**
      * Prompt user to select a player.
      *
-     * @param currPlayerUsername the current player username in the game and is not in the list of player usernames displayed to the user.
+     * @param currPlayerUsername the current player username in the game and is not in the list of player usernames
+     *                           displayed to the user.
      * @param usernames the list of all the player usernames in the game.
      * @return a String representing the username selected by the user. This username is in the list of all usernames.
      */
