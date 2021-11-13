@@ -67,7 +67,24 @@ public abstract class GameTemplate {
             case "CRAZY EIGHTS":
                 return CrazyEights.getMaxPlayers();
             case "WAR":
-                return 2;
+                return War.getMaxPlayers();
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Returns a maximum number of players based on the given game.
+     *
+     * @param name The name of a possible game.
+     * @return an integer of the maximum number of players allowed to play the game.
+     */
+    public static int getMinPlayers(String name) {
+        switch (name.toUpperCase()) {
+            case "CRAZY EIGHTS":
+                return CrazyEights.getMinPlayers();
+            case "WAR":
+                return War.getMinPlayers();
             default:
                 return 0;
         }

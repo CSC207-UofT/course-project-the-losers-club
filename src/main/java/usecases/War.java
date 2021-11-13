@@ -13,6 +13,8 @@ public class War extends GameTemplate {
     private final Input gameInput;
     private final Output gameOutput;
     private final static String[] HIERARCHY = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    private final static int minPlayers = 2;
+    private final static int maxPlayers = 2;
 
     /**
      * Constructor for War. Note that usernames must be a List of length 2
@@ -109,6 +111,22 @@ public class War extends GameTemplate {
         } else {
             this.gameOutput.sendOutput("how did you get here. " + playingField.get(0).size() + " " + playingField.get(1).size() + "\n");
         }
+    }
+
+    /**
+     * Return's this game's maximum number of players allowed to play the game.
+     * @return the maximum number of players.
+     */
+    protected static int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    /**
+     * Return's this game's minimum number of players needed to play the game.
+     * @return the maximum number of players.
+     */
+    protected static int getMinPlayers() {
+        return minPlayers;
     }
 
     /**

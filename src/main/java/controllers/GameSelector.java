@@ -83,14 +83,20 @@ public class GameSelector {
             List<String> usernames = new ArrayList<>();
 
             int maxPlayers = GameTemplate.getMaxPlayers(gameString);
+            int minPlayers = GameTemplate.getMinPlayers(gameString);
 
-            this.selectorOutput.sendOutput("Input up to " + maxPlayers + " usernames for " +
-                    "players playing the game. Enter 'done' to finish. ");
+            if (maxPlayers == minPlayers) {
+                this.selectorOutput.sendOutput("Input " + maxPlayers + " usernames for " +
+                        "players playing the game. Enter 'done' to finish.\n");
+            } else {
+                this.selectorOutput.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
+                        "players playing the game. Enter 'done' to finish.\n");
+            }
 
             String username = this.selectorInput.getUsername();
 
             while (username.equalsIgnoreCase("done")) {
-                this.selectorOutput.sendOutput("\nPlease enter at least one username!\n");
+                this.selectorOutput.sendOutput("\nPlease enter at least " + minPlayers + " usernames!\n");
                 username = this.selectorInput.getUsername();
             }
 
@@ -108,6 +114,22 @@ public class GameSelector {
                         username = this.selectorInput.getUsername();
                     }
                     maxPlayers--;
+                }
+            }
+
+            while (username.equalsIgnoreCase("done")) {
+                this.selectorOutput.sendOutput("\nPlease enter at least " + minPlayers + " usernames!\n");
+                username = this.selectorInput.getUsername();
+            }
+
+            if (usernames.contains(username)) {
+                this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!");
+                username = this.selectorInput.getUsername();
+            } else {
+                usernames.add(username);
+                try {
+                    userManager.addUser(username);
+                } catch (UserManager.UserAlreadyExistsException ignored) {
                 }
             }
 
