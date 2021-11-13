@@ -27,14 +27,15 @@ public class UserDisplay {
                 int gamesPlayed = this.userManager.getGamesPlayed(usrname);
                 int wins = this.userManager.getWins(usrname);
                 int ties = this.userManager.getGamesTied(usrname);
-                double wpct = Math.round(((double) wins / (double) gamesPlayed) * 100);
+                double wpct = ((double) wins / (double) ties) * 100.0;
+                double roundedWpct = Math.round(wpct * 100.0) / 100.0;
 
                 this.displayOutput.sendOutput("\n\n\n\n\n");
                 this.displayOutput.sendOutput(usrname + "'s Stats\n");
                 this.displayOutput.sendOutput("Games Played: " + gamesPlayed + "\n");
                 this.displayOutput.sendOutput("Games Won: " + wins + "\n");
                 this.displayOutput.sendOutput("Games Tied: " + ties + "\n");
-                this.displayOutput.sendOutput("Win Percentage: " + wpct + "%\n");
+                this.displayOutput.sendOutput("Win Percentage: " + roundedWpct + "%\n");
 
                 usrname = this.displayInput.getUsername();
             } catch (UserManager.UserNotFoundException e) {
