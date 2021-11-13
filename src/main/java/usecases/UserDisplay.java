@@ -31,7 +31,12 @@ public class UserDisplay {
                 int gamesPlayed = this.userManager.getGamesPlayed(usrname);
                 int wins = this.userManager.getWins(usrname);
                 int ties = this.userManager.getGamesTied(usrname);
-                double wpct = ((double) wins / (double) gamesPlayed) * 100.0;
+                double wpct;
+                if (gamesPlayed == 0) {
+                    wpct = 0.00;
+                } else {
+                    wpct = ((double) wins / (double) gamesPlayed) * 100.0;
+                }
 
                 this.displayOutput.sendOutput("\n\n\n\n\n");
                 this.displayOutput.sendOutput(usrname + "'s Stats\n");
