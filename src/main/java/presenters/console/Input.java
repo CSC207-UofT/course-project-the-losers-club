@@ -3,6 +3,7 @@ package presenters.console;
 import controllers.GameSelector;
 import helpers.CardCheck;
 import usecases.GameTemplate;
+import usecases.UserDisplay;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -18,7 +19,7 @@ import static helpers.UsernameCheck.checkUsername;
  * @see GameSelector.Input
  * @see GameTemplate.Input
  */
-public class Input implements GameSelector.Input, GameTemplate.Input {
+public class Input implements GameSelector.Input, GameTemplate.Input, UserDisplay.Input {
 
     private final Scanner inp;
 

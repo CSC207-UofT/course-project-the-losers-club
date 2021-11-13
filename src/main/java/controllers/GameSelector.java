@@ -1,9 +1,6 @@
 package controllers;
 
-import usecases.GameTemplate;
-import usecases.UserManager;
-import usecases.UserManagerExporter;
-import usecases.UserManagerImporter;
+import usecases.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,6 +66,13 @@ public class GameSelector {
                 return;
             }
 
+            if (sel == 9) {
+                new UserDisplay(userManager, (UserDisplay.Input) this.selectorInput,
+                        (UserDisplay.Output) this.selectorOutput).run();
+                displayMenu();
+                sel = this.selectorInput.getUserSelection();
+            }
+
             while (!checkValidity(sel)) {
                 this.selectorOutput.sendOutput("Invalid menu selection.\n");
                 sel = this.selectorInput.getUserSelection();
@@ -80,19 +84,19 @@ public class GameSelector {
 
             int maxPlayers = GameTemplate.getMaxPlayers(gameString);
 
-            System.out.println("Input up to " + maxPlayers + " usernames for " +
-                    "players playing the game. Enter 'done' to finish.");
+            this.selectorOutput.sendOutput("Input up to " + maxPlayers + " usernames for " +
+                    "players playing the game. Enter 'done' to finish. ");
 
             String username = this.selectorInput.getUsername();
 
             while (username.equalsIgnoreCase("done")) {
-                System.out.println("\nPlease enter at least one username!\n");
+                this.selectorOutput.sendOutput("\nPlease enter at least one username!\n");
                 username = this.selectorInput.getUsername();
             }
 
             while (!username.equalsIgnoreCase("done") && maxPlayers != 0) {
                 if (usernames.contains(username)) {
-                    System.out.println("This username has already been added. Please enter a new username!");
+                    this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!");
                     username = this.selectorInput.getUsername();
                 } else {
                     usernames.add(username);
@@ -122,6 +126,7 @@ public class GameSelector {
             sb.append("[").append(i + 1).append("] ").append(this.games[i]).append("\n");
         }
         this.selectorOutput.sendOutput(sb.toString());
+        this.selectorOutput.sendOutput("[9] CHECK STATS\n");
         this.selectorOutput.sendOutput("[0] EXIT\n");
         this.selectorOutput.sendOutput(dashes + "\n");
     }
