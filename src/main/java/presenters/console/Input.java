@@ -164,7 +164,7 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
     }
 
     /**
-     * Promp the user to enter a username and return the username.
+     * Prompt the user to enter a username and return the username.
      *
      * @return a String representing the user's username
      */

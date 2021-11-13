@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Hand;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /***
  * Player class represents a player that plays implementations of Game. Each player contains a hand,
@@ -83,4 +84,15 @@ public class Player {
     public String getHandString(){
         return this.hand.toString();
     }
+
+    /**
+     * Returns the player's sorted hand as a string with respect to the Comparator implementation c.
+     *
+     * @param c A comparator implementation for Card, this describes how you want to sort the cards.
+     * @return The sorted version of the players hand as a string
+     */
+    public String getSortedHandString(Comparator<Card> c){
+        return this.hand.sortedHand(c).toString();
+    }
+
 }

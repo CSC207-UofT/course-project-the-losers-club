@@ -1,9 +1,10 @@
 package usecases;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import entities.User;
 
-public class UserManager {
+public class UserManager implements Serializable {
 
     private HashMap<String, User> users;
 

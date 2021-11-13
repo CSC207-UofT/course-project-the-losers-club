@@ -201,5 +201,24 @@ class InputTest {
         }
     }
 
+    @Nested
+    class GetUsername {
+        @Test
+        void getUsernameShort() {
+            String data = "a";
+            System.setIn(new ByteArrayInputStream(data.getBytes()));
+            cin = new Input();
+            assertEquals("a", cin.getUsername());
+        }
+
+        @Test
+        void getUsernameLong() {
+            String data = "abcdefghikj";
+            System.setIn(new ByteArrayInputStream(data.getBytes()));
+            cin = new Input();
+            assertEquals("abcdefghikj", cin.getUsername());
+        }
+    }
+
 
 }
