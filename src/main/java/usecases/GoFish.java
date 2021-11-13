@@ -121,6 +121,7 @@ public class GoFish extends GameTemplate {
         throw new RuntimeException();
     }
 
+
     private void checkEveryoneForBook() {
         for (Player player : players) {
             this.currPlayer = player;
