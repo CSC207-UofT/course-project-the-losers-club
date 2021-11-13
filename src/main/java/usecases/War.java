@@ -4,11 +4,12 @@ import entities.Card;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Stack;
 import java.util.ArrayList;
 import java.util.List;
 
 public class War extends GameTemplate {
-    private final ArrayList<ArrayList<Card>> playingField = new ArrayList<>(Arrays.asList(new ArrayList<>(), new ArrayList<>()));
+    private final ArrayList<Stack<Card>> playingField = new ArrayList<>(Arrays.asList(new Stack<>(), new Stack<>()));
     private final Input gameInput;
     private final Output gameOutput;
     private final static String[] HIERARCHY = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
@@ -59,10 +60,10 @@ public class War extends GameTemplate {
             this.gameOutput.sendOutput("Turn " + turnCounter + ". Pile sizes: " + playingField.get(0).size() + "\n");
             this.gameOutput.sendOutput("---------------------------------------\n");
             for (int i = 0; i < 2; i++) {
-                if (playingField.get(i).isEmpty()) {
+                if (playingField.get(i).empty()) {
                     this.gameOutput.sendOutput(players[i].getUsername() + "'s Pile is empty\n");
                 } else {
-                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField.get(i).get(playingField.get(i).size() - 1) + "\n");
+                    this.gameOutput.sendOutput(players[i].getUsername() + "'s Top Card is: " + playingField.get(i).peek() + "\n");
                 }
                 this.gameOutput.sendOutput("---------------------------------------\n");
             }
@@ -88,8 +89,8 @@ public class War extends GameTemplate {
                 inWar = true;
             } else if (winner < 2) {
                 for (int j = 0; j < 2; j++) {
-                    for (int k = 0; k < playingField.get(j).size(); k++) {
-                        players[winner].addToHand(playingField.get(j).remove(k));
+                    while (!playingField.get(j).empty()) {
+                        players[winner].addToHand(playingField.get(j).pop());
                     }
                 }
             }
@@ -128,7 +129,7 @@ public class War extends GameTemplate {
      * @param playerIndex the index representing the player's pile we want to return
      */
     public Card returnTopCard(int playerIndex) {
-        return this.playingField.get(playerIndex).get(playingField.get(playerIndex).size() - 1);
+        return this.playingField.get(playerIndex).peek();
     }
 
     /**
@@ -172,7 +173,7 @@ public class War extends GameTemplate {
      */
     @Override
     public void makeMove(Card card) {
-        this.playingField.get(currPlayerIndex).add(card);
+        this.playingField.get(currPlayerIndex).push(card);
     }
 
     /**
