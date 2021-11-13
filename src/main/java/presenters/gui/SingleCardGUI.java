@@ -7,6 +7,10 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An implementation of the Output class which presents the user the image of a single card
+ * originally specified in the constructor. It can then be changed using the sendOutput method.
+ */
 public class SingleCardGUI implements GameTemplate.Output {
 
     private final JFrame frame = new JFrame();
@@ -42,7 +46,7 @@ public class SingleCardGUI implements GameTemplate.Output {
     }
 
     private void set_card(String card) {
-        JLabel icon = new JLabel("src/main/resources/cards/" + this.stringToImage.get(card));
+        JLabel icon = new JLabel(new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card)));
         this.panel.add(icon);
         this.update();
     }
@@ -50,7 +54,7 @@ public class SingleCardGUI implements GameTemplate.Output {
     private void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setTitle("Testing Window");
+        this.frame.setTitle("GUI");
         this.frame.pack();
         this.frame.setVisible(true);
     }

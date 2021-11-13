@@ -63,7 +63,7 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
     private void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setTitle("Testing Window");
+        this.frame.setTitle("GUI");
         this.frame.pack();
         this.frame.setVisible(true);
     }
