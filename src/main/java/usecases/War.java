@@ -1,13 +1,15 @@
 package usecases;
 
 import entities.Card;
+import presenters.console.Input;
+import presenters.console.Output;
 
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
 public class War extends GameTemplate {
-    private final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
+    public final ArrayList[] playingField = new ArrayList[]{new ArrayList<Card>(), new ArrayList<Card>()};
     private final Input gameInput;
     private final Output gameOutput;
     private final static String[] Hierarchy = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
