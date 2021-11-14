@@ -9,7 +9,7 @@ import java.util.Random;
 
 
 public class GoFish extends GameTemplate {
-    private static final int MAX_PLAYERS = 5;
+    private static final int MAX_PLAYERS = 7;
     private static final int MIN_PLAYERS = 2;
     private final Input gameInput;
     private final Output gameOutput;

@@ -8,8 +8,8 @@ import java.util.List;
 
 public abstract class GameTemplate {
 
-    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
+    protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
@@ -36,18 +36,6 @@ public abstract class GameTemplate {
         }
         this.deck = new Deck(cardList);
     }
-
-    public abstract void startGame();
-
-
-    public static GameTemplate GameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
-        switch (name.toUpperCase()) {
-            case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, input, output);
-            case "GO FISH":
-                return new GoFish(usernames, userManager, input, output);
-            default:
-                return null;
 
     /**
      * Create a new <code>GameTemplate</code> instance based on the given game name
@@ -150,6 +138,7 @@ public abstract class GameTemplate {
 
         /**
          * Implementation should return a Player object corresponding to a picked player.
+         *
          * @return a Player that is chosen by the user.
          */
         String getPlayerUsername(String currPlayerUsername, List<String> usernames);
@@ -161,6 +150,7 @@ public abstract class GameTemplate {
         boolean stall();
 
     }
+
 
     /**
      * Output is an interface allowing Games to output back to the user.

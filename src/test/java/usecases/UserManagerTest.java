@@ -121,7 +121,7 @@ class UserManagerTest {
 
     @Test
     void login() {
-        assertTrue(usr_manager.login("usrname"));
-        assertFalse(usr_manager.login("random"));
+        assertTrue(usrManager.login("usrname"));
+        assertFalse(usrManager.login("random"));
     }
 }
