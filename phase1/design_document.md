@@ -2,6 +2,29 @@
 
 ## Updated Specification
 
+* The specification remains mostly the same, except for an additional game `Go Fish` that was added in this phase. The rules of the game is as follows:
+
+### Go Fish
+
+* 2+ players, 52 cards
+* Start:
+  * any player deals one card face up to each player. The player with the lowest card is the dealer. The dealer shuffles the cards, and the player to the right cuts them
+  * dealer deals cards clockwise one at a time, face down
+  * for two or three people, each player receives seven cards
+  * for four or five people, each player receives five cards
+  * rest of cards placed face down in middle
+* Play:
+  * player to the left of the dealer and asks any other player for cards of a certain rank
+  * if the addressed player does not have any card of the given suit, they say, "Go Fish" and the player who made the request draws the top card from the middle
+  * if the player does receive one or more card of the given suit, they can ask the same or another player for a card
+  * as long as the player succeeds in getting cards, their turn continues
+  * if a player gets the fourth card of the same suit, the player shows all four cards and places them on the table face up
+  * if a player is left without cards, the player may draw from the middle and then ask for cards of that rank
+  * if there are no cards left in the middle, they are out of the game
+* Win condition:
+  * the game ends when all thirteen suits have been won
+  * the winner is the player with the most set of cards
+
 
 ## Major Design Decisions
 * As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the 
@@ -46,7 +69,7 @@ We primarily considered the packaging by component and the packaging by layer st
 
 * Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project, coordinated GitHub activities.
 * Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
-* Brian:
+* Brian: Added `User` entitiy class and `UserManager` usecase with Teddy; integrated user functionality; created a stat display menu in the main menu; integrated basic GUI with CrazyEights
 * Bradley:
 * Daniel: Worked alongside Bradley on implementing the'War' game. Addressed issues with entity classes and streamlined 'Hand' to be implement the 'Iterable' interface. 
 * Azamat:
@@ -56,7 +79,7 @@ We primarily considered the packaging by component and the packaging by layer st
 ### What each group member plans to work on next
 * Raymond: Migrating serialization to a database, continue improving design and efficiency across the project.
 * Teddy: Improve user functionality, add more features or work on a new game
-* Brian:
+* Brian: Integrade other games with the GUI, improve GUI interactions with each game
 * Bradley:
 * Daniel: Work alongside Luke and Bradley to progress the GUI. May work on a new game. 
 * Azamat:
