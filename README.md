@@ -7,6 +7,8 @@ A collection of various card games played through a graphical user interface.
 ## Implemented Games
 
 * Crazy Eights
+* War
+* Go Fish
 
 
 
@@ -25,8 +27,10 @@ A collection of various card games played through a graphical user interface.
 
 ## Roadmap
 
-* Finish Crazy Eights implementation
-* Implement game selection menu in CLI
-* Implement other games (War, etc.)
-* Implement GUI
-
+* [ ] Improve GUI design 
+* [ ] Implement other games
+* [ ] Migrate serialization of users to a database
+* [x] Finish Crazy Eights implementation
+* [x] Implement game selection menu in CLI
+* [x] Implement War
+* [x] Implement GUI
