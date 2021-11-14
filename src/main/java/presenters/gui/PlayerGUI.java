@@ -217,6 +217,14 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
 
     }
 
+    /**
+     * This method displays a popup to the user as to which players turn it has become.
+     * @param player the players name as a string
+     */
+    public void changePlayer(String player){
+        JOptionPane.showMessageDialog(new JFrame(), "It is now " + player + "'s turn");
+    }
+
     @Override
     public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
         return null;
