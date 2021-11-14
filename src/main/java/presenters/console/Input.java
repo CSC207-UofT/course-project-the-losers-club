@@ -3,6 +3,7 @@ package presenters.console;
 import controllers.GameSelector;
 import helpers.CardCheck;
 import usecases.GameTemplate;
+import usecases.UserDisplay;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -17,7 +18,7 @@ import static helpers.UsernameCheck.checkUsername;
  * @see GameSelector.Input
  * @see GameTemplate.Input
  */
-public class Input implements GameSelector.Input, GameTemplate.Input {
+public class Input implements GameSelector.Input, GameTemplate.Input, UserDisplay.Input {
 
     private final Scanner inp;
 
@@ -169,7 +170,6 @@ public class Input implements GameSelector.Input, GameTemplate.Input {
      */
     @Override
     public String getUsername() {
-        System.out.println("Input all usernames for players playing the game. Enter 'done' to finish.");
         System.out.print("Enter a Username: ");
 
         String line = this.inp.nextLine().trim();

@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String username;
+    private final String username;
     private int gamesWon;
     private int gamesPlayed;
     private int gamesTied;

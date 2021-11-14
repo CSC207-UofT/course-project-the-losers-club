@@ -2,6 +2,7 @@ package presenters.console;
 
 import usecases.GameTemplate;
 import controllers.GameSelector;
+import usecases.UserDisplay;
 
 
 /**
@@ -12,7 +13,7 @@ import controllers.GameSelector;
  * @see GameSelector.Output
  * @see GameTemplate.Output
  */
-public class Output implements GameSelector.Output, GameTemplate.Output {
+public class Output implements GameSelector.Output, GameTemplate.Output, UserDisplay.Output {
 
     /**
      * Instantiate a new Output instance.
@@ -29,5 +30,4 @@ public class Output implements GameSelector.Output, GameTemplate.Output {
     public void sendOutput(Object s) {
         System.out.print(s.toString());
     }
-
 }

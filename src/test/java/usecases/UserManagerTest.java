@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserManagerTest {
 
-    private UserManager usr_manager;
+    private UserManager usrManager;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +21,7 @@ class UserManagerTest {
         users.put("usrname", usr1);
         users.put("gamerboy123", usr2);
 
-        usr_manager = new UserManager(users);
+        usrManager = new UserManager(users);
     }
 
     @AfterEach
@@ -31,32 +31,32 @@ class UserManagerTest {
     @Test
     void addUser() {
         try {
-            usr_manager.addUser("poggers");
+            usrManager.addUser("poggers");
         } catch (UserManager.UserAlreadyExistsException e) {
             e.printStackTrace();
         }
-        assertTrue(usr_manager.hasUser("poggers"));
+        assertTrue(usrManager.hasUser("poggers"));
     }
 
     @Test
     void deleteUser() {
         try {
-            usr_manager.deleteUser("gamerboy123");
+            usrManager.deleteUser("gamerboy123");
         }
         catch (UserManager.UserNotFoundException e){
             e.printStackTrace();
         }
-        assertFalse(usr_manager.hasUser("gamerboy123"));
+        assertFalse(usrManager.hasUser("gamerboy123"));
     }
 
     @Test
     void addGamesPlayed() {
         try {
-            usr_manager.addGamesPlayed("usrname", 1);
-            usr_manager.addGamesPlayed("usrname", 0);
-            assertEquals(2, usr_manager.getGamesPlayed("usrname"));
-            assertEquals(1, usr_manager.getWins("usrname"));
-            assertEquals(1, usr_manager.getGamesTied("usrname"));
+            usrManager.addGamesPlayed("usrname", 1);
+            usrManager.addGamesPlayed("usrname", 0);
+            assertEquals(2, usrManager.getGamesPlayed("usrname"));
+            assertEquals(1, usrManager.getWins("usrname"));
+            assertEquals(1, usrManager.getGamesTied("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,9 +65,9 @@ class UserManagerTest {
     @Test
     void getWins() {
         try {
-            usr_manager.addGamesPlayed("usrname", 1);
-            usr_manager.addGamesPlayed("usrname", 1);
-            assertEquals(2, usr_manager.getWins("usrname"));
+            usrManager.addGamesPlayed("usrname", 1);
+            usrManager.addGamesPlayed("usrname", 1);
+            assertEquals(2, usrManager.getWins("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -76,9 +76,9 @@ class UserManagerTest {
     @Test
     void getWinsv2() {
         try {
-            usr_manager.addGamesPlayed("usrname", -1);
-            usr_manager.addGamesPlayed("usrname", -1);
-            assertEquals(0, usr_manager.getWins("usrname"));
+            usrManager.addGamesPlayed("usrname", -1);
+            usrManager.addGamesPlayed("usrname", -1);
+            assertEquals(0, usrManager.getWins("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -87,10 +87,10 @@ class UserManagerTest {
     @Test
     void getWinsv3() {
         try {
-            usr_manager.addGamesPlayed("usrname", -1);
-            usr_manager.addGamesPlayed("usrname", 0);
-            usr_manager.addGamesPlayed("usrname", 1);
-            assertEquals(1, usr_manager.getWins("usrname"));
+            usrManager.addGamesPlayed("usrname", -1);
+            usrManager.addGamesPlayed("usrname", 0);
+            usrManager.addGamesPlayed("usrname", 1);
+            assertEquals(1, usrManager.getWins("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -99,7 +99,7 @@ class UserManagerTest {
     @Test
     void getGamesPlayed() {
         try {
-            assertEquals(0, usr_manager.getGamesPlayed("usrname"));
+            assertEquals(0, usrManager.getGamesPlayed("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -108,7 +108,7 @@ class UserManagerTest {
     @Test
     void getGamesTied() {
         try {
-            assertEquals(0, usr_manager.getGamesPlayed("usrname"));
+            assertEquals(0, usrManager.getGamesPlayed("usrname"));
         } catch (UserManager.UserNotFoundException e) {
             e.printStackTrace();
         }
@@ -116,7 +116,7 @@ class UserManagerTest {
 
     @Test
     void hasUser() {
-        assertTrue(usr_manager.hasUser("gamerboy123"));
+        assertTrue(usrManager.hasUser("gamerboy123"));
     }
 
     @Test
