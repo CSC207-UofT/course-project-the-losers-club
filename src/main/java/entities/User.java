@@ -1,15 +1,17 @@
 package entities;
 
 
-public class User {
+import java.io.Serializable;
 
-    private String username;
+public class User implements Serializable {
+
+    private final String username;
     private int gamesWon;
     private int gamesPlayed;
     private int gamesTied;
 
     /**
-     * Constructs a User with the given name, username, and password.
+     * Constructs a User with the given username.
      * @param username The username of the User displayed by the game
      */
     public User(String username) {
