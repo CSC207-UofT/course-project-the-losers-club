@@ -28,6 +28,8 @@ decide how to display that using the GUI.
 
 ## Packaging Strategy
 
+We primarily considered the packaging by component and the packaging by layer strategies. We decided on the packaging by layer strategy to make our layers more clear and make it easy to tell whether the dependency rule is violated. However, as our project expands in scope, it might be worth reconsidering our use of packaging by layer since each of the packages have low cohesion.
+
 ## Design Patterns
 
 * Factory Method
@@ -42,21 +44,21 @@ decide how to display that using the GUI.
 * Using issues/milestones on GitHub has been a very effective tool to both assign work to people without having to have a general meeting all the time and to ensure that everyone is aware of what work needs to be done and where.
 ### What each group member has been working on
 
-* Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project.
+* Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project, coordinated GitHub activities.
 * Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
 * Brian:
 * Bradley:
-* Daniel:
+* Daniel: Worked alongside Bradley on implementing the'War' game. Addressed issues with entity classes and streamlined 'Hand' to be implement the 'Iterable' interface. 
 * Azamat:
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
 * Nitish:
 
 ### What each group member plans to work on next
-* Raymond: Migrating serialization to a database using Spring Boot, continue improving design and efficiency across the project.
+* Raymond: Migrating serialization to a database, continue improving design and efficiency across the project.
 * Teddy: Improve user functionality, add more features or work on a new game
 * Brian:
 * Bradley:
-* Daniel:
+* Daniel: Work alongside Luke and Bradley to progress the GUI. May work on a new game. 
 * Azamat:
 * Luke: Continue to expand upon GUI. Clean up current GUI implementation, most likely refactoring to utilise polymorphism effectively. Redesign Input and Output interfaces to be specific to the project.
 * Nitish:
