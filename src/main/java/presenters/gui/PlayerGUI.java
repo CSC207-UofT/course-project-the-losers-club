@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import usecases.GameTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 import java.awt.*;
@@ -182,6 +183,43 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
         char[] suits = {'s', 'c', 'd', 'h'};
 
         return suits[n];
+    }
+    /**
+     * Prompts the user to select a rank via a pop box.
+     * @return The string representation of the rank selected
+     */
+    @Override
+    public String getRank() {
+        String[] options = {
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "Jack",
+                "Queen",
+                "King",
+                "Ace"};
+        int n = JOptionPane.showOptionDialog(frame,
+                "Please Select A Rank",
+                "rank Selection",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]);
+        return options[n];
+
+    }
+
+    @Override
+    public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
+        return null;
     }
 
     /**
