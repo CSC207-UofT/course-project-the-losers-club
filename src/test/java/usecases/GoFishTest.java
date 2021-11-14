@@ -81,7 +81,7 @@ public class GoFishTest {
         }
         assertTrue(game.deck.isEmpty());
         int scoreSum = 0;
-        for (int score : game.scoreTracker.values()) {
+        for (int score : game.SCORE_TRACKER.values()) {
             scoreSum += score;
         }
         assertEquals(13, scoreSum);

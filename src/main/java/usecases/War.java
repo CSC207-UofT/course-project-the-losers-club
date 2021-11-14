@@ -143,7 +143,7 @@ public class War extends GameTemplate {
     /**
      * Flips a card for each player
      */
-    private void flipCards() {
+    protected void flipCards() {
         makeMove(currPlayer.getHand().removeCard());
         currPlayerIndex = 1;
         currPlayer = players[currPlayerIndex];
@@ -157,7 +157,7 @@ public class War extends GameTemplate {
      *
      * @param playerIndex the index representing the player's pile we want to return
      */
-    private Card returnTopCard(int playerIndex) {
+    protected Card returnTopCard(int playerIndex) {
         return this.PLAYING_FIELD.get(playerIndex).peek();
     }
 
@@ -165,7 +165,7 @@ public class War extends GameTemplate {
      * Uses Hierarchy to decide which player wins a round of War. returns which player has won (0 or 1) or a 2 if
      * the players tie. Outputs a message accordingly.
      */
-    private int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
+    protected int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
         int topCardHierarchy0 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard0.getRank());
         int topCardHierarchy1 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard1.getRank());
 
@@ -186,20 +186,11 @@ public class War extends GameTemplate {
     }
 
     /**
-     * Returns true as moves are predetermined in war
-     *
-     * @param card A card object
-     */
-    private boolean checkMove(Card card) {
-        return true;
-    }
-
-    /**
      * Plays the given card into the playingField for the current player
      *
      * @param card A card object that will be played in the game
      */
-    private void makeMove(Card card) {
+    protected void makeMove(Card card) {
         this.PLAYING_FIELD.get(currPlayerIndex).push(card);
     }
 

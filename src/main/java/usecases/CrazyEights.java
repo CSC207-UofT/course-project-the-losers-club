@@ -116,7 +116,7 @@ public class CrazyEights extends GameTemplate {
                     this.PLAYER_GUI.sendPopup("Card drawn from Deck because there are no cards to play.");
                 } else if (!this.PLAYER_GUI.drawCard()) {
                     crd = this.PLAYER_GUI.getCard().toUpperCase();
-                    card = new Card(crd.substring(0, 1), crd.charAt(1));
+                    card = new Card(crd.substring(0, crd.length() - 1), crd.charAt(crd.length() - 1));
                     if (card.getRank().equals("8")) {
                         this.suitTracker = Character.toUpperCase(this.PLAYER_GUI.getSuit());
                     }
@@ -124,6 +124,8 @@ public class CrazyEights extends GameTemplate {
 
                 if (card != null && !checkMove(card)) {
                     looped = true;
+                } else {
+                    looped = false;
                 }
             } while (card != null && !checkMove(card));
             if (card == null) {

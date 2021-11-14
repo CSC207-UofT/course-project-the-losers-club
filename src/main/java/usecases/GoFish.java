@@ -11,7 +11,7 @@ import java.util.Random;
 public class GoFish extends GameTemplate {
     private static final int MAX_PLAYERS = 7;
     private static final int MIN_PLAYERS = 2;
-    private final HashMap<Player, Integer> SCORE_TRACKER;
+    protected final HashMap<Player, Integer> SCORE_TRACKER;
 
     /**
      * Instantiate a new GoFish game instance.
