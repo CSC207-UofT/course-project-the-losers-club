@@ -1,8 +1,6 @@
 package entities;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A standard 52-card playing deck containing 52 Card objects, each representing 1 of the 52 unique cards in a
@@ -10,7 +8,7 @@ import java.util.Random;
  */
 public class Deck {
 
-    private final List<Card> cards;
+    private final Queue<Card> cards;
 
     /**
      * Constructs a deck and initializes it with a list of Card objects passed to it
@@ -18,7 +16,8 @@ public class Deck {
      * @param cards list of Card objects
      */
     public Deck(List<Card> cards) {
-        this.cards = cards;
+        this.cards = new LinkedList<>();
+        this.cards.addAll(cards);
     }
 
     /**
@@ -27,7 +26,7 @@ public class Deck {
      * @return the Card that was just removed
      */
     public Card drawCard() {
-        return cards.remove(0);
+        return cards.remove();
     }
 
     /**
@@ -43,7 +42,7 @@ public class Deck {
      * @param rand Random object used to seed the shuffle
      */
     public void shuffle(Random rand) {
-        Collections.shuffle(this.cards, rand);
+        Collections.shuffle((List<?>) this.cards, rand);
     }
 
     /**
@@ -52,7 +51,7 @@ public class Deck {
      * @return the first Card object in the instance attribute 'cards'
      */
     public Card peek() {
-        return cards.get(0);
+        return cards.peek();
     }
 
     /**
