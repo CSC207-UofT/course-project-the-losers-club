@@ -11,7 +11,7 @@ import java.util.Random;
 public class GoFish extends GameTemplate {
     private final Input gameInput;
     private final Output gameOutput;
-    private HashMap<Player, Integer> scoreTracker;
+    protected HashMap<Player, Integer> scoreTracker;
     private final Integer handSize;
 
     /**
