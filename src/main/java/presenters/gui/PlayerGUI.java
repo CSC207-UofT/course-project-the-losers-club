@@ -137,6 +137,14 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
     }
 
     /**
+     * A method that sends a popup to the user containing message
+     * @param message the string that is to be sent to the user
+     */
+    public void sendPopup(String message){
+        JOptionPane.showMessageDialog(new JFrame(), message);
+    }
+
+    /**
      * This method returns the string representation of the card that is selected by the user.
      * @return the string representation of the card that is selected by the user.
      */
