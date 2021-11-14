@@ -1,6 +1,6 @@
 package presenters.console;
 
-import controllers.GameSelector;
+import controllers.MainMenu;
 import helpers.CardCheck;
 import usecases.GameTemplate;
 import usecases.UserDisplay;
@@ -15,10 +15,10 @@ import static helpers.UsernameCheck.checkUsername;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
- * @see GameSelector.Input
+ * @see MainMenu.Input
  * @see GameTemplate.Input
  */
-public class Input implements GameSelector.Input, GameTemplate.Input, UserDisplay.Input {
+public class Input implements MainMenu.Input, GameTemplate.Input, UserDisplay.Input {
 
     private final Scanner inp;
 

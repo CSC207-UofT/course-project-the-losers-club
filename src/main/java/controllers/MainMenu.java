@@ -8,47 +8,47 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * GameSelector is a class controlling the selection of games.
+ * MainMenu is a class controlling the selection of games.
  */
-public class GameSelector {
+public class MainMenu {
 
     private static final int WIDTH = 39;
-    private final String[] games;
-    private final GameSelector.Input selectorInput;
-    private final GameSelector.Output selectorOutput;
-    private final GameTemplate.Input gameInput;
-    private final GameTemplate.Output gameOutput;
-    private final String dashes;
+    private final String[] GAMES;
+    private final MainMenu.Input SELECTOR_INPUT;
+    private final MainMenu.Output SELECTOR_OUTPUT;
+    private final GameTemplate.Input GAME_INPUT;
+    private final GameTemplate.Output GAME_OUTPUT;
+    private final String DASHES;
 
     /**
-     * Instantiate a GameSelector.
+     * Instantiate a MainMenu.
      *
-     * @param selectorInput  implementor of GameSelector.Input used for gathering input from the user
-     * @param selectorOutput implementor of GameSelector.Output used for sending output back to the user
+     * @param selectorInput  implementor of MainMenu.Input used for gathering input from the user
+     * @param selectorOutput implementor of MainMenu.Output used for sending output back to the user
      * @param games          Strings representing the Games to create
      * @param gameInput      implementor of GameTemplate.Input used for gathering game specific input from the user
      * @param gameOutput     implementor of GameTemplate.Output used for sending output back to the user
      */
-    public GameSelector(GameSelector.Input selectorInput,
-                        GameSelector.Output selectorOutput,
-                        String[] games,
-                        GameTemplate.Input gameInput,
-                        GameTemplate.Output gameOutput) {
-        this.selectorInput = selectorInput;
-        this.selectorOutput = selectorOutput;
+    public MainMenu(MainMenu.Input selectorInput,
+                    MainMenu.Output selectorOutput,
+                    String[] games,
+                    GameTemplate.Input gameInput,
+                    GameTemplate.Output gameOutput) {
+        this.SELECTOR_INPUT = selectorInput;
+        this.SELECTOR_OUTPUT = selectorOutput;
 
-        this.gameInput = gameInput;
-        this.gameOutput = gameOutput;
+        this.GAME_INPUT = gameInput;
+        this.GAME_OUTPUT = gameOutput;
 
-        this.games = games;
+        this.GAMES = games;
 
-        this.dashes = "=".repeat(WIDTH);
+        this.DASHES = "=".repeat(WIDTH);
     }
 
     /**
-     * Run this GameSelector.
+     * Run this MainMenu.
      * <p>
-     * GameSelector allows a user to select the game they wish to play and runs that game.
+     * MainMenu allows a user to select the game they wish to play and runs that game.
      *
      * @param userManagerInputFile  a String representing a file with a serialized <code>UserManager</code> to import
      * @param userManagerOutputFile a String representing a file to serialize a <code>UserManager</code> to
@@ -60,21 +60,21 @@ public class GameSelector {
         while (true) {
             displayMenu();
 
-            int sel = this.selectorInput.getUserSelection();
+            int sel = this.SELECTOR_INPUT.getUserSelection();
             while (!checkValidity(sel)) {
-                this.selectorOutput.sendOutput("Invalid menu selection.\n");
-                sel = this.selectorInput.getUserSelection();
+                this.SELECTOR_OUTPUT.sendOutput("Invalid menu selection.\n");
+                sel = this.SELECTOR_INPUT.getUserSelection();
             }
 
             if (sel == 0) {
                 this.exportUserManager(userManager, userManagerOutputFile);
                 return;
             } else if (sel == 9) {
-                UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.selectorInput,
-                        (UserDisplay.Output) this.selectorOutput);
+                UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
+                        (UserDisplay.Output) this.SELECTOR_OUTPUT);
                 userDisplay.run();
             } else {
-                List<String> usernames = getUsernames(userManager, this.games[sel - 1]);
+                List<String> usernames = getUsernames(userManager, this.GAMES[sel - 1]);
 
                 handleUserSelection(sel, usernames, userManager);
                 this.exportUserManager(userManager, userManagerOutputFile);
@@ -86,16 +86,16 @@ public class GameSelector {
      * Display the game menu.
      */
     private void displayMenu() {
-        this.selectorOutput.sendOutput("" + this.dashes + "\n              GAME SELECT              \n" + this.dashes + "\n");
+        this.SELECTOR_OUTPUT.sendOutput("" + this.DASHES + "\n              GAME SELECT              \n" + this.DASHES + "\n");
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.games.length; i++) {
+        for (int i = 0; i < this.GAMES.length; i++) {
             // [#] GAME NAME
-            sb.append("[").append(i + 1).append("] ").append(this.games[i]).append("\n");
+            sb.append("[").append(i + 1).append("] ").append(this.GAMES[i]).append("\n");
         }
-        this.selectorOutput.sendOutput(sb.toString());
-        this.selectorOutput.sendOutput("[9] CHECK STATS\n");
-        this.selectorOutput.sendOutput("[0] EXIT\n");
-        this.selectorOutput.sendOutput(dashes + "\n");
+        this.SELECTOR_OUTPUT.sendOutput(sb.toString());
+        this.SELECTOR_OUTPUT.sendOutput("\n[9] CHECK STATS\n");
+        this.SELECTOR_OUTPUT.sendOutput("[0] EXIT\n");
+        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n");
     }
 
     /**
@@ -106,14 +106,14 @@ public class GameSelector {
      * @param sel the user's selection. Must be greater than 0.
      */
     private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
-        String gameString = this.games[sel - 1];
-        this.selectorOutput.sendOutput(dashes + "\n\n\n\n\n" + dashes + "\n");
+        String gameString = this.GAMES[sel - 1];
+        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n\n\n\n\n" + DASHES + "\n");
 
-        this.selectorOutput.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
-        this.selectorOutput.sendOutput(this.dashes + "\n\n\n\n\n");
-        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.gameInput, this.gameOutput);
+        this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
+        this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
+        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.GAME_INPUT, this.GAME_OUTPUT);
         game.startGame();
-        this.selectorOutput.sendOutput("\n\n\n\n\n");
+        this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }
 
     /**
@@ -123,7 +123,7 @@ public class GameSelector {
      * @return false when the selection is invalid or true when the selection is valid
      */
     private boolean checkValidity(int sel) {
-        return (sel == 0 || sel == 9) || (sel <= this.games.length && sel > 0);
+        return (sel == 0 || sel == 9) || (sel <= this.GAMES.length && sel > 0);
     }
 
     /**
@@ -140,19 +140,19 @@ public class GameSelector {
         int minPlayers = GameTemplate.getMinPlayers(game);
 
         if (maxPlayers == minPlayers) {
-            this.selectorOutput.sendOutput("Input " + maxPlayers + " usernames for " +
+            this.SELECTOR_OUTPUT.sendOutput("Input " + maxPlayers + " usernames for " +
                     "players playing the game. Enter 'done' to finish.\n");
         } else {
-            this.selectorOutput.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
+            this.SELECTOR_OUTPUT.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
                     "players playing the game. Enter 'done' to finish.\n");
         }
 
-        String username = this.selectorInput.getUsername();
+        String username = this.SELECTOR_INPUT.getUsername();
         while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
             if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
-                this.selectorOutput.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
+                this.SELECTOR_OUTPUT.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
             } else if (usernames.contains(username)) {
-                this.selectorOutput.sendOutput("This username has already been added. Please enter a new username!\n");
+                this.SELECTOR_OUTPUT.sendOutput("This username has already been added. Please enter a new username!\n");
             } else {
                 usernames.add(username);
                 try {
@@ -162,7 +162,7 @@ public class GameSelector {
             }
 
             if (usernames.size() != maxPlayers) {
-                username = this.selectorInput.getUsername();
+                username = this.SELECTOR_INPUT.getUsername();
             }
         }
         return usernames;
@@ -197,7 +197,7 @@ public class GameSelector {
             // dump UserManager to a unique file (should be unique since using current system time)
             Date currDate = new Date();
             try {
-                UserManagerExporter.exportUserManager(userManager, "usermanager-" + currDate.getTime() + ".ser");
+                UserManagerExporter.exportUserManager(userManager, "UserManager-" + currDate.getTime() + ".ser");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -216,6 +216,13 @@ public class GameSelector {
          */
         int getUserSelection();
 
+
+        /**
+         * Implementations should return a String representing the user's username selection
+         *
+         * @return a valid username representation
+         * @see helpers.UsernameCheck
+         */
         String getUsername();
 
     }
