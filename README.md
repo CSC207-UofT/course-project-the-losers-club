@@ -27,7 +27,10 @@ A collection of various card games played through a graphical user interface.
 
 ## Roadmap
 
-* Improve GUI design 
-* Implement other games
-* Migrate serialization of users to a database
-
+* [ ] Improve GUI design 
+* [ ] Implement other games
+* [ ] Migrate serialization of users to a database
+* [x] Finish Crazy Eights implementation
+* [x] Implement game selection menu in CLI
+* [x] Implement War
+* [x] Implement GUI
