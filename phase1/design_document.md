@@ -34,7 +34,7 @@
 ### Open questions
 
 ### What has worked well
-
+* Using issues/milestones on GitHub has been a very effective tool to both assign work to people without having to have a general meeting all the time and to ensure that everyone is aware of what work needs to be done and where.
 ### What each group member has been working on
 
 * Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project.
@@ -43,7 +43,7 @@
 * Bradley:
 * Daniel:
 * Azamat:
-* Luke:
+* Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as work tests for other code. Reviewed pull requests and other GitHub maintenance.
 * Nitish:
 
 ### What each group member plans to work on next
@@ -53,6 +53,6 @@
 * Bradley:
 * Daniel:
 * Azamat:
-* Luke:
+* Luke: Continue to expand upon GUI. Clean up current GUI implementation, most likely refactoring to utilise polymorphism effectively. Redesign Input and Output interfaces to be specific to the project.
 * Nitish:
 
