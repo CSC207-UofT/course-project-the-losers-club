@@ -11,18 +11,15 @@ import java.util.Random;
 public class GoFish extends GameTemplate {
     private static final int MAX_PLAYERS = 7;
     private static final int MIN_PLAYERS = 2;
-    private final Input gameInput;
-    private final Output gameOutput;
-    protected HashMap<Player, Integer> scoreTracker;
-    private final Integer handSize;
+    private final HashMap<Player, Integer> SCORE_TRACKER;
 
     /**
      * Instantiate a new GoFish game instance.
      *
-     * @param usernames the list of usernames of players that are playing the game.
-     * @param userManager a usermanager that manages the user entities
-     * @param gameInput A Game.Input object allowing for player input.
-     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param usernames   the list of usernames of players that are playing the game.
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this(usernames, userManager, gameInput, gameOutput, new Random());
@@ -31,19 +28,18 @@ public class GoFish extends GameTemplate {
     /**
      * Instantiate a new GoFish game instance. This constructor allows the deck to be seeded with a state.
      *
-     * @param usernames the list of usernames of players that are playing the game.
-     * @param userManager a usermanager that manages the user entities
-     * @param gameInput A Game.Input object allowing for player input.
-     * @param gameOutput A Game.Output object allowing for output to the player.
-     * @param rand a Random object for creating deterministic behaviour.
+     * @param usernames   the list of usernames of players that are playing the game.
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param rand        a Random object for creating deterministic behaviour.
      */
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
-        super(usernames, userManager);
-        this.gameInput = gameInput;
-        this.gameOutput = gameOutput;
-        this.scoreTracker = new HashMap<>();
+        super(usernames, userManager, gameInput, gameOutput);
+        this.SCORE_TRACKER = new HashMap<>();
         this.currPlayerIndex = 0;
         this.deck.shuffle(rand);
+        int handSize;
         if (usernames.size() <= 3) {
             handSize = 7;
         } else {
@@ -53,8 +49,26 @@ public class GoFish extends GameTemplate {
             for (int i = 0; i < 7; i++) {
                 player.addToHand(this.deck.drawCard());
             }
-            this.scoreTracker.put(player, 0);
+            this.SCORE_TRACKER.put(player, 0);
         }
+    }
+
+    /**
+     * Return's this game's maximum number of players.
+     *
+     * @return the maximum number of players.
+     */
+    public static int getMaxPlayers() {
+        return MAX_PLAYERS;
+    }
+
+    /**
+     * Return's this game's minimum number of players required to play the game.
+     *
+     * @return the maximum number of players.
+     */
+    public static int getMinPlayers() {
+        return MIN_PLAYERS;
     }
 
     /**
@@ -67,24 +81,6 @@ public class GoFish extends GameTemplate {
     }
 
     /**
-     * Return's this game's maximum number of players.
-     *
-     * @return the maximum number of players.
-     */
-    protected static int getMaxPlayers() {
-        return MAX_PLAYERS;
-    }
-
-    /**
-     * Return's this game's minimum number of players required to play the game.
-     *
-     * @return the maximum number of players.
-     */
-    protected static int getMinPlayers() {
-        return MIN_PLAYERS;
-    }
-
-    /**
      * The main part of the game that prompts the player to "fish" for cards, check for book in player's hand, iterate
      * over the players, and finally output winner(s).
      */
@@ -93,18 +89,18 @@ public class GoFish extends GameTemplate {
         checkEveryoneForBook();
         while (!gameEnd()) {
             this.currPlayer = this.players[this.currPlayerIndex];
-            this.gameOutput.sendOutput("---------------------------------------\n");
-            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
-            this.gameOutput.sendOutput("---------------------------------------\n");
+            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
+            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
             if (!currPlayer.isHandEmpty()) {
                 if (!fish()) {
-                    this.gameOutput.sendOutput("Go Fish! No matches.\n");
+                    this.GAME_OUTPUT.sendOutput("Go Fish! No matches.\n");
                 }
             }
             if (!this.deck.isEmpty()) {
                 this.currPlayer.addToHand(this.deck.drawCard());
-                this.gameOutput.sendOutput("Drawing a card from the deck. \n");
-                this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+                this.GAME_OUTPUT.sendOutput("Drawing a card from the deck. \n");
+                this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
             }
 
             checkForBook();
@@ -118,6 +114,7 @@ public class GoFish extends GameTemplate {
      * Prompts the user to select a card rank and a player to request the cards from. If there's a catch (requested
      * player has cards of the chosen rank in hand), then those cards are transferred to current player's hand. Also
      * checks for book after each attempt at "fishing".
+     *
      * @return true if there is a catch and false if there is no catch.
      */
     private boolean fish() {
@@ -131,16 +128,16 @@ public class GoFish extends GameTemplate {
             boolean loopedRankChoice = false;
 
             if (loopedFish) {
-                this.gameOutput.sendOutput("Your turn continues.\n");
+                this.GAME_OUTPUT.sendOutput("Your turn continues.\n");
             }
-            this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
             do {
                 if (loopedRankChoice) {
-                    this.gameOutput.sendOutput("Invalid rank chosen. Try again.\n");
+                    this.GAME_OUTPUT.sendOutput("Invalid rank chosen. Try again.\n");
                 }
 
-                this.gameOutput.sendOutput("Which card rank would you like to request?\n");
-                rank = this.gameInput.getRank();
+                this.GAME_OUTPUT.sendOutput("Which card rank would you like to request?\n");
+                rank = this.GAME_INPUT.getRank();
 
                 if (!validRank(rank)) {
                     loopedRankChoice = true;
@@ -156,7 +153,7 @@ public class GoFish extends GameTemplate {
             finalHandSize = this.currPlayer.getHand().getSize();
 
             if (initialHandSize != finalHandSize) {
-                this.gameOutput.sendOutput(String.format("Successful catch!\n%s moved from %s's hand to %s's hand.\n",
+                this.GAME_OUTPUT.sendOutput(String.format("Successful catch!\n%s moved from %s's hand to %s's hand.\n",
                         cardCatch.toString(), chosenPlayer.getUsername(), currPlayer.getUsername()));
                 loopedFish = true;
             }
@@ -169,11 +166,12 @@ public class GoFish extends GameTemplate {
 
     /**
      * Prompts the user to choose a username (from a list of usernames) that they would like to request cards from.
+     *
      * @return a Player object corresponding to the username chosen by the user.
      */
     private Player requestPlayer() {
-        this.gameOutput.sendOutput("Who would like to request cards from?\n");
-        String chosenUsername = this.gameInput.getPlayerUsername(this.currPlayer.getUsername(), this.usernames);
+        this.GAME_OUTPUT.sendOutput("Who would like to request cards from?\n");
+        String chosenUsername = this.GAME_INPUT.getPlayerUsername(this.currPlayer.getUsername(), this.usernames);
         for (Player player : this.players) {
             if (player.getUsername().equals(chosenUsername)) {
                 return player;
@@ -207,14 +205,14 @@ public class GoFish extends GameTemplate {
         }
         for (String rank : RANKS) {
             if (numRanks.get(rank) == 4) {
-                scoreTracker.put(this.currPlayer, scoreTracker.get(this.currPlayer) + 1);
+                SCORE_TRACKER.put(this.currPlayer, SCORE_TRACKER.get(this.currPlayer) + 1);
                 currPlayer.removeFromHand(rank);
-                this.gameOutput.sendOutput(String.format("A book is found in %1$s's hand! The following cards are " +
+                this.GAME_OUTPUT.sendOutput(String.format("A book is found in %1$s's hand! The following cards are " +
                         "removed: %2$sH, %2$sS, %2$sD, %2$sC\n", this.currPlayer.getUsername(), rank));
                 if (this.currPlayer.isHandEmpty() && !this.deck.isEmpty()) {
-                    this.gameOutput.sendOutput("Hand is empty after removing the book. Drawing a card from deck.\n");
+                    this.GAME_OUTPUT.sendOutput("Hand is empty after removing the book. Drawing a card from deck.\n");
                     this.currPlayer.addToHand(this.deck.drawCard());
-                    this.gameOutput.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+                    this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
                 }
             }
         }
@@ -223,6 +221,7 @@ public class GoFish extends GameTemplate {
     /**
      * Checks whether the chosen rank of card is valid. Rank is valid if the current player's hand contains at least one
      * card of the chosen rank.
+     *
      * @param rank the rank of the cards that the user wants to request from other player.
      * @return true if the rank is valid (hand contains a card of the said rank); otherwise, return false.
      */
@@ -232,6 +231,7 @@ public class GoFish extends GameTemplate {
 
     /**
      * Checks whether the game has ended. Game ends when all players' hands are empty AND the deck is empty.
+     *
      * @return true if the game has ended; otherwise, return false (if deck is not empty or there are players with cards
      * in their hands).
      */
@@ -256,10 +256,10 @@ public class GoFish extends GameTemplate {
         ArrayList<String> winners = new ArrayList<>();
         int maxScore = 0;
         for (Player player : players) {
-            if (scoreTracker.get(player) == maxScore) {
+            if (SCORE_TRACKER.get(player) == maxScore) {
                 winners.add(player.getUsername());
-            } else if (scoreTracker.get(player) > maxScore) {
-                maxScore = scoreTracker.get(player);
+            } else if (SCORE_TRACKER.get(player) > maxScore) {
+                maxScore = SCORE_TRACKER.get(player);
                 winners.clear();
                 winners.add(player.getUsername());
             }
@@ -279,6 +279,6 @@ public class GoFish extends GameTemplate {
                 }
             }
         }
-        this.gameOutput.sendOutput(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
+        this.GAME_OUTPUT.sendOutput(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
     }
 }

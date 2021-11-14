@@ -12,6 +12,8 @@ public abstract class GameTemplate {
 
     protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
+    protected final Input GAME_INPUT;
+    protected final Output GAME_OUTPUT;
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
@@ -19,9 +21,13 @@ public abstract class GameTemplate {
     protected List<String> usernames;
     protected int currPlayerIndex;
 
-    protected GameTemplate(List<String> usernames, UserManager userManager) {
+    protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this.userManager = userManager;
         this.usernames = usernames;
+
+        this.GAME_INPUT = gameInput;
+        this.GAME_OUTPUT = gameOutput;
+
         this.players = new Player[usernames.size()];
         for (int i = 0; i < players.length; i++) {
             Player newPlayer = new Player(usernames.get(i));
@@ -54,7 +60,7 @@ public abstract class GameTemplate {
             case "CRAZY EIGHTS":
                 return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
             case "WAR":
-                return new War(input, output, usernames, userManager);
+                return new War(usernames, userManager, input, output);
             case "GO FISH":
                 return new GoFish(usernames, userManager, input, output);
             default:
@@ -100,6 +106,11 @@ public abstract class GameTemplate {
         }
     }
 
+    /**
+     * Run a given game.
+     * <p>
+     * This is likely the entry point to the main loop of this game.
+     */
     public abstract void startGame();
 
     /**
