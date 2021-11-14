@@ -1,7 +1,7 @@
 package presenters.console;
 
+import controllers.MainMenu;
 import usecases.GameTemplate;
-import controllers.GameSelector;
 import usecases.UserDisplay;
 
 
@@ -10,10 +10,10 @@ import usecases.UserDisplay;
  * <p>
  * It is intended to be used as a basic command line interface.
  *
- * @see GameSelector.Output
+ * @see MainMenu.Output
  * @see GameTemplate.Output
  */
-public class Output implements GameSelector.Output, GameTemplate.Output, UserDisplay.Output {
+public class Output implements MainMenu.Output, GameTemplate.Output, UserDisplay.Output {
 
     /**
      * Instantiate a new Output instance.
