@@ -2,6 +2,8 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
+import presenters.gui.PlayerGUI;
+import presenters.gui.SingleCardGUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +52,7 @@ public abstract class GameTemplate {
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, input, output);
+                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
             case "WAR":
                 return new War(input, output, usernames, userManager);
             case "GO FISH":

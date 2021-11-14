@@ -2,6 +2,8 @@ package usecases;
 
 import entities.Card;
 import entities.Hand;
+import presenters.gui.PlayerGUI;
+import presenters.gui.SingleCardGUI;
 
 import java.util.List;
 import java.util.Random;
@@ -11,8 +13,8 @@ public class CrazyEights extends GameTemplate {
     private static final int MAX_PLAYERS = 5;
     private static final int MIN_PLAYERS = 2;
     private final Stack<Card> PLAYING_FIELD;
-    private final Input GAME_INPUT;
-    private final Output GAME_OUTPUT;
+    private final PlayerGUI PLAYER_GUI;
+    private final SingleCardGUI SINGLE_CARD_GUI;
     private char suitTracker;
 
     /**
@@ -20,11 +22,11 @@ public class CrazyEights extends GameTemplate {
      *
      * @param usernames   the list of usernames of player that are playing the game
      * @param userManager a usermanager that manages the user entities
-     * @param gameInput   A Game.Input object allowing for player input.
-     * @param gameOutput  A Game.Output object allowing for output to the player.
+     * @param playerGUI   A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI  A SingleCardGUI object allowing for the top card visualization.
      */
-    public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+    public CrazyEights(List<String> usernames, UserManager userManager, PlayerGUI playerGUI, SingleCardGUI singleCardGUI) {
+        this(usernames, userManager, playerGUI, singleCardGUI, new Random());
     }
 
     /**
@@ -32,14 +34,15 @@ public class CrazyEights extends GameTemplate {
      *
      * @param usernames   the list of usernames of player that are playing the game
      * @param userManager a usermanager that manages the user entities
-     * @param gameInput   A Game.Input object allowing for player input.
-     * @param gameOutput  A Game.Output object allowing for output to the player.
+     * @param playerGUI   A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI  A SingleCardGUI object allowing for the top card visualization.
      * @param rand        a Random object for creating deterministic behaviour
      */
-    public CrazyEights(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
+    public CrazyEights(List<String> usernames, UserManager userManager,
+                       PlayerGUI playerGUI, SingleCardGUI singleCardGUI, Random rand) {
         super(usernames, userManager);
-        this.GAME_INPUT = gameInput;
-        this.GAME_OUTPUT = gameOutput;
+        this.PLAYER_GUI = playerGUI;
+        this.SINGLE_CARD_GUI = singleCardGUI;
         this.currPlayerIndex = 0;
         this.PLAYING_FIELD = new Stack<>();
         this.deck.shuffle(rand);
@@ -91,25 +94,31 @@ public class CrazyEights extends GameTemplate {
             Card card = null;
             String crd;
             boolean looped = false;
-            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
-            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
-            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
-            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
-            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+//            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+//            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
+//            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+            this.PLAYER_GUI.changePlayer(currPlayer.getUsername());
+            this.SINGLE_CARD_GUI.sendOutput((this.PLAYING_FIELD.peek().getRank() + this.suitTracker));
+            System.out.println(this.currPlayer.getHandStringFormatted());
+            this.PLAYER_GUI.sendOutput(this.currPlayer.getHandStringFormatted());
+//            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
+//            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped) {
-                    this.GAME_OUTPUT.sendOutput("This is not a valid move.\n");
+                    this.PLAYER_GUI.sendPopup("This is not a valid move.");
                     card = null;
                 }
 
+                System.out.println(this.suitTracker);
+
                 if (!hasValidMove(currPlayer.getHand())) {
-                    this.GAME_OUTPUT.sendOutput("Card drawn from Deck because there are no cards to play.\n");
-                } else if (!this.GAME_INPUT.drawCard()) {
-                    crd = this.GAME_INPUT.getCard();
-                    card = new Card(crd.substring(1), crd.charAt(0));
+                    this.PLAYER_GUI.sendPopup("Card drawn from Deck because there are no cards to play.");
+                } else if (!this.PLAYER_GUI.drawCard()) {
+                    crd = this.PLAYER_GUI.getCard().toUpperCase();
+                    card = new Card(crd.substring(0, 1), crd.charAt(1));
                     if (card.getRank().equals("8")) {
-                        this.suitTracker = this.GAME_INPUT.getSuit();
+                        this.suitTracker = Character.toUpperCase(this.PLAYER_GUI.getSuit());
                     }
                 }
 
@@ -123,7 +132,6 @@ public class CrazyEights extends GameTemplate {
                 makeMove(card);
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
-            this.GAME_OUTPUT.sendOutput("\n");
         }
         for (String u : this.usernames) {
             if (this.currPlayer.getUsername().equals(u)) {
@@ -140,7 +148,8 @@ public class CrazyEights extends GameTemplate {
                 }
             }
         }
-        this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + " Wins!!!\n");
+        this.PLAYER_GUI.close(this.currPlayer.getUsername() + " Wins!!!");
+        this.SINGLE_CARD_GUI.close();
     }
 
     /**
