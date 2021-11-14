@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An implementation of the Output class which presents the user the image of a single card
- * originally specified in the constructor. It can then be changed using the sendOutput method.
+ * An implementation of the Output class which presents the user the image of a single card as
+ * originally specified in the constructor in its own window. The card shown can then be
+ * changed using the sendOutput method.
  */
 public class SingleCardGUI implements GameTemplate.Output {
 
@@ -19,6 +20,10 @@ public class SingleCardGUI implements GameTemplate.Output {
 
     private final Map<String, String> stringToImage;
 
+    /**
+     * Creates a SingleCardGUI object which is displaying card.
+     * @param card The card to be displayed to the user
+     */
     public SingleCardGUI(String card) {
         final String[] CARDS_STRINGS = {"as", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "js", "qs", "ks",
                 "ac", "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "10c", "jc", "qc", "kc",
@@ -37,6 +42,7 @@ public class SingleCardGUI implements GameTemplate.Output {
             this.stringToImage.put(CARDS_STRINGS[i], CARD_IMAGES[i]);
         }
 
+        //Creates a boarder for the panel
         this.panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
 
         this.set_card(card);
@@ -45,12 +51,20 @@ public class SingleCardGUI implements GameTemplate.Output {
 
     }
 
+    /**
+     * This method takes a card as a string and then finds the address of the image for that card and changes the
+     * image on the panel to that of the new card.
+     * @param card The new card that is going to be displayed in the window
+     */
     private void set_card(String card) {
         JLabel icon = new JLabel(new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card)));
         this.panel.add(icon);
         this.update();
     }
 
+    /**
+     * This method visually changes the GUI to match the new values that have been assigned to the parts
+     */
     private void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +73,10 @@ public class SingleCardGUI implements GameTemplate.Output {
         this.frame.setVisible(true);
     }
 
+    /**
+     * Displays entered card to the user on the screen in the window
+     * @param s The card that is to be displayed
+     */
     @Override
     public void sendOutput(Object s) {
         this.set_card(s.toString());
