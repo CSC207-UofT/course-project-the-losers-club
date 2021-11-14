@@ -18,6 +18,8 @@ public class SingleCardGUI implements GameTemplate.Output {
 
     private final JPanel panel = new JPanel();
 
+    private JLabel currentCard = new JLabel();
+
     private final Map<String, String> stringToImage;
 
     /**
@@ -59,7 +61,11 @@ public class SingleCardGUI implements GameTemplate.Output {
     private void setCard(String card) {
         card = card.toLowerCase();
         JLabel icon = new JLabel(new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card)));
+
+        this.panel.remove(this.currentCard);
+        this.currentCard = icon;
         this.panel.add(icon);
+
         this.update();
     }
 
