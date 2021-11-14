@@ -72,7 +72,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Brian: Added `User` entitiy class and `UserManager` usecase with Teddy; integrated user functionality; created a stat display menu in the main menu; integrated basic GUI with CrazyEights
 * Bradley:
 * Daniel: Worked alongside Bradley on implementing the'War' game. Addressed issues with entity classes and streamlined 'Hand' to be implement the 'Iterable' interface. 
-* Azamat:
+* Azamat: Implemented the `GoFish` game as a subclass of `GameTemplate`. Extended other classes (`Card`, `Hand`, `Player`, and `Input`) by adding new/overloading existing methods to assist with `GoFish`'s functionality. Tested `GoFish` by first predefining a sequence of user inputs such that the game successfully ends, and then asserting that a set of post-game conditions hold.
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
 * Nitish: Changed the implementation for `Deck` by changing it from a list to queue for more efficiency and helped with testing GoFish.
 
@@ -82,7 +82,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Brian: Integrade other games with the GUI, improve GUI interactions with each game
 * Bradley:
 * Daniel: Work alongside Luke and Bradley to progress the GUI. May work on a new game. 
-* Azamat:
+* Azamat: Implement a new card game. Refactor code in `GameTemplate` and its subclasses to pull common operations in subclasses out to `GameTemplate` (base class).
 * Luke: Continue to expand upon GUI. Clean up current GUI implementation, most likely refactoring to utilise polymorphism effectively. Redesign Input and Output interfaces to be specific to the project.
 * Nitish: Continue to fix bugs, refactor code, and may work on a new game.
 
