@@ -41,7 +41,7 @@
 * Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
 * Brian:
 * Bradley:
-* Daniel:
+* Daniel: Worked alongside Bradley on implementing the'War' game. Addressed issues with entity classes and streamlined 'Hand' to be implement the 'Iterable' interface. 
 * Azamat:
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
 * Nitish:
@@ -51,7 +51,7 @@
 * Teddy: Improve user functionality, add more features or work on a new game
 * Brian:
 * Bradley:
-* Daniel:
+* Daniel: Work alongside Luke and Bradley to progress the GUI. May work on a new game. 
 * Azamat:
 * Luke: Continue to expand upon GUI. Clean up current GUI implementation, most likely refactoring to utilise polymorphism effectively. Redesign Input and Output interfaces to be specific to the project.
 * Nitish:
