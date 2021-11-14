@@ -45,7 +45,7 @@ public class SingleCardGUI implements GameTemplate.Output {
         //Creates a boarder for the panel
         this.panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
 
-        this.set_card(card);
+        this.setCard(card);
 
         this.update();
 
@@ -56,7 +56,8 @@ public class SingleCardGUI implements GameTemplate.Output {
      * image on the panel to that of the new card.
      * @param card The new card that is going to be displayed in the window
      */
-    private void set_card(String card) {
+    private void setCard(String card) {
+        card = card.toLowerCase();
         JLabel icon = new JLabel(new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card)));
         this.panel.add(icon);
         this.update();
@@ -79,6 +80,6 @@ public class SingleCardGUI implements GameTemplate.Output {
      */
     @Override
     public void sendOutput(Object s) {
-        this.set_card(s.toString());
+        this.setCard(s.toString());
     }
 }

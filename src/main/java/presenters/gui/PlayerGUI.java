@@ -64,7 +64,7 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
 
         this.panel.add(send_card);
 
-        this.set_hand(cards);
+        this.setHand(cards);
 
         this.update();
 
@@ -85,11 +85,13 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
      * This method changes the hand to be displayed to the new hand that is specified in hand
      * @param hand the space seperated string representations of cards that you want to be displayed
      */
-    private void set_hand(String hand) {
+    private void setHand(String hand) {
         //First clean the old hand
         for (JButton button : this.buttons) {
             this.panel.remove(button);
         }
+
+        hand = hand.toLowerCase();
 
         String[] cards_strings = hand.split(" ");
 
@@ -133,7 +135,7 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
     @Override
     public void sendOutput(Object s) {
         String cards = s.toString();
-        set_hand(cards);
+        setHand(cards);
     }
 
     /**
