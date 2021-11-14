@@ -3,6 +3,7 @@ package usecases;
 import entities.Card;
 import entities.Hand;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /***
@@ -10,7 +11,7 @@ import java.util.Comparator;
  * which is the cards the player holds at a given moment.
  */
 public class Player {
-    private Hand hand;
+    private final Hand hand;
     private final String username;
 
     public String getUsername() {
@@ -36,6 +37,14 @@ public class Player {
     }
 
     /**
+     * adds the inputted list of cards to the hand of this player.
+     * @param cards an ArrayList of cards to add to the hand.
+     */
+    public void addToHand(ArrayList<Card> cards) {
+        this.hand.addCard(cards);
+    }
+
+    /**
      * removes a card that is present in the hand.
      * assumes that the card to be removed is in hand
      *
@@ -43,6 +52,15 @@ public class Player {
      */
     public void removeFromHand(Card card) {
         this.hand.removeCard(card);
+    }
+
+    /**
+     * remove and return a list of cards with the given rank from this player's hand.
+     * @param rank the rank of the cards.
+     * @return an ArrayList of cards with the given rank that have been removed from this player's hand.
+     */
+    public ArrayList<Card> removeFromHand(String rank) {
+        return this.hand.removeCard(rank);
     }
 
     public Hand getHand() {

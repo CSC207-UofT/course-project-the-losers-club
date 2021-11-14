@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -11,7 +13,7 @@ import java.util.Iterator;
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
-    private List<Card> cards;
+    private final List<Card> cards;
 
     /**
      * Constructs an empty hand
@@ -49,6 +51,14 @@ public class Hand implements Iterable<Card> {
     }
 
     /**
+     * Adds all the cards in the given list to the hand.
+     * @param cards ArrayList of Cards to be added to the hand.
+     */
+    public void addCard(ArrayList<Card> cards) {
+        this.cards.addAll(cards);
+    }
+
+    /**
      * Removes the first card in the hand and returns it
      *
      * @return the removed Card
@@ -83,6 +93,24 @@ public class Hand implements Iterable<Card> {
     public Card removeCard(Card c) {
         int i = this.cards.indexOf(c);
         return this.cards.remove(i);
+    }
+
+    /**
+     * Remove and return all cards of the given rank.
+     * @param rank the rank of the card
+     * @return ArrayList of cards of the given rank.
+     */
+    public ArrayList<Card> removeCard(String rank) {
+        ArrayList<Card> toReturn = new ArrayList<>();
+        Iterator<Card> cardIterator = this.iterator();
+        while (cardIterator.hasNext()) {
+            Card card = cardIterator.next();
+            if (card.getRank().equals(rank)) {
+                toReturn.add(card);
+                cardIterator.remove();
+            }
+        }
+        return toReturn;
     }
 
     /**
