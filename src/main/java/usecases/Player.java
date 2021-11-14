@@ -86,6 +86,19 @@ public class Player {
     }
 
     /**
+     * Returns the player's hand as a string where each card is space separated
+     *
+     * @return the player's hand as a string formatted
+     */
+    public String getHandStringFormatted() {
+        String s = this.hand.toString();
+        String clippedString = s.substring(1, s.length() - 1);
+        String formattedString = clippedString.replaceAll(" ", "").replaceAll(",", " ");
+
+        return formattedString;
+    }
+
+    /**
      * Returns the player's sorted hand as a string with respect to the Comparator implementation c.
      *
      * @param c A comparator implementation for Card, this describes how you want to sort the cards.
