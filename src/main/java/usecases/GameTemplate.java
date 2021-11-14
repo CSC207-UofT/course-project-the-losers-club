@@ -8,8 +8,8 @@ import java.util.List;
 
 public abstract class GameTemplate {
 
-    private static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    private static final char[] SUITS = {'H', 'S', 'D', 'C'};
+    protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
@@ -53,6 +53,8 @@ public abstract class GameTemplate {
                 return new CrazyEights(usernames, userManager, input, output);
             case "WAR":
                 return new War(input, output, usernames, userManager);
+            case "GO FISH":
+                return new GoFish(usernames, userManager, input, output);
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
@@ -70,6 +72,8 @@ public abstract class GameTemplate {
                 return CrazyEights.getMaxPlayers();
             case "WAR":
                 return War.getMaxPlayers();
+            case "GO FISH":
+                return GoFish.getMaxPlayers();
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
@@ -87,6 +91,8 @@ public abstract class GameTemplate {
                 return CrazyEights.getMinPlayers();
             case "WAR":
                 return War.getMinPlayers();
+            case "GO FISH":
+                return GoFish.getMinPlayers();
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
@@ -125,12 +131,26 @@ public abstract class GameTemplate {
         char getSuit();
 
         /**
+         * Implementations should return a string corresponding to a picked rank.
+         * The string must be one of {"A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K"}.
+         */
+        String getRank();
+
+        /**
+         * Implementation should return a Player object corresponding to a picked player.
+         *
+         * @return a Player that is chosen by the user.
+         */
+        String getPlayerUsername(String currPlayerUsername, List<String> usernames);
+
+        /**
          * Implementations should stall the output display. This can be used when the user needs to "click to continue"
          * or in the case of a command line interface, "press enter to continue".
          */
         boolean stall();
 
     }
+
 
     /**
      * Output is an interface allowing Games to output back to the user.

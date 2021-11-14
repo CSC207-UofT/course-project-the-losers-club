@@ -11,7 +11,7 @@ public class User implements Serializable {
     private int gamesTied;
 
     /**
-     * Constructs a User with the given name, username, and password.
+     * Constructs a User with the given username.
      * @param username The username of the User displayed by the game
      */
     public User(String username) {

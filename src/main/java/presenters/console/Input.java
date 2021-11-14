@@ -5,11 +5,10 @@ import helpers.CardCheck;
 import usecases.GameTemplate;
 import usecases.UserDisplay;
 
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static helpers.UsernameCheck.checkUsername;
-
 
 /**
  * Input uses System.in to gather input from the user.
@@ -92,6 +91,48 @@ public class Input implements GameSelector.Input, GameTemplate.Input, UserDispla
     }
 
     /**
+     * Prompt user to select a rank.
+     *
+     * @return a string encoding the selected rank. The returned string will be one of
+     * {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
+     */
+    public String getRank() {
+        String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        System.out.print("Pick a rank (one of " + Arrays.toString(RANKS) + "): ");
+        String line = this.inp.nextLine().trim().toUpperCase();
+
+        while (!Arrays.asList(RANKS).contains(line)) {
+            System.out.print("Invalid selection (" + Arrays.toString(RANKS) + "), try again: ");
+            line = this.inp.nextLine().trim().toUpperCase();
+        }
+        return line;
+    }
+
+    /**
+     * Prompt user to select a player.
+     *
+     * @param currPlayerUsername the current player username in the game and is not in the list of player usernames displayed to the user.
+     * @param usernames the list of all the player usernames in the game.
+     * @return a String representing the username selected by the user. This username is in the list of all usernames.
+     */
+    public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
+        List<String> usernamesForDisplay = new ArrayList<>();
+        for (String username : usernames) {
+            if (!username.equals(currPlayerUsername)) {
+                usernamesForDisplay.add(username);
+            }
+        }
+        System.out.print("Pick a player (one of " + usernamesForDisplay + "): ");
+        String username = this.inp.nextLine().trim();
+
+        while (!usernamesForDisplay.contains(username)) {
+            System.out.print("Invalid selection (" + usernamesForDisplay + "), try again: ");
+            username = this.inp.nextLine().trim();
+        }
+        return username;
+    }
+
+    /**
      * Prompt the user to press enter to continue.
      *
      * @return a boolean representing whether execution should continue. Note that this method will ALWAYS return true.
@@ -122,9 +163,8 @@ public class Input implements GameSelector.Input, GameTemplate.Input, UserDispla
         return Integer.parseInt(line);
     }
 
-
     /**
-     * Promp the user to enter a username and return the username.
+     * Prompt the user to enter a username and return the username.
      *
      * @return a String representing the user's username
      */
