@@ -4,6 +4,11 @@
 
 
 ## Major Design Decisions
+* As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the 
+dependency rule since operating the GUI is more complex than the current Output Interface allows. In Phase 2, we are
+planning to fix this problem either by redesign the Output interface to be less vague or to use the Facade design pattern
+to the fix the problem by creating a class that takes the object that is trying to be outputted and 
+decide how to display that using the GUI. 
 
 
 ## Clean Architecture
