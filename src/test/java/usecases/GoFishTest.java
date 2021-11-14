@@ -1,6 +1,6 @@
 package usecases;
 
-import controllers.GameSelector;
+import controllers.MainMenu;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class GoFishTest {
     List<String> usernames;
     UserManager usermanager;
 
-    protected class TestInput extends Input implements GameSelector.Input, GameTemplate.Input {
+    protected class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
         String[] getRankSequence = {"8", "8", "6", "6", "Q", "Q", "Q", "4", "4", "5", "5", "5", "J", "J", "7", "7","10",
                 "10", "10", "2", "2", "2", "K", "K", "K", "9", "9", "3", "3", "3", "A", "A"};
         int currRankIndex = 0;
