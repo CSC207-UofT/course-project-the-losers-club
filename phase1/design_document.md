@@ -51,7 +51,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Daniel: Worked alongside Bradley on implementing the'War' game. Addressed issues with entity classes and streamlined 'Hand' to be implement the 'Iterable' interface. 
 * Azamat:
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
-* Nitish:
+* Nitish: Changed the implementation for `Deck` by changing it from a list to queue for more efficiency and helped with testing GoFish.
 
 ### What each group member plans to work on next
 * Raymond: Migrating serialization to a database, continue improving design and efficiency across the project.
@@ -61,5 +61,5 @@ We primarily considered the packaging by component and the packaging by layer st
 * Daniel: Work alongside Luke and Bradley to progress the GUI. May work on a new game. 
 * Azamat:
 * Luke: Continue to expand upon GUI. Clean up current GUI implementation, most likely refactoring to utilise polymorphism effectively. Redesign Input and Output interfaces to be specific to the project.
-* Nitish:
+* Nitish: Continue to fix bugs, refactor code, and may work on a new game.
 
