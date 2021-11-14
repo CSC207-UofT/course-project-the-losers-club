@@ -43,7 +43,7 @@
 * Bradley:
 * Daniel:
 * Azamat:
-* Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as work tests for other code. Reviewed pull requests and other GitHub maintenance.
+* Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
 * Nitish:
 
 ### What each group member plans to work on next
