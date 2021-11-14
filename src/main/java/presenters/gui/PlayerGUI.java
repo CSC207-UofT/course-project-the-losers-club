@@ -248,5 +248,21 @@ public class PlayerGUI implements ActionListener, GameTemplate.Output, GameTempl
     public boolean stall() {
         return false;
     }
+
+    /**
+     * This method will close the GUI when called.
+     */
+    public void close(){
+        this.frame.dispose();
+    }
+
+    /**
+     * This overload version will first display a message to the user before closing.
+     * @param message The string that is the message that is shown to the user.
+     */
+    public void close(String message){
+        JOptionPane.showMessageDialog(this.frame, message);
+        this.frame.dispose();
+    }
 }
 
