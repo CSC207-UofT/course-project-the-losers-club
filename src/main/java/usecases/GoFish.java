@@ -9,6 +9,8 @@ import java.util.Random;
 
 
 public class GoFish extends GameTemplate {
+    private static final int MAX_PLAYERS = 5;
+    private static final int MIN_PLAYERS = 2;
     private final Input gameInput;
     private final Output gameOutput;
     protected HashMap<Player, Integer> scoreTracker;
@@ -62,6 +64,24 @@ public class GoFish extends GameTemplate {
      */
     public String toString() {
         return "Go Fish";
+    }
+
+    /**
+     * Return's this game's maximum number of players.
+     *
+     * @return the maximum number of players.
+     */
+    protected static int getMaxPlayers() {
+        return MAX_PLAYERS;
+    }
+
+    /**
+     * Return's this game's minimum number of players required to play the game.
+     *
+     * @return the maximum number of players.
+     */
+    protected static int getMinPlayers() {
+        return MIN_PLAYERS;
     }
 
     /**
