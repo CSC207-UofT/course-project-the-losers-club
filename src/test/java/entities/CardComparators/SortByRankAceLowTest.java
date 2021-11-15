@@ -1,17 +1,17 @@
-package entities.CardComparors;
+package entities.CardComparators;
+
+import entities.Card;
+import entities.Hand;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import entities.Card;
-import entities.Hand;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-public class SortByRankAceHighTest {
+public class SortByRankAceLowTest {
 
     @Test
     void CheckOnlyNumbers() {
@@ -41,7 +41,7 @@ public class SortByRankAceHighTest {
 
         Hand sortedHand = new Hand(cards);
 
-        Comparator<Card> c = new SortByRankAceHigh();
+        Comparator<Card> c = new SortByRankAceLow();
 
         assertEquals(sortedHand.toString(), hand.sortedHand(c).toString());
     }
@@ -65,20 +65,20 @@ public class SortByRankAceHighTest {
 
         cards = new ArrayList<>();
 
+        cards.add(new Card("a", 's'));
         cards.add(new Card("2", 's'));
         cards.add(new Card("4", 's'));
         cards.add(new Card("5", 's'));
         cards.add(new Card("6", 's'));
         cards.add(new Card("7", 's'));
-        cards.add(new Card("a", 's'));
+        cards.add(new Card("a", 'h'));
         cards.add(new Card("3", 'h'));
         cards.add(new Card("6", 'h'));
         cards.add(new Card("9", 'h'));
-        cards.add(new Card("a", 'h'));
 
         Hand sortedHand = new Hand(cards);
 
-        Comparator<Card> c = new SortByRankAceHigh();
+        Comparator<Card> c = new SortByRankAceLow();
 
         assertEquals(sortedHand.toString(), hand.sortedHand(c).toString());
     }
@@ -105,6 +105,7 @@ public class SortByRankAceHighTest {
 
         cards = new ArrayList<>();
 
+        cards.add(new Card("a", 's'));
         cards.add(new Card("2", 's'));
         cards.add(new Card("4", 's'));
         cards.add(new Card("5", 's'));
@@ -112,16 +113,15 @@ public class SortByRankAceHighTest {
         cards.add(new Card("7", 's'));
         cards.add(new Card("q", 's'));
         cards.add(new Card("k", 's'));
-        cards.add(new Card("a", 's'));
+        cards.add(new Card("a", 'h'));
         cards.add(new Card("3", 'h'));
         cards.add(new Card("6", 'h'));
         cards.add(new Card("9", 'h'));
         cards.add(new Card("q", 'h'));
-        cards.add(new Card("a", 'h'));
 
         Hand sortedHand = new Hand(cards);
 
-        Comparator<Card> c = new SortByRankAceHigh();
+        Comparator<Card> c = new SortByRankAceLow();
 
         assertEquals(sortedHand.toString(), hand.sortedHand(c).toString());
     }
