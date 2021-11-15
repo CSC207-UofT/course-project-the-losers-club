@@ -77,7 +77,6 @@ class GameTemplateTest {
     }
 
     @Nested
-    @SuppressWarnings()
     class AddUserStatsWinner {
 
         GameTemplate game;
