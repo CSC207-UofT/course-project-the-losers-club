@@ -131,10 +131,13 @@ public class War extends GameTemplate {
 
         if (players[0].isHandEmpty() && players[1].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput("Somehow you two have managed to end up in an extremely improbable draw. Congratulations!\n");
+            this.addUserStats(this.usernames);
         } else if (players[1].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput(players[1].getUsername() + " is out of cards and can no longer participate. " + players[0].getUsername() + " wins!\n");
+            this.addUserStats(players[0].getUsername());
         } else if (players[0].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!\n");
+            this.addUserStats(players[1].getUsername());
         } else {
             this.GAME_OUTPUT.sendOutput("how did you get here. " + PLAYING_FIELD.get(0).size() + " " + PLAYING_FIELD.get(1).size() + "\n");
         }

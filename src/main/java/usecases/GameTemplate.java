@@ -107,6 +107,52 @@ public abstract class GameTemplate {
     }
 
     /**
+     * Add user statistics (wins/losses) to this <code>GameTemplate</code>.
+     *
+     * @param winnerUsername the username of the winning player
+     */
+    protected void addUserStats(String winnerUsername) {
+        for (String u : this.usernames) {
+            if (winnerUsername.equals(u)) {
+                try {
+                    this.userManager.addGamesPlayed(u, 1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Add user statistics (ties) to this <code>GameTemplate</code>.
+     *
+     * @param tiedPlayers the usernames of the players that tied
+     */
+    protected void addUserStats(List<String> tiedPlayers) {
+        for (String u : this.usernames) {
+            if (tiedPlayers.contains(u)) {
+                try {
+                    this.userManager.addGamesPlayed(u, 0);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
      * Run a given game.
      * <p>
      * This is likely the entry point to the main loop of this game.
