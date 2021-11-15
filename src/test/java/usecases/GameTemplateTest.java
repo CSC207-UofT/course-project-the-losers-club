@@ -82,7 +82,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output);
+            this.game = GameTemplate.gameFactory("War", usernames, userManager, input, output);
         }
 
         @Test
@@ -126,7 +126,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output);
+            this.game = GameTemplate.gameFactory("War", usernames, userManager, input, output);
         }
 
         @Test
