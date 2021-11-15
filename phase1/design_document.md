@@ -36,7 +36,47 @@ decide how to display that using the GUI.
 
 ## Clean Architecture
 
-## SOLID Design Principles
+Our code can be divided into 3 systems which work together to perform the task necessary to run our system.
+These 3 systems are:
+1. Console IO Flow: This system is used to pass input to and from the usecases of the application and the users
+2. Game Generation and Management: This system is used to create and play new games
+3. User Creation and Storage: This system is used to create users to be used as players in the games, saving their stats as well
+
+**Console IO Flow:**
+This system is where the main method of our application is. When Main is run, it uses the Input and Output classes, 
+which communicate with MainMenu. MainMenu is where Games are selected and where users are verified to play in games.
+If user operations are selected, MainMenu will communicate with the User Creation and Storage systems. If a game is selected,
+MainMenu will communicate with the Game Generation and Management system. (see ConsoleIO_Flow.png in UMLs)
+
+**Game Generation and Management:**
+When a game is called upon by MainMenu, this system activates. Each game is created as a child of the abstract class GameTemplate 
+to standardize the methods which MainMenu has to use. The 3 games which are implemented currently are 
+CrazyEights, War, and GoFish. These games, all use instances of our entity classes Deck and Hand to simulate the decks and
+hands of players in each respective game. (See Game_Dependencies.png in UMLs)
+
+We can see a more in depth example of how games interact with the entity classes in CrazyEights_Dependencies.png
+
+**User Creation and Storage:**
+When user operations like creating a new user or checking the stats of an existing user are selected in MainMenu,
+this system activates. The requests from MainMenu are processed through the UserManager class, and assisted by 
+UserManagerImporter, UserManagerExporter, and UserDisplay. These allow us to interact with and create new instances
+of our custom entity class User, and use them to play games with. 
+
+
+**Violations Of Clean Architecture:**
+As a whole, our code has few violations of clean architecture. Our biggest violation comes from the fact that because of
+the implementation of our GUI, the games using it (as of now we've only implemented CrazyEights to work with the GUI) are
+dependant on it. This violates clean architecture, as changes in the GUI system will have to be reflected in CrazyEights.
+However, this violation is due to the fact that GUI systems have only started to be integrated. We are currently looking 
+in to creating some sort of facade class to allow for communication between the systems, or possibly changing the interfaces
+themselves. This issue is also touched on in the Major Design Decisions paragraph. 
+
+The other potential violation of clean architecture present in our code is the fact that the entity classes Deck and Hand
+depend on the entity class Card. However, we are unsure if this violates clean architecture, and if so how to remedy it. 
+Since Hands and Decks are made up of Cards, it makes sense for them to be dependant, but if this is found to be against
+clean architecture then other solutions will be found.
+
+## SOLID Design Principles.
 
 * Single Responsibility
   * The console input interface (`presenters.console.Input`) only does one thing&mdash;retrieve input from the user through the console. It retrieves input from the user, parses does very basic input validation ("10S" is a valid card string whereas "404W" is not), and then returns primitive representation of the desired input (for example the `String` "S10" to represent the 10 of spades).
@@ -70,7 +110,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project, coordinated GitHub activities.
 * Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
 * Brian: Added `User` entity class and `UserManager` usecase with Teddy; integrated user functionality; created a stat display menu in the main menu; integrated basic GUI with CrazyEights
-* Bradley: Worked with Daniel on implementing the 'War' usecase. Reviewed pull requests.
+* Bradley: Worked with Daniel on implementing the 'War' usecase. Reviewed pull requests. Worked on Design Document
 * Daniel: Worked alongside Bradley on implementing the 'War' usecase. Addressed issues with entity classes and streamlined 'Hand' to implement the 'Iterable' interface. 
 * Azamat: Implemented the `GoFish` game as a subclass of `GameTemplate`. Extended other classes (`Card`, `Hand`, `Player`, and `Input`) by adding new/overloading existing methods to assist with `GoFish`'s functionality. Tested `GoFish` by first predefining a sequence of user inputs such that the game successfully ends, and then asserting that a set of post-game conditions hold.
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
