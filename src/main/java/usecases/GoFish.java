@@ -264,21 +264,13 @@ public class GoFish extends GameTemplate {
                 winners.add(player.getUsername());
             }
         }
-        for (String username : this.usernames) {
-            if (winners.contains(username)) {
-                try {
-                    this.userManager.addGamesPlayed(username, 1);
-                } catch (UserManager.UserNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    this.userManager.addGamesPlayed(username, -1);
-                } catch (UserManager.UserNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+
+        if (winners.size() == 1) {
+            this.addUserStats(winners.get(0));
+        } else {
+            this.addUserStats(winners);
         }
+
         this.GAME_OUTPUT.sendOutput(String.format("Winner(s): %s with %s points!\n", winners, maxScore));
     }
 }
