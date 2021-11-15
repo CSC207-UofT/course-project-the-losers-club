@@ -99,7 +99,6 @@ public class CrazyEights extends GameTemplate {
 //            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
             this.PLAYER_GUI.changePlayer(currPlayer.getUsername());
             this.SINGLE_CARD_GUI.sendOutput((this.PLAYING_FIELD.peek().getRank() + this.suitTracker));
-            System.out.println(this.currPlayer.getHandStringFormatted());
             this.PLAYER_GUI.sendOutput(this.currPlayer.getHandStringFormatted());
 //            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
 //            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
@@ -109,8 +108,6 @@ public class CrazyEights extends GameTemplate {
                     this.PLAYER_GUI.sendPopup("This is not a valid move.");
                     card = null;
                 }
-
-                System.out.println(this.suitTracker);
 
                 if (!hasValidMove(currPlayer.getHand())) {
                     this.PLAYER_GUI.sendPopup("Card drawn from Deck because there are no cards to play.");
