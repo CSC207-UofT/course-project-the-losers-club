@@ -15,11 +15,14 @@ public class War extends GameTemplate {
     /**
      * Constructor for War. Note that usernames must be a List of length 2
      *
-     * @param gameInput  A Game.Input object allowing for player input.
-     * @param gameOutput A Game.Output object allowing for output to the player.
+     * @param usernames   the list of usernames of player that are playing the game
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param random      a random object for the purposes of game seeding
      */
-    public War(Input gameInput, Output gameOutput, List<String> usernames, UserManager userManager, Random random) {
-        super(usernames, userManager);
+    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random random) {
+        super(usernames, userManager, gameInput, gameOutput);
         this.GAME_INPUT = gameInput;
         this.GAME_OUTPUT = gameOutput;
         this.currPlayerIndex = 0;
@@ -35,12 +38,12 @@ public class War extends GameTemplate {
      * Instantiate a new War game instance.
      *
      * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a usermanager that manages the user entities
-     * @param gameInput   A Game.Input object allowing for player input.
-     * @param gameOutput  A Game.Output object allowing for output to the player.
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
-    public War(Input gameInput, Output gameOutput, List<String> usernames, UserManager userManager) {
-        this(gameInput, gameOutput, usernames, userManager, new Random());
+    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        this(usernames, userManager, gameInput, gameOutput, new Random());
     }
 
     /**
@@ -48,7 +51,7 @@ public class War extends GameTemplate {
      *
      * @return the maximum number of players.
      */
-    protected static int getMaxPlayers() {
+    public static int getMaxPlayers() {
         return MAX_PLAYERS;
     }
 
@@ -57,8 +60,18 @@ public class War extends GameTemplate {
      *
      * @return the maximum number of players.
      */
-    protected static int getMinPlayers() {
+    public static int getMinPlayers() {
         return MIN_PLAYERS;
+    }
+
+    /**
+     * Return a String representation of this class.
+     *
+     * @return the String "War"
+     */
+    @Override
+    public String toString() {
+        return "War";
     }
 
     /**
@@ -118,10 +131,13 @@ public class War extends GameTemplate {
 
         if (players[0].isHandEmpty() && players[1].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput("Somehow you two have managed to end up in an extremely improbable draw. Congratulations!\n");
+            this.addUserStats(this.usernames);
         } else if (players[1].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput(players[1].getUsername() + " is out of cards and can no longer participate. " + players[0].getUsername() + " wins!\n");
+            this.addUserStats(players[0].getUsername());
         } else if (players[0].isHandEmpty()) {
             this.GAME_OUTPUT.sendOutput(players[0].getUsername() + " is out of cards and can no longer participate. " + players[1].getUsername() + " wins!\n");
+            this.addUserStats(players[1].getUsername());
         } else {
             this.GAME_OUTPUT.sendOutput("how did you get here. " + PLAYING_FIELD.get(0).size() + " " + PLAYING_FIELD.get(1).size() + "\n");
         }
@@ -130,7 +146,7 @@ public class War extends GameTemplate {
     /**
      * Flips a card for each player
      */
-    public void flipCards() {
+    protected void flipCards() {
         makeMove(currPlayer.getHand().removeCard());
         currPlayerIndex = 1;
         currPlayer = players[currPlayerIndex];
@@ -144,7 +160,7 @@ public class War extends GameTemplate {
      *
      * @param playerIndex the index representing the player's pile we want to return
      */
-    public Card returnTopCard(int playerIndex) {
+    protected Card returnTopCard(int playerIndex) {
         return this.PLAYING_FIELD.get(playerIndex).peek();
     }
 
@@ -152,7 +168,7 @@ public class War extends GameTemplate {
      * Uses Hierarchy to decide which player wins a round of War. returns which player has won (0 or 1) or a 2 if
      * the players tie. Outputs a message accordingly.
      */
-    public int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
+    protected int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
         int topCardHierarchy0 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard0.getRank());
         int topCardHierarchy1 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard1.getRank());
 
@@ -173,20 +189,11 @@ public class War extends GameTemplate {
     }
 
     /**
-     * Returns true as moves are predetermined in war
-     *
-     * @param card A card object
-     */
-    public boolean checkMove(Card card) {
-        return true;
-    }
-
-    /**
      * Plays the given card into the playingField for the current player
      *
      * @param card A card object that will be played in the game
      */
-    public void makeMove(Card card) {
+    protected void makeMove(Card card) {
         this.PLAYING_FIELD.get(currPlayerIndex).push(card);
     }
 
@@ -195,7 +202,7 @@ public class War extends GameTemplate {
      *
      * @return true if either player has an empty hand, false otherwise
      */
-    public boolean checkWin() {
+    private boolean checkWin() {
         return (players[0].isHandEmpty() || players[1].isHandEmpty());
     }
 }

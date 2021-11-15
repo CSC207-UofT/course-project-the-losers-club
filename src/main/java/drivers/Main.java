@@ -1,11 +1,8 @@
 package drivers;
 
 import controllers.MainMenu;
-
 import presenters.console.Input;
 import presenters.console.Output;
-import presenters.gui.PlayerGUI;
-import presenters.gui.SingleCardGUI;
 import usecases.GameTemplate;
 
 public class Main {

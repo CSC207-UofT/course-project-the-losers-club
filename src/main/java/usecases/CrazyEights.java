@@ -20,10 +20,10 @@ public class CrazyEights extends GameTemplate {
     /**
      * Instantiate a new CrazyEights game instance.
      *
-     * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a usermanager that manages the user entities
-     * @param playerGUI   A PlayerGUI object allowing for player input and hand visualization.
-     * @param singleCardGUI  A SingleCardGUI object allowing for the top card visualization.
+     * @param usernames     the list of usernames of player that are playing the game
+     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
      */
     public CrazyEights(List<String> usernames, UserManager userManager, PlayerGUI playerGUI, SingleCardGUI singleCardGUI) {
         this(usernames, userManager, playerGUI, singleCardGUI, new Random());
@@ -32,15 +32,15 @@ public class CrazyEights extends GameTemplate {
     /**
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
-     * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a usermanager that manages the user entities
-     * @param playerGUI   A PlayerGUI object allowing for player input and hand visualization.
-     * @param singleCardGUI  A SingleCardGUI object allowing for the top card visualization.
-     * @param rand        a Random object for creating deterministic behaviour
+     * @param usernames     the list of usernames of player that are playing the game
+     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
+     * @param rand          a Random object for creating deterministic behaviour
      */
     public CrazyEights(List<String> usernames, UserManager userManager,
                        PlayerGUI playerGUI, SingleCardGUI singleCardGUI, Random rand) {
-        super(usernames, userManager);
+        super(usernames, userManager, playerGUI, singleCardGUI);
         this.PLAYER_GUI = playerGUI;
         this.SINGLE_CARD_GUI = singleCardGUI;
         this.currPlayerIndex = 0;
@@ -60,7 +60,7 @@ public class CrazyEights extends GameTemplate {
      *
      * @return the maximum number of players.
      */
-    protected static int getMaxPlayers() {
+    public static int getMaxPlayers() {
         return MAX_PLAYERS;
     }
 
@@ -69,7 +69,7 @@ public class CrazyEights extends GameTemplate {
      *
      * @return the maximum number of players.
      */
-    protected static int getMinPlayers() {
+    public static int getMinPlayers() {
         return MIN_PLAYERS;
     }
 
@@ -116,7 +116,7 @@ public class CrazyEights extends GameTemplate {
                     this.PLAYER_GUI.sendPopup("Card drawn from Deck because there are no cards to play.");
                 } else if (!this.PLAYER_GUI.drawCard()) {
                     crd = this.PLAYER_GUI.getCard().toUpperCase();
-                    card = new Card(crd.substring(0, 1), crd.charAt(1));
+                    card = new Card(crd.substring(0, crd.length() - 1), crd.charAt(crd.length() - 1));
                     if (card.getRank().equals("8")) {
                         this.suitTracker = Character.toUpperCase(this.PLAYER_GUI.getSuit());
                     }
@@ -124,6 +124,8 @@ public class CrazyEights extends GameTemplate {
 
                 if (card != null && !checkMove(card)) {
                     looped = true;
+                } else {
+                    looped = false;
                 }
             } while (card != null && !checkMove(card));
             if (card == null) {
@@ -133,21 +135,8 @@ public class CrazyEights extends GameTemplate {
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
         }
-        for (String u : this.usernames) {
-            if (this.currPlayer.getUsername().equals(u)) {
-                try {
-                    this.userManager.addGamesPlayed(u, 1);
-                } catch (UserManager.UserNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    this.userManager.addGamesPlayed(u, -1);
-                } catch (UserManager.UserNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+
+        this.addUserStats(this.currPlayer.getUsername());
         this.PLAYER_GUI.close(this.currPlayer.getUsername() + " Wins!!!");
         this.SINGLE_CARD_GUI.close();
     }
@@ -158,7 +147,7 @@ public class CrazyEights extends GameTemplate {
      * @param card A card object that will be checked if it is a valid move
      * @return true if card is a valid move, false otherwise
      */
-    public boolean checkMove(Card card) {
+    private boolean checkMove(Card card) {
         if (this.currPlayer.isHandEmpty()) {
             return false;
         } else if (card.getRank().equals("8")) {
@@ -179,7 +168,7 @@ public class CrazyEights extends GameTemplate {
      * @param hand A hand object of a player playing the game
      * @return true if the hand has a valid move, false otherwise
      */
-    public boolean hasValidMove(Hand hand) {
+    private boolean hasValidMove(Hand hand) {
         List<Card> cards = hand.getCards();
         for (Card card : cards) {
             if (card.getSuit() == this.suitTracker || card.getRank().equals(this.PLAYING_FIELD.peek().getRank()) || card.getRank().equals("8")) {
@@ -194,7 +183,7 @@ public class CrazyEights extends GameTemplate {
      *
      * @param card A card object that will be played in the game
      */
-    public void makeMove(Card card) {
+    private void makeMove(Card card) {
         this.PLAYING_FIELD.add(card);
         this.currPlayer.removeFromHand(card);
         if (!card.getRank().equals("8")) {
@@ -207,7 +196,7 @@ public class CrazyEights extends GameTemplate {
      *
      * @return true if player has an empty hand, false otherwise
      */
-    public boolean checkWin() {
+    private boolean checkWin() {
         return currPlayer.isHandEmpty();
     }
 }

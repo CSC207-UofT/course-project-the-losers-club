@@ -5,7 +5,10 @@ import helpers.CardCheck;
 import usecases.GameTemplate;
 import usecases.UserDisplay;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import static helpers.UsernameCheck.checkUsername;
@@ -112,7 +115,7 @@ public class Input implements MainMenu.Input, GameTemplate.Input, UserDisplay.In
      * Prompt user to select a player.
      *
      * @param currPlayerUsername the current player username in the game and is not in the list of player usernames displayed to the user.
-     * @param usernames the list of all the player usernames in the game.
+     * @param usernames          the list of all the player usernames in the game.
      * @return a String representing the username selected by the user. This username is in the list of all usernames.
      */
     public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
@@ -174,7 +177,7 @@ public class Input implements MainMenu.Input, GameTemplate.Input, UserDisplay.In
 
         String line = this.inp.nextLine().trim();
 
-        while (!checkUsername(line)){
+        while (!checkUsername(line)) {
             System.out.print("Invalid username, try again: ");
             line = this.inp.nextLine().trim();
         }

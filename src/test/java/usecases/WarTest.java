@@ -21,7 +21,7 @@ public class WarTest {
         usernames.add("Daniel");
         usernames.add("Bradley");
         Random seed = new Random(12345);
-        this.war = new War(input, output, usernames, this.userManager, seed);
+        this.war = new War(usernames, this.userManager, input, output, seed);
     }
 
     @Test

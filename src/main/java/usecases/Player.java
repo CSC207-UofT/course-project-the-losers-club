@@ -14,17 +14,16 @@ public class Player {
     private final Hand hand;
     private final String username;
 
-    public String getUsername() {
-        return username;
-    }
-
     /**
-     *
      * @param username username of the user that is attached to the player
      */
     public Player(String username) {
         this.hand = new Hand();
         this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -38,6 +37,7 @@ public class Player {
 
     /**
      * adds the inputted list of cards to the hand of this player.
+     *
      * @param cards an ArrayList of cards to add to the hand.
      */
     public void addToHand(ArrayList<Card> cards) {
@@ -56,6 +56,7 @@ public class Player {
 
     /**
      * remove and return a list of cards with the given rank from this player's hand.
+     *
      * @param rank the rank of the cards.
      * @return an ArrayList of cards with the given rank that have been removed from this player's hand.
      */
@@ -72,7 +73,7 @@ public class Player {
      *
      * @return a boolean for if the player's hand is empty or not
      */
-    public boolean isHandEmpty(){
+    public boolean isHandEmpty() {
         return this.hand.isEmpty();
     }
 
@@ -81,7 +82,7 @@ public class Player {
      *
      * @return the player's hand as a string
      */
-    public String getHandString(){
+    public String getHandString() {
         return this.hand.toString();
     }
 
@@ -93,9 +94,8 @@ public class Player {
     public String getHandStringFormatted() {
         String s = this.hand.toString();
         String clippedString = s.substring(1, s.length() - 1);
-        String formattedString = clippedString.replaceAll(" ", "").replaceAll(",", " ");
 
-        return formattedString;
+        return clippedString.replaceAll(" ", "").replaceAll(",", " ");
     }
 
     /**
@@ -104,7 +104,7 @@ public class Player {
      * @param c A comparator implementation for Card, this describes how you want to sort the cards.
      * @return The sorted version of the players hand as a string
      */
-    public String getSortedHandString(Comparator<Card> c){
+    public String getSortedHandString(Comparator<Card> c) {
         return this.hand.sortedHand(c).toString();
     }
 
