@@ -2,7 +2,13 @@
 
 ## Updated Specification
 
-* The specification remains mostly the same, except for an additional game `Go Fish` that was added in this phase. The rules of the game is as follows:
+* The specification remains mostly the same, except for an additional game Go Fish that was added in this phase. 
+* Main additions for phase 1 are:
+  * Added a main menu (previously, launching the project launched straight into Crazy Eights)
+  * Added "user" functionality&mdash;tracking users and their game statistics through their username
+  * Added serialization of users (users' statistics are stored between program runs)
+  * Added a basic GUI (only implemented in Crazy Eights for now, other games and design improvements are to be done in phase 2)
+* The rules of Go Fish are as follows:
 
 ### Go Fish
 
@@ -27,53 +33,63 @@
 
 
 ## Major Design Decisions
-* As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the 
-dependency rule since operating the GUI is more complex than the current Output Interface allows. In Phase 2, we are
-planning to fix this problem either by redesign the Output interface to be less vague or to use the Facade design pattern
-to the fix the problem by creating a class that takes the object that is trying to be outputted and 
-decide how to display that using the GUI. 
-
+* As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the dependency rule since methods of the GUI are directly being called from `CrazyEights`. In Phase 2, we are planning to fix this problem either by redesigning the output interface to be less vague or to use the Façade design pattern to the fix the problem by creating a class that takes the object that is trying to be outputted and decide how to display that using the GUI. 
+* The input and output interfaces are separate for the games and for the main menu. This was done to avoid forcing an implementer to implement both interfaces. It may be necessary to have a more unified input/output interface in the future, since having these multiple interfaces requires these IO objects to be passed lower than may be necessary.
 
 ## Clean Architecture
 
 Our code can be divided into 3 systems which work together to perform the task necessary to run our system.
 These 3 systems are:
+
 1. Console IO Flow: This system is used to pass input to and from the usecases of the application and the users
 2. Game Generation and Management: This system is used to create and play new games
 3. User Creation and Storage: This system is used to create users to be used as players in the games, saving their stats as well
 
-**Console IO Flow:**
-This system is where the main method of our application is. When Main is run, it uses the Input and Output classes, 
-which communicate with MainMenu. MainMenu is where Games are selected and where users are verified to play in games.
+#### Console IO Flow
+
+This system is where the main method of our application is. When `Main` is run, it uses the `console.Input` and `console.Output` classes, 
+which communicate with `MainMenu`. `MainMenu` is where Games are selected and where users are verified to play in games.
 If user operations are selected, MainMenu will communicate with the User Creation and Storage systems. If a game is selected,
-MainMenu will communicate with the Game Generation and Management system. (see ConsoleIO_Flow.png in UMLs)
+`MainMenu` will communicate with the Game Generation and Management system.
 
-**Game Generation and Management:**
-When a game is called upon by MainMenu, this system activates. Each game is created as a child of the abstract class GameTemplate 
-to standardize the methods which MainMenu has to use. The 3 games which are implemented currently are 
-CrazyEights, War, and GoFish. These games, all use instances of our entity classes Deck and Hand to simulate the decks and
-hands of players in each respective game. (See Game_Dependencies.png in UMLs)
+<img src="UMLs/ConsoleIO_Flow.png" width=600>
 
-We can see a more in depth example of how games interact with the entity classes in CrazyEights_Dependencies.png
 
-**User Creation and Storage:**
-When user operations like creating a new user or checking the stats of an existing user are selected in MainMenu,
-this system activates. The requests from MainMenu are processed through the UserManager class, and assisted by 
-UserManagerImporter, UserManagerExporter, and UserDisplay. These allow us to interact with and create new instances
+
+#### Game Generation and Management
+
+When a game is called upon by `MainMenu`, this system activates. Each game is created as a child of the abstract class `GameTemplate `
+to standardize the methods which `MainMenu` has to use. The 3 games which are implemented currently are 
+`CrazyEights`, `War`, and `GoFish`. These games, all use instances of our entity classes `Deck` and `Hand` to simulate the decks and
+hands of players in each respective game. 
+
+<img src="UMLs/Game_Dependencies.png" width=450>
+
+We can see a more in depth example of how games interact with the entity classes in the below image:
+
+<img src="UMLs/CrazyEights_Dependencies.png" width=500>
+
+#### User Creation and Storage
+
+When user operations like creating a new user or checking the stats of an existing user are selected in `MainMenu`,
+this system activates. The requests from `MainMenu` are processed through the `UserManager` class, and assisted by 
+`UserManagerImporter`, `UserManagerExporter`, and `UserDisplay`. These allow us to interact with and create new instances
 of our custom entity class User, and use them to play games with. 
 
+<img src="UMLs/User_Flow.png" width=600>
 
-**Violations Of Clean Architecture:**
+#### Violations Of Clean Architecture
+
 As a whole, our code has few violations of clean architecture. Our biggest violation comes from the fact that because of
-the implementation of our GUI, the games using it (as of now we've only implemented CrazyEights to work with the GUI) are
-dependant on it. This violates clean architecture, as changes in the GUI system will have to be reflected in CrazyEights.
+the implementation of our GUI, the games using it (as of now we've only implemented `CrazyEights` to work with the GUI) are
+dependent on it. This violates clean architecture, as changes in the GUI system will have to be reflected in `CrazyEights`.
 However, this violation is due to the fact that GUI systems have only started to be integrated. We are currently looking 
-in to creating some sort of facade class to allow for communication between the systems, or possibly changing the interfaces
+in to creating some sort of façade class to allow for communication between the systems, or possibly changing the interfaces
 themselves. This issue is also touched on in the Major Design Decisions paragraph. 
 
-The other potential violation of clean architecture present in our code is the fact that the entity classes Deck and Hand
-depend on the entity class Card. However, we are unsure if this violates clean architecture, and if so how to remedy it. 
-Since Hands and Decks are made up of Cards, it makes sense for them to be dependant, but if this is found to be against
+The other potential violation of clean architecture present in our code is the fact that the entity classes `Deck` and `Hand`
+depend on the entity class `Card`. However, we are unsure if this violates clean architecture, and if so how to remedy it. 
+Since `Hand`s and `Deck`s are made up of `Card`s, it makes sense for them to be dependent, but if this is found to be against
 clean architecture then other solutions will be found.
 
 ## SOLID Design Principles.
@@ -97,24 +113,31 @@ We primarily considered the packaging by component and the packaging by layer st
 
 * Factory Method
   * `GameTemplate.gameFactory()` is used to create the various games. When games are added/removed from the pool of available games, `GameTemplate` must be changed, but not the menu implementation in `GameSelector`. `GameSelector` remains independent of the actual available games.
+* Dependency Inversion
+  * `GameTemplate` and `GameSelector` define input and output interfaces. These classes have parameters in their constructors for implementations of these interfaces. This allows classes in the layers above them to choose which implementation they wish to use. Additionally, having these interfaces defined means testing is much easier. For example, in `GoFishTest`, a class that emulates the behaviour of a user is used to test the `GoFish` game functionality.
 
 
 ## Progress Report
 
 ### Open questions
 
+1. How can we redesign our output interface to handle the various messages/types of actions that need to be triggered in the GUI?
+2. Would migrating to a database be worth it for our project? It would allow for flexibility in the future should we decide to do more with the users and their statistics, but it would be more complex than the current solution.
+3. Would abstracting away some sort of "menu" superclass make sense for our current design? We decided against it for phase 1 because there's only one main menu, and we thought abstracting it away would just add unnecessary complexity. Would abstracting it work/make sense with our GUI?
+
 ### What has worked well
+
 * Using issues/milestones on GitHub has been a very effective tool to both assign work to people without having to have a general meeting all the time and to ensure that everyone is aware of what work needs to be done and where.
 ### What each group member has been working on
 
-* Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project, coordinated GitHub activities.
-* Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`
-* Brian: Added `User` entity class and `UserManager` usecase with Teddy; integrated user functionality; created a stat display menu in the main menu; integrated basic GUI with CrazyEights
-* Bradley: Worked with Daniel on implementing the 'War' usecase. Reviewed pull requests. Worked on Design Document
-* Daniel: Worked alongside Bradley on implementing the 'War' usecase. Addressed issues with entity classes and streamlined 'Hand' to implement the 'Iterable' interface. 
+* Raymond: Added the `GameSelector` menu (and related console IO), added `UserManager` serialization flows, worked on general improvements across the project, coordinated GitHub activities, worked on the design document.
+* Teddy: Added `User` entity class and `UserManager` usecase; integrated user functionality across the entire project; worked on `GameSelector` menu; cleaned up and added functionality to `CrazyEights`.
+* Brian: Added `User` entity class and `UserManager` usecase with Teddy; integrated user functionality; created a stat display menu in the main menu; integrated basic GUI with `CrazyEights`.
+* Bradley: Worked with Daniel on implementing the `War` usecase. Reviewed pull requests. Worked on the Design Document.
+* Daniel: Worked alongside Bradley on implementing the `War` usecase. Addressed issues with entity classes and streamlined `Hand` to implement the `Iterable` interface. 
 * Azamat: Implemented the `GoFish` game as a subclass of `GameTemplate`. Extended other classes (`Card`, `Hand`, `Player`, and `Input`) by adding new/overloading existing methods to assist with `GoFish`'s functionality. Tested `GoFish` by first predefining a sequence of user inputs such that the game successfully ends, and then asserting that a set of post-game conditions hold.
 * Luke: Added `PlayerGUI` and `SingleCardGUI` classes. Created and designed the GUI as well as wrote tests for other code. Reviewed pull requests and other GitHub maintenance.
-* Nitish: Changed the implementation for `Deck` by changing it from a list to queue for more efficiency and helped with testing GoFish.
+* Nitish: Changed the implementation for `Deck` by changing it from a list to queue for more efficiency and helped with testing `GoFish`.
 
 ### What each group member plans to work on next
 * Raymond: Migrating serialization to a database, continue improving design and efficiency across the project.
