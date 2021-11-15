@@ -83,7 +83,11 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output);
+            try {
+                this.game = GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output);
+            } catch (HeadlessException ignored) {
+                // suppress exception for GitHub running
+            }
         }
 
         @Test
