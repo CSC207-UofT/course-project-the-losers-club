@@ -135,23 +135,8 @@ public class CrazyEights extends GameTemplate {
             }
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
         }
-        this.addUserStats(this.currPlayer.getUsername());
 
-//        for (String u : this.usernames) {
-//            if (this.currPlayer.getUsername().equals(u)) {
-//                try {
-//                    this.userManager.addGamesPlayed(u, 1);
-//                } catch (UserManager.UserNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                try {
-//                    this.userManager.addGamesPlayed(u, -1);
-//                } catch (UserManager.UserNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
+        this.addUserStats(this.currPlayer.getUsername());
         this.PLAYER_GUI.close(this.currPlayer.getUsername() + " Wins!!!");
         this.SINGLE_CARD_GUI.close();
     }
