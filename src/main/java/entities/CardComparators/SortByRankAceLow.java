@@ -1,4 +1,4 @@
-package entities.CardComparors;
+package entities.CardComparators;
 
 import entities.Card;
 
