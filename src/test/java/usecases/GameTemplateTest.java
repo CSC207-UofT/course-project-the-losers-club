@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,6 +75,18 @@ class GameTemplateTest {
         }
     }
 
+    static class FakeGame extends GameTemplate {
+
+        protected FakeGame(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+            super(usernames, userManager, gameInput, gameOutput);
+        }
+
+        @Override
+        public void startGame() {
+
+        }
+    }
+
     @Nested
     class AddUserStatsWinner {
 
@@ -83,11 +94,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            try {
-                this.game = GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output);
-            } catch (HeadlessException ignored) {
-                // suppress exception for GitHub running
-            }
+            this.game = new FakeGame(usernames, userManager, input, output);
         }
 
         @Test
@@ -131,7 +138,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = GameTemplate.gameFactory("Go Fish", usernames, userManager, input, output);
+            this.game = new FakeGame(usernames, userManager, input, output);
         }
 
         @Test
@@ -164,37 +171,6 @@ class GameTemplateTest {
                         fail("User not found when getting non-winner's wins");
                     }
                 }
-            }
-        }
-    }
-
-    @Nested
-    class GameFactory {
-        @Test
-        void gameFactoryCrazyEights() {
-            try {
-                assertTrue(GameTemplate.gameFactory("Crazy Eights", usernames, userManager, input, output) instanceof CrazyEights);
-            } catch (HeadlessException ignored) {
-                // suppress exception for GitHub running
-            }
-        }
-
-        @Test
-        void gameFactoryWar() {
-            List<String> names = Arrays.asList("harrypotter", "hermionegranger");
-            try {
-                assertTrue(GameTemplate.gameFactory("War", names, userManager, input, output) instanceof War);
-            } catch (HeadlessException ignored) {
-                // suppress exception for GitHub running
-            }
-        }
-
-        @Test
-        void gameFactoryGoFish() {
-            try {
-                assertTrue(GameTemplate.gameFactory("Go Fish", usernames, userManager, input, output) instanceof GoFish);
-            } catch (HeadlessException ignored) {
-                // suppress exception for GitHub running
             }
         }
     }
