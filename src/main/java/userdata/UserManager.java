@@ -87,4 +87,13 @@ public interface UserManager {
         }
     }
 
+    /**
+     * An exception representing the event where a provided statistic is invalid.
+     */
+    class InvalidStatisticError extends Error {
+        public InvalidStatisticError(String statistic) {
+            super("Statistic of: " + statistic + ", is invalid.");
+        }
+    }
+
 }
