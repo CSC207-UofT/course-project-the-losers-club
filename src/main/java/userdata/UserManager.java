@@ -35,6 +35,13 @@ public interface UserManager extends AutoCloseable, Closeable {
 
     /**
      * Set the specified statistics to the given amount for the given user.
+     * <p>
+     * Implementations must support the following statistics:
+     * <ul>
+     *     <li>gamesPlayed</li>
+     *     <li>gamesWon</li>
+     *     <li>gamesTied</li>
+     * </ul>
      *
      * @param username   the username of the user to set statistics for
      * @param statistics the new values of the statistics. Should be a mapping of <code>{statistic: new value}</code>.
@@ -44,6 +51,13 @@ public interface UserManager extends AutoCloseable, Closeable {
 
     /**
      * Increment the specified statistics by the given amount for the given user.
+     * <p>
+     * Implementations must support the following statistics:
+     * <ul>
+     *     <li>gamesPlayed</li>
+     *     <li>gamesWon</li>
+     *     <li>gamesTied</li>
+     * </ul>
      *
      * @param username   the username of the user to add statistics to
      * @param statistics the statistics to add. Should be a mapping of <code>{statistic: increment}</code>.
@@ -53,6 +67,13 @@ public interface UserManager extends AutoCloseable, Closeable {
 
     /**
      * Increment the specified statistics by 1 for the given user.
+     * <p>
+     * Implementations must support the following statistics:
+     * <ul>
+     *     <li>gamesPlayed</li>
+     *     <li>gamesWon</li>
+     *     <li>gamesTied</li>
+     * </ul>
      *
      * @param username   the username of the user to add statistics to
      * @param statistics the statistics to add. Should be a mapping of <code>{statistic: increment}</code>.
@@ -62,6 +83,13 @@ public interface UserManager extends AutoCloseable, Closeable {
 
     /**
      * Return the selected statistics for the given user.
+     * <p>
+     * Implementations must support the following statistics:
+     * <ul>
+     *     <li>gamesPlayed</li>
+     *     <li>gamesWon</li>
+     *     <li>gamesTied</li>
+     * </ul>
      *
      * @param username   the username of the user to retrieve statistics for
      * @param statistics the statistics to retrieve
