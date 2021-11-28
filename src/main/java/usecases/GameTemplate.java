@@ -4,9 +4,11 @@ import entities.Card;
 import entities.Deck;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
+import userdata.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public abstract class GameTemplate {
 
@@ -21,6 +23,14 @@ public abstract class GameTemplate {
     protected List<String> usernames;
     protected int currPlayerIndex;
 
+    /**
+     * Construct a <code>GameTemplate</code>.
+     *
+     * @param usernames   usernames of those playing the game
+     * @param userManager manager for storing user information
+     * @param gameInput   an object implementing <code>GameTemplate.Input</code>
+     * @param gameOutput  an object implementing <code>GameTemplate.output</code>
+     */
     protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this.userManager = userManager;
         this.usernames = usernames;
@@ -115,13 +125,13 @@ public abstract class GameTemplate {
         for (String u : this.usernames) {
             if (winnerUsername.equals(u)) {
                 try {
-                    this.userManager.addGamesPlayed(u, 1);
+                    this.userManager.addUserStatistics(u, Set.of("gamesPlayed", "gamesWon"));
                 } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    this.userManager.addGamesPlayed(u, -1);
+                    this.userManager.addUserStatistics(u, Set.of("gamesPlayed"));
                 } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -138,13 +148,13 @@ public abstract class GameTemplate {
         for (String u : this.usernames) {
             if (tiedPlayers.contains(u)) {
                 try {
-                    this.userManager.addGamesPlayed(u, 0);
+                    this.userManager.addUserStatistics(u, Set.of("gamesPlayed", "gamesTied"));
                 } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    this.userManager.addGamesPlayed(u, -1);
+                    this.userManager.addUserStatistics(u, Set.of("gamesPlayed"));
                 } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }

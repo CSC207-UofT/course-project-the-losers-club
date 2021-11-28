@@ -1,10 +1,10 @@
 package controllers;
 
-import usecases.*;
+import usecases.GameTemplate;
+import usecases.UserDisplay;
+import userdata.UserManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,13 +50,9 @@ public class MainMenu {
      * <p>
      * MainMenu allows a user to select the game they wish to play and runs that game.
      *
-     * @param userManagerInputFile  a String representing a file with a serialized <code>UserManager</code> to import
-     * @param userManagerOutputFile a String representing a file to serialize a <code>UserManager</code> to
+     * @param userManager storage manager for user information
      */
-    public void run(String userManagerInputFile, String userManagerOutputFile) {
-
-        UserManager userManager = this.importUserManager(userManagerInputFile);
-
+    public void run(UserManager userManager) {
         while (true) {
             displayMenu();
 
@@ -67,7 +63,6 @@ public class MainMenu {
             }
 
             if (sel == 0) {
-                this.exportUserManager(userManager, userManagerOutputFile);
                 return;
             } else if (sel == 9) {
                 UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
@@ -77,7 +72,6 @@ public class MainMenu {
                 List<String> usernames = getUsernames(userManager, this.GAMES[sel - 1]);
 
                 handleUserSelection(sel, usernames, userManager);
-                this.exportUserManager(userManager, userManagerOutputFile);
             }
         }
     }
@@ -103,7 +97,9 @@ public class MainMenu {
      * <p>
      * This method will be the main runner of the selected Game.
      *
-     * @param sel the user's selection. Must be greater than 0.
+     * @param sel         the user's selection. Must be greater than 0.
+     * @param usernames   usernames that are playing the game
+     * @param userManager storage manager for user information
      */
     private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
         String gameString = this.GAMES[sel - 1];
@@ -155,10 +151,7 @@ public class MainMenu {
                 this.SELECTOR_OUTPUT.sendOutput("This username has already been added. Please enter a new username!\n");
             } else {
                 usernames.add(username);
-                try {
-                    userManager.addUser(username);
-                } catch (UserManager.UserAlreadyExistsException ignored) {
-                }
+                userManager.addUser(username);
             }
 
             if (usernames.size() != maxPlayers) {
@@ -166,42 +159,6 @@ public class MainMenu {
             }
         }
         return usernames;
-    }
-
-    /**
-     * Import and return a <code>UserManager</code> serialized in the specified <code>inputFilePath</code>.
-     *
-     * @param inputFilePath file path to a serialized <code>UserManager</code>
-     * @return the deserialized <code>UserManager</code>
-     */
-    private UserManager importUserManager(String inputFilePath) {
-        UserManager userManager;
-        try {
-            userManager = UserManagerImporter.importUserManager(inputFilePath);
-        } catch (IOException | ClassNotFoundException ignored) {
-            userManager = new UserManager();  // ignore input file if exception thrown
-        }
-        return userManager;
-    }
-
-    /**
-     * Export the given <code>UserManager</code> to the specified <code>outputFilePath</code>
-     *
-     * @param userManager    the <code>UserManager</code> to serialize
-     * @param outputFilePath the file to serialize to
-     */
-    private void exportUserManager(UserManager userManager, String outputFilePath) {
-        try {
-            UserManagerExporter.exportUserManager(userManager, outputFilePath);
-        } catch (IOException e) {
-            // dump UserManager to a unique file (should be unique since using current system time)
-            Date currDate = new Date();
-            try {
-                UserManagerExporter.exportUserManager(userManager, "UserManager-" + currDate.getTime() + ".ser");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 
     /**

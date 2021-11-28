@@ -1,20 +1,34 @@
 package usecases;
 
 import entities.Card;
-import presenters.console.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import presenters.console.Input;
+import presenters.console.Output;
+import userdata.SQLiteUserDatabase;
+import userdata.UserManager;
 
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class WarTest {
-    private final UserManager userManager = new UserManager();
+    private UserManager userManager;
     public War war;
+    String filePath;
 
     @BeforeEach
     void setUp() {
+        this.filePath = "usermanager-" + (new Date()).getTime() + (new Random()).nextInt() + ".db";
+        this.userManager = new SQLiteUserDatabase(this.filePath);
+
         Input input = new Input();
         Output output = new Output();
         List<String> usernames = new ArrayList<>();
@@ -22,6 +36,18 @@ public class WarTest {
         usernames.add("Bradley");
         Random seed = new Random(12345);
         this.war = new War(usernames, this.userManager, input, output, seed);
+    }
+
+    @AfterEach
+    void tearDown() {
+        try {
+            this.userManager.close();
+        } catch (IOException e) {
+            fail("Could not close manager connection.");
+        }
+        if (!(new File(this.filePath)).delete()) {
+            fail("File could not be deleted, is it still in use?");
+        }
     }
 
     @Test

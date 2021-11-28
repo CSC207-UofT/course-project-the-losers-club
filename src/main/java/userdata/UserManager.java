@@ -1,5 +1,6 @@
 package userdata;
 
+import java.io.Closeable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * Manages a collection of users.
  */
-public interface UserManager {
+public interface UserManager extends AutoCloseable, Closeable {
     /**
      * Add a user to this database.
      *

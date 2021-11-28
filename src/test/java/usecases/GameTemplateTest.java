@@ -1,13 +1,17 @@
 package usecases;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import userdata.SQLiteUserDatabase;
+import userdata.UserManager;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,21 +21,32 @@ class GameTemplateTest {
     UserManager userManager;
     GameTemplate.Input input;
     GameTemplate.Output output;
+    String filePath;
 
     @BeforeEach
     void setUp() {
         this.usernames = Arrays.asList("harrypotter", "hermionegranger", "ronweasley");
-        this.userManager = new UserManager();
+
+        this.filePath = "usermanager-" + (new Date()).getTime() + (new Random()).nextInt() + ".db";
+        this.userManager = new SQLiteUserDatabase(this.filePath);
         for (String u : usernames) {
-            try {
-                userManager.addUser(u);
-            } catch (UserManager.UserAlreadyExistsException e) {
-                throw new IllegalArgumentException("User already exists. Check usernames used for test.");
-            }
+            userManager.addUser(u);
         }
 
         this.input = new Input();
         this.output = new Output();
+    }
+
+    @AfterEach
+    void tearDown() {
+        try {
+            userManager.close();
+        } catch (IOException e) {
+            fail("Could not close manager connection.");
+        }
+        if (!(new File(this.filePath)).delete()) {
+            fail("File could not be deleted, is it still in use?");
+        }
     }
 
     static class Input implements GameTemplate.Input {
@@ -103,26 +118,26 @@ class GameTemplateTest {
             this.game.addUserStats(winner);
             for (String u : usernames) {
                 try {
-                    assertEquals(1, userManager.getGamesPlayed(u));
+                    assertEquals(1, userManager.getUserStatistics(u, Set.of("gamesPlayed")).get("gamesPlayed"));
                 } catch (UserManager.UserNotFoundException e) {
                     fail("User not found when getting games played");
                 }
 
                 try {
-                    assertEquals(0, userManager.getGamesTied(u));
+                    assertEquals(0, userManager.getUserStatistics(u, Set.of("gamesTied")).get("gamesTied"));
                 } catch (UserManager.UserNotFoundException e) {
                     fail("User not found when getting games tied");
                 }
 
                 if (u.equals(winner)) {
                     try {
-                        assertEquals(1, userManager.getWins(u));
+                        assertEquals(1, userManager.getUserStatistics(u, Set.of("gamesWon")).get("gamesWon"));
                     } catch (UserManager.UserNotFoundException e) {
                         fail("User not found when getting winner's wins");
                     }
                 } else {
                     try {
-                        assertEquals(0, userManager.getWins(u));
+                        assertEquals(0, userManager.getUserStatistics(u, Set.of("gamesWon")).get("gamesWon"));
                     } catch (UserManager.UserNotFoundException e) {
                         fail("User not found when getting non-winner's wins");
                     }
@@ -147,26 +162,26 @@ class GameTemplateTest {
             this.game.addUserStats(tiedUsers);
             for (String u : usernames) {
                 try {
-                    assertEquals(1, userManager.getGamesPlayed(u));
+                    assertEquals(1, userManager.getUserStatistics(u, Set.of("gamesPlayed")).get("gamesPlayed"));
                 } catch (UserManager.UserNotFoundException e) {
                     fail("User not found when getting games played");
                 }
 
                 try {
-                    assertEquals(0, userManager.getWins(u));
+                    assertEquals(0, userManager.getUserStatistics(u, Set.of("gamesWon")).get("gamesWon"));
                 } catch (UserManager.UserNotFoundException e) {
                     fail("User not found when getting non-winner's wins");
                 }
 
                 if (tiedUsers.contains(u)) {
                     try {
-                        assertEquals(1, userManager.getGamesTied(u));
+                        assertEquals(1, userManager.getUserStatistics(u, Set.of("gamesTied")).get("gamesTied"));
                     } catch (UserManager.UserNotFoundException e) {
                         fail("User not found when getting games tied");
                     }
                 } else {
                     try {
-                        assertEquals(0, userManager.getGamesTied(u));
+                        assertEquals(0, userManager.getUserStatistics(u, Set.of("gamesTied")).get("gamesTied"));
                     } catch (UserManager.UserNotFoundException e) {
                         fail("User not found when getting non-winner's wins");
                     }

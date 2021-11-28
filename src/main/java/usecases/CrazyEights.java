@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Hand;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
+import userdata.UserManager;
 
 import java.util.List;
 import java.util.Random;
@@ -119,11 +120,7 @@ public class CrazyEights extends GameTemplate {
                     }
                 }
 
-                if (card != null && !checkMove(card)) {
-                    looped = true;
-                } else {
-                    looped = false;
-                }
+                looped = card != null && !checkMove(card);
             } while (card != null && !checkMove(card));
             if (card == null) {
                 currPlayer.addToHand(deck.drawCard());

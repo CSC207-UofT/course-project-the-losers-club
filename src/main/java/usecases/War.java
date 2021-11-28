@@ -1,6 +1,7 @@
 package usecases;
 
 import entities.Card;
+import userdata.UserManager;
 
 import java.util.*;
 
