@@ -1,12 +1,18 @@
 package userdata;
 
 import java.io.Closeable;
+import java.io.File;
+import java.nio.file.Path;
+import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable {
 
+    private static final Set<String> STATISTICS_COLUMNS = Set.of("gamesPlayed", "gamesWon", "gamesTied");
+    private final Connection CONN;
 
     /**
      * Instantiate a new SQLiteUserDatabase. It is encouraged to instantiate this class using
@@ -15,6 +21,21 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      * @param filePath filePath to the SQLite database
      */
     public SQLiteUserDatabase(String filePath) {
+        Path p = Path.of(filePath);
+        p = p.toAbsolutePath();
+
+        File parent = p.getParent().toFile();
+        boolean madeParent = parent.mkdirs();
+
+        String connectionString = "jdbc:sqlite:" + new File(filePath).getAbsolutePath();
+        try {
+            this.CONN = DriverManager.getConnection(connectionString);
+            this.CONN.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DatabaseConnectionError("Failed to connect to SQLite database");
+        }
+
+        this.createTables();
     }
 
     /**
@@ -24,13 +45,34 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      * @return the user table's column name
      */
     private static String getActualColName(String col) {
-        return "";
+        switch (col.toLowerCase()) {
+            case "gamesplayed":
+                return "gamesPlayed";
+            case "gameswon":
+                return "gamesWon";
+            case "gamestied":
+                return "gamesTied";
+            default:
+                throw new InvalidStatisticError(col);
+        }
     }
 
     /**
      * Create the required tables for this SQLiteUserDatabase.
      */
     private void createTables() {
+        String createString = "CREATE TABLE IF NOT EXISTS users(" +
+                "username TEXT PRIMARY KEY ASC ON CONFLICT ABORT UNIQUE COLLATE NOCASE," +
+                "gamesPlayed INTEGER DEFAULT 0," +
+                "gamesWon INTEGER DEFAULT 0," +
+                "gamesTied INTEGER DEFAULT 0" +
+                ")";
+        try (Statement stmt = this.CONN.createStatement()) {
+            stmt.executeUpdate(createString);
+            this.CONN.commit();
+        } catch (SQLException e) {
+            throw new DatabaseConnectionError("Error creating tables for this SQLiteUserDatabase.");
+        }
     }
 
     /**
@@ -41,7 +83,24 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public boolean addUser(String username) {
-        return false;
+        String insertString = "INSERT INTO users (username) VALUES(?)";
+        try (PreparedStatement stmt = this.CONN.prepareStatement(insertString)) {
+            stmt.setString(1, username);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated != 1) {
+                this.CONN.rollback();
+                return false;
+            } else {
+                this.CONN.commit();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19) { // SQLITE_CONSTRAINT
+                return false;
+            }
+            throw new UnexpectedSQLExceptionError("User could not be added to the database: " + e.getMessage());
+        }
     }
 
     /**
@@ -52,7 +111,14 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public boolean userExists(String username) {
-        return false;
+        String query = "SELECT * FROM users WHERE username LIKE ?";
+        try (PreparedStatement stmt = this.CONN.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new UnexpectedSQLExceptionError("Could not check if username exists: " + e.getMessage());
+        }
     }
 
     /**
@@ -63,6 +129,19 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public void removeUser(String username) throws UserNotFoundException {
+        String removeStr = "DELETE FROM users WHERE username LIKE ?";
+        try (PreparedStatement stmt = this.CONN.prepareStatement(removeStr)) {
+            stmt.setString(1, username);
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                throw new UserNotFoundException("User with username: " + username + ", was not found.");
+            } else {
+                this.CONN.commit();
+            }
+        } catch (SQLException e) {
+            throw new UnexpectedSQLExceptionError("Could not remove user: " + e.getMessage());
+        }
     }
 
     /**
@@ -74,6 +153,25 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public void setUserStatistics(String username, Map<String, Integer> statistics) throws UserNotFoundException {
+        if (statistics.isEmpty()) {
+            return;
+        }
+
+        String update1 = "UPDATE OR ABORT users SET ";
+        String update2 = " = ? WHERE username LIKE ?";
+        for (Map.Entry<String, Integer> entry : statistics.entrySet()) {
+            try (PreparedStatement stmt = this.CONN.prepareStatement(update1 + getActualColName(entry.getKey()) + update2)) {
+                stmt.setInt(1, entry.getValue());
+                stmt.setString(2, username);
+                int rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated == 0) {
+                    throw new UserNotFoundException("User of: " + username + ", not found.");
+                }
+                this.CONN.commit();
+            } catch (SQLException e) {
+                throw new UnexpectedSQLExceptionError("Could not set user statistics: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -85,6 +183,10 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public void addUserStatistics(String username, Map<String, Integer> statistics) throws UserNotFoundException {
+        HashMap<String, Integer> origStatistics = this.getUserStatistics(username, statistics.keySet());
+        origStatistics.replaceAll((k, v) -> v + statistics.get(k));
+
+        this.setUserStatistics(username, origStatistics);
     }
 
     /**
@@ -96,6 +198,13 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public void addUserStatistics(String username, Collection<String> statistics) throws UserNotFoundException {
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for (String statistic : statistics) {
+            map.put(statistic, 1); // default increment by 1
+        }
+
+        this.addUserStatistics(username, map);
     }
 
     /**
@@ -108,7 +217,26 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public HashMap<String, Integer> getUserStatistics(String username, Collection<String> statistics) throws UserNotFoundException {
-        return new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
+
+        String query1 = "SELECT ";
+        String query2 = " FROM users WHERE username LIKE ?";
+        for (String statistic : statistics) {
+            try (PreparedStatement stmt = this.CONN.prepareStatement(query1 + getActualColName(statistic) + query2)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    map.put(statistic, rs.getInt(statistic));
+                } else {
+                    throw new UserNotFoundException("User of: " + username + ", not found.");
+                }
+            } catch (SQLException e) {
+                throw new UnexpectedSQLExceptionError("Could not retrieve statistics for the given user: " + e.getMessage());
+            }
+        }
+
+        return map;
     }
 
     /**
@@ -120,7 +248,7 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public HashMap<String, Integer> getUserStatistics(String username) throws UserNotFoundException {
-        return new HashMap<>();
+        return this.getUserStatistics(username, STATISTICS_COLUMNS);
     }
 
     /**
@@ -128,6 +256,12 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
      */
     @Override
     public void close() {
+        try {
+            this.CONN.rollback();
+            this.CONN.close();
+        } catch (SQLException e) {
+            throw new DatabaseConnectionError("Failed to close SQLite database connection");
+        }
     }
 
     /**
