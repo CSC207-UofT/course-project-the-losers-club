@@ -9,10 +9,10 @@ public class Bura extends GameTemplate {
     protected static final String[] RANKS = {"A", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private final static int MIN_PLAYERS = 2;
     private final static int MAX_PLAYERS = 6;
-    private Stack<Card> PlAYING_FIELD = new Stack<Card>();
-    protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<Player, Integer>();
+    private Stack<Card> PlAYING_FIELD = new Stack<>();
+    protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
     private static char TRUMP_SUIT;
-    private final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
+    protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
             "J", 2, "9", 0, "8", 0, "7", 0, "6", 0);
 
     private final Map<String, Integer> rankToPoint = Map.of("A", 9, "K", 8, "10", 5, "Q", 7,
@@ -85,7 +85,7 @@ public class Bura extends GameTemplate {
     /**
      * Return a String representation of this class.
      *
-     * @return the String "Go Fish"
+     * @return the String "Bura"
      */
     public String toString() {
         return "Bura";
@@ -109,10 +109,10 @@ public class Bura extends GameTemplate {
      * Plays one round of the game. This means that each player plays a card and the player that played the highest card
      * takes all the cards on the playing field.
      *
-     * Precondition: this.currPlayerIndex refers to the index of the player that won the prevous round
+     * Precondition: this.currPlayerIndex refers to the index of the player that won the previous round
      * Postcondition: this.currPlayerIndex refers to the index of the player that just won the round
      */
-    public void playRound(){
+    public void playRound() {
         int startIndex = this.currPlayerIndex;
         int winningPlayerIndex = this.currPlayerIndex;
         String crd;
@@ -214,11 +214,8 @@ public class Bura extends GameTemplate {
      * @return True if card1 beats card2
      */
     public boolean beatsCard(Card card1, Card card2) {
-        if ((card1.getSuit() == (card2.getSuit()) && rankToPoint.get(card1.getRank()) >
-                rankToPoint.get(card2.getRank())) || (card1.getSuit() == TRUMP_SUIT && card2.getSuit() != TRUMP_SUIT)) {
-            return true;
-        }
-        return false;
+        return (card1.getSuit() == (card2.getSuit()) && rankToPoint.get(card1.getRank()) >
+                rankToPoint.get(card2.getRank())) || (card1.getSuit() == TRUMP_SUIT && card2.getSuit() != TRUMP_SUIT);
     }
 
     /**
