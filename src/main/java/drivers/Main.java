@@ -10,7 +10,7 @@ public class Main {
         MainMenu.Input selectorInput = new Input();
         MainMenu.Output selectorOutput = new Output();
 
-        MainMenu selector = new MainMenu(selectorInput, selectorOutput, new String[]{"Crazy Eights", "War", "Go Fish"},
+        MainMenu selector = new MainMenu(selectorInput, selectorOutput, new String[]{"Crazy Eights", "War", "Go Fish", "Bura"},
                 (GameTemplate.Input) selectorInput, (GameTemplate.Output) selectorOutput);
 
         String inputFile = "userManager.ser";
