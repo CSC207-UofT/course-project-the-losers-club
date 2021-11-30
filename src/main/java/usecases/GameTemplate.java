@@ -4,11 +4,10 @@ import entities.Card;
 import entities.Deck;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
-import userdata.UserDatabaseGateway;
+import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public abstract class GameTemplate {
 
@@ -19,7 +18,7 @@ public abstract class GameTemplate {
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
-    protected UserDatabaseGateway userDatabaseGateway;
+    protected UserManager userManager;
     protected List<String> usernames;
     protected int currPlayerIndex;
 
@@ -27,12 +26,12 @@ public abstract class GameTemplate {
      * Construct a <code>GameTemplate</code>.
      *
      * @param usernames   usernames of those playing the game
-     * @param userDatabaseGateway manager for storing user information
+     * @param userManager manager for storing user information
      * @param gameInput   an object implementing <code>GameTemplate.Input</code>
      * @param gameOutput  an object implementing <code>GameTemplate.output</code>
      */
-    protected GameTemplate(List<String> usernames, UserDatabaseGateway userDatabaseGateway, Input gameInput, Output gameOutput) {
-        this.userDatabaseGateway = userDatabaseGateway;
+    protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        this.userManager = userManager;
         this.usernames = usernames;
 
         this.GAME_INPUT = gameInput;
@@ -60,19 +59,19 @@ public abstract class GameTemplate {
      *
      * @param name        the game to create
      * @param usernames   list of usernames to play the game
-     * @param userDatabaseGateway <code>UserDatabaseGateway</code> that has users for each of the given usernames
+     * @param userManager user management vessel
      * @param input       an object implementing <code>GameTemplate.Input</code>
      * @param output      an object implementing <code>GameTemplate.output</code>
      * @return the requested game instance
      */
-    public static GameTemplate gameFactory(String name, List<String> usernames, UserDatabaseGateway userDatabaseGateway, Input input, Output output) {
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userDatabaseGateway, new PlayerGUI(""), new SingleCardGUI(""));
+                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
             case "WAR":
-                return new War(usernames, userDatabaseGateway, input, output);
+                return new War(usernames, userManager, input, output);
             case "GO FISH":
-                return new GoFish(usernames, userDatabaseGateway, input, output);
+                return new GoFish(usernames, userManager, input, output);
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
@@ -125,14 +124,14 @@ public abstract class GameTemplate {
         for (String u : this.usernames) {
             if (winnerUsername.equals(u)) {
                 try {
-                    this.userDatabaseGateway.addUserStatistics(u, Set.of("gamesPlayed", "gamesWon"));
-                } catch (UserDatabaseGateway.UserNotFoundException e) {
+                    this.userManager.addGamesPlayed(u, 1);
+                } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    this.userDatabaseGateway.addUserStatistics(u, Set.of("gamesPlayed"));
-                } catch (UserDatabaseGateway.UserNotFoundException e) {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             }
@@ -148,14 +147,14 @@ public abstract class GameTemplate {
         for (String u : this.usernames) {
             if (tiedPlayers.contains(u)) {
                 try {
-                    this.userDatabaseGateway.addUserStatistics(u, Set.of("gamesPlayed", "gamesTied"));
-                } catch (UserDatabaseGateway.UserNotFoundException e) {
+                    this.userManager.addGamesPlayed(u, 0);
+                } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    this.userDatabaseGateway.addUserStatistics(u, Set.of("gamesPlayed"));
-                } catch (UserDatabaseGateway.UserNotFoundException e) {
+                    this.userManager.addGamesPlayed(u, -1);
+                } catch (UserManager.UserNotFoundException e) {
                     e.printStackTrace();
                 }
             }

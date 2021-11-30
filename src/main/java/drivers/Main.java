@@ -4,7 +4,8 @@ import controllers.MainMenu;
 import presenters.console.Input;
 import presenters.console.Output;
 import usecases.GameTemplate;
-import userdata.SQLiteUserDatabase;
+import usecases.usermanagement.UserDatabaseAccess;
+import userdatabases.SQLiteUserDatabase;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +15,7 @@ public class Main {
         MainMenu selector = new MainMenu(selectorInput, selectorOutput, new String[]{"Crazy Eights", "War", "Go Fish"},
                 (GameTemplate.Input) selectorInput, (GameTemplate.Output) selectorOutput);
 
-        SQLiteUserDatabase db = new SQLiteUserDatabase("db/users.db");
+        UserDatabaseAccess db = new SQLiteUserDatabase("db/users.db");
         selector.run(db);
     }
 }

@@ -6,28 +6,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
-import userdata.SQLiteUserDatabase;
-import userdata.UserDatabaseGateway;
+import usecases.usermanagement.UserManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class WarTest {
-    private UserDatabaseGateway userDatabaseGateway;
     public War war;
-    String filePath;
 
     @BeforeEach
     void setUp() {
-        this.filePath = "usermanager-" + (new Date()).getTime() + (new Random()).nextInt() + ".db";
-        this.userDatabaseGateway = new SQLiteUserDatabase(this.filePath);
+        UserManager userManager = new UserManager();
 
         Input input = new Input();
         Output output = new Output();
@@ -35,19 +27,11 @@ public class WarTest {
         usernames.add("Daniel");
         usernames.add("Bradley");
         Random seed = new Random(12345);
-        this.war = new War(usernames, this.userDatabaseGateway, input, output, seed);
+        this.war = new War(usernames, userManager, input, output, seed);
     }
 
     @AfterEach
     void tearDown() {
-        try {
-            this.userDatabaseGateway.close();
-        } catch (IOException e) {
-            fail("Could not close manager connection.");
-        }
-        if (!(new File(this.filePath)).delete()) {
-            fail("File could not be deleted, is it still in use?");
-        }
     }
 
     @Test

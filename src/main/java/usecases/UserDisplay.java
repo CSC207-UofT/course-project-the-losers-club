@@ -1,6 +1,7 @@
 package usecases;
 
-import userdata.UserDatabaseGateway;
+import usecases.usermanagement.UserDatabaseAccess;
+import usecases.usermanagement.UserManager;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -13,34 +14,39 @@ public class UserDisplay {
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private final UserDisplay.Input displayInput;
     private final UserDisplay.Output displayOutput;
-    private final UserDatabaseGateway userDatabaseGateway;
+    private final UserManager userDatabaseAccess;
 
-    public UserDisplay(UserDatabaseGateway userDatabaseGateway, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
-        this.userDatabaseGateway = userDatabaseGateway;
+    public UserDisplay(UserManager userDatabaseAccess, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
+        this.userDatabaseAccess = userDatabaseAccess;
         this.displayInput = displayInput;
         this.displayOutput = displayOutput;
     }
 
+    /**
+     * Run this <code>UserDisplay</code> to display user statistics.
+     */
     public void run() {
         this.displayOutput.sendOutput("\n\n\n\n\n");
         this.displayOutput.sendOutput("Check your stats by entering your username.\n");
         this.displayOutput.sendOutput("Enter exit to return to the game selection menu.\n");
 
-        String usrname = this.displayInput.getUsername();
+        String username = this.displayInput.getUsername();
 
-        while (!usrname.equalsIgnoreCase("exit")) {
-            Map<String, Integer> statistics;
+        while (!username.equalsIgnoreCase("exit")) {
+            int gamesPlayed = 0;
+            int wins;
+            int ties;
+
             try {
-                statistics = this.userDatabaseGateway.getUserStatistics(usrname);
-            } catch (UserDatabaseGateway.UserNotFoundException e) {
+                gamesPlayed = this.userDatabaseAccess.getGamesPlayed(username);
+                wins = this.userDatabaseAccess.getWins(username);
+                ties = this.userDatabaseAccess.getGamesTied(username);
+            } catch (UserManager.UserNotFoundException e) {
                 this.displayOutput.sendOutput("The user was not found. Please enter a existing user.\n");
-                usrname = this.displayInput.getUsername();
+                username = this.displayInput.getUsername();
                 continue;
             }
 
-            int gamesPlayed = statistics.get("gamesPlayed");
-            int wins = statistics.get("gamesWon");
-            int ties = statistics.get("gamesTied");
             double wpct;
             if (gamesPlayed == 0) {
                 wpct = 0.00;
@@ -49,13 +55,13 @@ public class UserDisplay {
             }
 
             this.displayOutput.sendOutput("\n\n\n\n\n");
-            this.displayOutput.sendOutput(usrname + "'s Stats\n");
+            this.displayOutput.sendOutput(username + "'s Stats\n");
             this.displayOutput.sendOutput("Games Played: " + gamesPlayed + "\n");
             this.displayOutput.sendOutput("Games Won: " + wins + "\n");
             this.displayOutput.sendOutput("Games Tied: " + ties + "\n");
             this.displayOutput.sendOutput("Win Percentage: " + df.format(wpct) + "%\n");
 
-            usrname = this.displayInput.getUsername();
+            username = this.displayInput.getUsername();
 
         }
         this.displayOutput.sendOutput("\n\n\n\n\n");

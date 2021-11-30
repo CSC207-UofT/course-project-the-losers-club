@@ -1,4 +1,6 @@
-package userdata;
+package userdatabases;
+
+import usecases.usermanagement.UserDatabaseAccess;
 
 import java.io.Closeable;
 import java.io.File;
@@ -6,7 +8,7 @@ import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
 
-public class SQLiteUserDatabase implements UserDatabaseGateway, AutoCloseable, Closeable {
+public class SQLiteUserDatabase implements UserDatabaseAccess, AutoCloseable, Closeable {
 
     private static final Set<String> STATISTICS_COLUMNS = Set.of("gamesPlayed", "gamesWon", "gamesTied");
     private final Connection CONN;

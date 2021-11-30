@@ -1,4 +1,4 @@
-package userdata;
+package usecases.usermanagement;
 
 import java.io.Closeable;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Manages a collection of users.
  */
-public interface UserDatabaseGateway extends AutoCloseable, Closeable {
+public interface UserDatabaseAccess extends AutoCloseable, Closeable {
 
     /**
      * Return a set of all usernames in this user database

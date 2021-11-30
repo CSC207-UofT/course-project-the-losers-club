@@ -6,13 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
-import userdata.SQLiteUserDatabase;
-import userdata.UserDatabaseGateway;
+import usecases.usermanagement.UserManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -21,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GoFishTest {
     GoFish game;
     List<String> usernames;
-    UserDatabaseGateway usermanager;
-    String filePath;
+    UserManager usermanager;
 
     @BeforeEach
     void setUp() {
@@ -31,24 +26,19 @@ public class GoFishTest {
             usernames.add("Test User-" + i);
         }
 
-        filePath = "usermanager-" + (new Date()).getTime() + (new Random()).nextInt() + ".db";
-        usermanager = new SQLiteUserDatabase(filePath);
+        usermanager = new UserManager();
         for (String username : usernames) {
-            usermanager.addUser(username);
+            try {
+                usermanager.addUser(username);
+            } catch (UserManager.UserAlreadyExistsException e) {
+                fail("User already exists, check test inputs");
+            }
         }
         game = new GoFish(usernames, usermanager, new TestInput(), new Output(), new Random(12345));
     }
 
     @AfterEach
     void tearDown() {
-        try {
-            usermanager.close();
-        } catch (IOException e) {
-            fail("Could not close manager connection.");
-        }
-        if (!(new File(this.filePath)).delete()) {
-            fail("File could not be deleted, is it still in use?");
-        }
     }
 
     @Test
