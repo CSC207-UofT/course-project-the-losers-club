@@ -9,7 +9,7 @@ public class Bura extends GameTemplate {
     protected static final String[] RANKS = {"A", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private final static int MIN_PLAYERS = 2;
     private final static int MAX_PLAYERS = 6;
-    private Stack<Card> PlAYING_FIELD = new Stack<>();
+    private final Stack<Card> PLAYING_FIELD = new Stack<>();
     protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
     private static char TRUMP_SUIT;
     protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
@@ -20,8 +20,8 @@ public class Bura extends GameTemplate {
 
     /**
      * Instantiate a new Bura game instance
-
-     * @param usernames the list of usernames of players that are playing the game
+     *
+     * @param usernames   the list of usernames of players that are playing the game
      * @param userManager a <code>UserManager</code> that manages the user entities
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
@@ -33,6 +33,7 @@ public class Bura extends GameTemplate {
 
     /**
      * Instantiate a new Bura game instance. This constructor allows the deck to be seeded with a state.
+     *
      * @param usernames   the list of usernames of players that are playing the game.
      * @param userManager a <code>UserManager</code> that manages the user entities
      * @param gameInput   A GameTemplate.Input object allowing for player input.
@@ -108,11 +109,11 @@ public class Bura extends GameTemplate {
     /**
      * Plays one round of the game. This means that each player plays a card and the player that played the highest card
      * takes all the cards on the playing field.
-     *
+     * <p>
      * Precondition: this.currPlayerIndex refers to the index of the player that won the previous round
-     * Postcondition: this.currPlayerIndex refers to the index of the player that just won the round
+     * Post-condition: this.currPlayerIndex refers to the index of the player that just won the round
      */
-    public void playRound() {
+    private void playRound() {
         int startIndex = this.currPlayerIndex;
         int winningPlayerIndex = this.currPlayerIndex;
         String crd;
@@ -124,14 +125,13 @@ public class Bura extends GameTemplate {
             this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
             this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
 
-            if (PlAYING_FIELD.empty()){
+            if (PLAYING_FIELD.empty()) {
                 this.GAME_OUTPUT.sendOutput("New round started. Play the first card.\n");
-            }
-            else{
-                this.GAME_OUTPUT.sendOutput("Card to beat: " + this.PlAYING_FIELD.peek().toString() + "\n");
+            } else {
+                this.GAME_OUTPUT.sendOutput("Card to beat: " + this.PLAYING_FIELD.peek().toString() + "\n");
             }
 
-            this.GAME_OUTPUT.sendOutput("Trump Suit: " + this.TRUMP_SUIT +"\n");
+            this.GAME_OUTPUT.sendOutput("Trump Suit: " + TRUMP_SUIT + "\n");
             this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
@@ -141,10 +141,10 @@ public class Bura extends GameTemplate {
 
                 this.GAME_OUTPUT.sendOutput("Which card would you like to play?\n");
                 crd = this.GAME_INPUT.getCard();
-                if (!validMove(crd)) {
+                if (invalidMove(crd)) {
                     loopedRankChoice = true;
                 }
-            } while(!validMove(crd));
+            } while (invalidMove(crd));
 
             if (addCard(crd)) {
                 winningPlayerIndex = currPlayerIndex;
@@ -152,7 +152,7 @@ public class Bura extends GameTemplate {
 
             this.currPlayerIndex = (this.currPlayerIndex + 1) % this.players.length;
 
-        } while(currPlayerIndex != startIndex);
+        } while (currPlayerIndex != startIndex);
 
         this.GAME_OUTPUT.sendOutput(this.players[winningPlayerIndex].getUsername() + " wins the round! \n");
         this.currPlayerIndex = winningPlayerIndex;
@@ -164,40 +164,39 @@ public class Bura extends GameTemplate {
      *
      * @return true if game has ended, false otherwise
      */
-    public boolean gameEnd(){
-       int max_score = Collections.max(this.SCORE_TRACKER.values());
-       return max_score >= 31 || this.currPlayer.getHand().isEmpty();
+    private boolean gameEnd() {
+        int max_score = Collections.max(this.SCORE_TRACKER.values());
+        return max_score >= 31 || this.currPlayer.getHand().isEmpty();
     }
 
     /**
      * Add the chosen card to the playing field. Return whether it beats the top card of the playing field.
+     *
      * @param crd the String representation of the card chosen by the User.
      * @return true if the chosen card beats the highest card on the playing field; false otherwise.
      */
-    public boolean addCard(String crd) {
+    private boolean addCard(String crd) {
         Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(1), crd.charAt(0));
-        if (this.PlAYING_FIELD.empty()) {
-            this.PlAYING_FIELD.push(chosenCard);
-        }
-        else {
-            Card topCard = this.PlAYING_FIELD.peek();
+        if (this.PLAYING_FIELD.empty()) {
+            this.PLAYING_FIELD.push(chosenCard);
+        } else {
+            Card topCard = this.PLAYING_FIELD.peek();
             if (beatsCard(chosenCard, topCard)) {
-                this.PlAYING_FIELD.push(chosenCard);
-            }
-            else {
-                this.PlAYING_FIELD.pop();
-                this.PlAYING_FIELD.push(chosenCard);
-                this.PlAYING_FIELD.push(topCard);
+                this.PLAYING_FIELD.push(chosenCard);
+            } else {
+                this.PLAYING_FIELD.pop();
+                this.PLAYING_FIELD.push(chosenCard);
+                this.PLAYING_FIELD.push(topCard);
             }
         }
-        return chosenCard.equals(this.PlAYING_FIELD.peek());
+        return chosenCard.equals(this.PLAYING_FIELD.peek());
     }
 
     /**
      * Restock the hand of each player to be 3 cards. If there are not enough cards left in the deck
      * to equally distribute, the hands are not restocks.
      */
-    public void restockHands() {
+    private void restockHands() {
         this.GAME_OUTPUT.sendOutput("Round ended! Restocking every player's hand.\n");
         while (this.currPlayer.getHand().getSize() < 3 && this.deck.getSize() >= this.players.length) {
             for (Player player : this.players) {
@@ -213,7 +212,7 @@ public class Bura extends GameTemplate {
      * @param card2 card to be beat
      * @return True if card1 beats card2
      */
-    public boolean beatsCard(Card card1, Card card2) {
+    boolean beatsCard(Card card1, Card card2) {
         return (card1.getSuit() == (card2.getSuit()) && rankToPoint.get(card1.getRank()) >
                 rankToPoint.get(card2.getRank())) || (card1.getSuit() == TRUMP_SUIT && card2.getSuit() != TRUMP_SUIT);
     }
@@ -224,28 +223,28 @@ public class Bura extends GameTemplate {
      * @param crd move made by the current player
      * @return True if the move is valid, false otherwise
      */
-    public boolean validMove(String crd){
+    private boolean invalidMove(String crd) {
         String formatted_crd = crd.substring(1) + crd.charAt(0);
         List<Card> cards = this.currPlayer.getHand().getCards();
-        for (Card card : cards){
+        for (Card card : cards) {
             String str = card.toString();
 
-            if (str.equals(formatted_crd)){
-                return true;
+            if (str.equals(formatted_crd)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
      * Updates the score after a round is played. The score is added to the player that won the round
-     *
+     * <p>
      * Precondition: currPlayerIndex refers to the player that just won the round
      */
-    public void updateScore() {
+    private void updateScore() {
         int sumScore = 0;
-        while (!this.PlAYING_FIELD.empty()) {
-            sumScore += ranks.get(this.PlAYING_FIELD.pop().getRank());
+        while (!this.PLAYING_FIELD.empty()) {
+            sumScore += ranks.get(this.PLAYING_FIELD.pop().getRank());
         }
         this.SCORE_TRACKER.put(this.players[this.currPlayerIndex],
                 this.SCORE_TRACKER.get(this.players[this.currPlayerIndex]) + sumScore);
@@ -255,7 +254,7 @@ public class Bura extends GameTemplate {
      * Outputs the winner based on number of points collected. Also updates user statistics by incrementing
      * games played by 1 and whether it's a win or a loss.
      */
-    public void outputWinner() {
+    private void outputWinner() {
         int currMaxScore = 0;
         Player winner = null;
         for (Player player : this.players) {
@@ -264,10 +263,9 @@ public class Bura extends GameTemplate {
                 winner = player;
             }
         }
+        assert winner != null;
         this.addUserStats(winner.getUsername());
         this.GAME_OUTPUT.sendOutput(String.format("Winner is %s with %s points!\n", winner.getUsername(), currMaxScore));
     }
 
 }
-
-

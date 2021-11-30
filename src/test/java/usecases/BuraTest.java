@@ -2,7 +2,6 @@ package usecases;
 
 import entities.Card;
 import controllers.MainMenu;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
@@ -11,6 +10,7 @@ import presenters.console.Output;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BuraTest {
@@ -18,8 +18,8 @@ public class BuraTest {
     List<String> usernames;
     UserManager usermanager;
 
-    protected class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
-        String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
+    private static class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
+        final String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
                 "S7", "S9", "HA", "SA", "C8"};
         int currCardIndex = 0;
 
@@ -42,10 +42,6 @@ public class BuraTest {
             usermanager.addUser(username);
         }
         game = new Bura(usernames, usermanager, new BuraTest.TestInput(), new Output(), new Random(12345));
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test
@@ -75,12 +71,12 @@ public class BuraTest {
 
     @Test
     void TestGetMaxPlayers() {
-        assertEquals(6, game.getMaxPlayers());
+        assertEquals(6, Bura.getMaxPlayers());
     }
 
     @Test
     void TestGetMinPlayers() {
-        assertEquals(2, game.getMinPlayers());
+        assertEquals(2, Bura.getMinPlayers());
     }
 
     @Test
