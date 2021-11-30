@@ -1,6 +1,6 @@
 package usecases;
 
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -13,10 +13,10 @@ public class UserDisplay {
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private final UserDisplay.Input displayInput;
     private final UserDisplay.Output displayOutput;
-    private final UserManager userManager;
+    private final UserDatabaseGateway userDatabaseGateway;
 
-    public UserDisplay(userdata.UserManager userManager, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
-        this.userManager = userManager;
+    public UserDisplay(UserDatabaseGateway userDatabaseGateway, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
+        this.userDatabaseGateway = userDatabaseGateway;
         this.displayInput = displayInput;
         this.displayOutput = displayOutput;
     }
@@ -31,8 +31,8 @@ public class UserDisplay {
         while (!usrname.equalsIgnoreCase("exit")) {
             Map<String, Integer> statistics;
             try {
-                statistics = this.userManager.getUserStatistics(usrname);
-            } catch (UserManager.UserNotFoundException e) {
+                statistics = this.userDatabaseGateway.getUserStatistics(usrname);
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 this.displayOutput.sendOutput("The user was not found. Please enter a existing user.\n");
                 usrname = this.displayInput.getUsername();
                 continue;

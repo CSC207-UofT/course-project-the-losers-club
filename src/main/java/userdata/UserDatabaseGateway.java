@@ -4,11 +4,20 @@ import java.io.Closeable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Manages a collection of users.
  */
-public interface UserManager extends AutoCloseable, Closeable {
+public interface UserDatabaseGateway extends AutoCloseable, Closeable {
+
+    /**
+     * Return a set of all usernames in this user database
+     *
+     * @return all the usernames stored
+     */
+    Set<String> getAllUsernames();
+
     /**
      * Add a user to this database.
      *

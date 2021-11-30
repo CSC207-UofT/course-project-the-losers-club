@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
 import userdata.SQLiteUserDatabase;
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GoFishTest {
     GoFish game;
     List<String> usernames;
-    UserManager usermanager;
+    UserDatabaseGateway usermanager;
     String filePath;
 
     @BeforeEach

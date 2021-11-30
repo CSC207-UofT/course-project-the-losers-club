@@ -30,6 +30,25 @@ class SQLiteUserDatabaseTest {
     }
 
     @Nested
+    class getAllUsernames {
+
+        Set<String> usernames = Set.of("alpha", "beta", "gamma", "delta");
+
+        @BeforeEach
+        void setUp() {
+            for (String username : usernames) {
+                db.addUser(username);
+            }
+        }
+
+        @Test
+        void getAll() {
+            assertEquals(usernames, db.getAllUsernames());
+        }
+    }
+
+
+    @Nested
     class SetUserStatistics {
         @BeforeEach
         void setUp() {
@@ -43,14 +62,14 @@ class SQLiteUserDatabaseTest {
 
             try {
                 db.setUserStatistics("alpha", origStatistics);
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
             }
 
             Map<String, Integer> retStatistics;
             try {
                 retStatistics = db.getUserStatistics("alpha", origStatistics.keySet());
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
                 return;
             }
@@ -64,14 +83,14 @@ class SQLiteUserDatabaseTest {
 
             try {
                 db.setUserStatistics("alpha", origStatistics);
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
             }
 
             Map<String, Integer> retStatistics;
             try {
                 retStatistics = db.getUserStatistics("alpha", origStatistics.keySet());
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
                 return;
             }
@@ -81,7 +100,7 @@ class SQLiteUserDatabaseTest {
 
         @Test
         void badUser() {
-            assertThrows(UserManager.UserNotFoundException.class,
+            assertThrows(UserDatabaseGateway.UserNotFoundException.class,
                     () -> db.setUserStatistics("non greek letter", Map.of("gamesPlayed", 10)));
         }
     }
@@ -99,7 +118,7 @@ class SQLiteUserDatabaseTest {
 
             try {
                 db.setUserStatistics(this.user, Map.of(this.stat, this.origValue));
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
             }
         }
@@ -110,20 +129,20 @@ class SQLiteUserDatabaseTest {
             void valid() {
                 try {
                     db.addUserStatistics(user, Set.of(stat));
-                } catch (UserManager.UserNotFoundException e) {
+                } catch (UserDatabaseGateway.UserNotFoundException e) {
                     fail("UserNotFoundException thrown when user should exist.");
                 }
 
                 try {
                     assertEquals(origValue + 1, db.getUserStatistics(user, Set.of(stat)).get(stat));
-                } catch (UserManager.UserNotFoundException e) {
+                } catch (UserDatabaseGateway.UserNotFoundException e) {
                     fail("UserNotFoundException thrown when user should exist.");
                 }
             }
 
             @Test
             void invalid() {
-                assertThrows(UserManager.UserNotFoundException.class,
+                assertThrows(UserDatabaseGateway.UserNotFoundException.class,
                         () -> db.addUserStatistics("greek letter", Set.of(stat)));
             }
         }
@@ -137,20 +156,20 @@ class SQLiteUserDatabaseTest {
             void valid() {
                 try {
                     db.addUserStatistics(user, Map.of(stat, increase));
-                } catch (UserManager.UserNotFoundException e) {
+                } catch (UserDatabaseGateway.UserNotFoundException e) {
                     fail("UserNotFoundException thrown when user should exist.");
                 }
 
                 try {
                     assertEquals(origValue + increase, db.getUserStatistics(user, Set.of(stat)).get(stat));
-                } catch (UserManager.UserNotFoundException e) {
+                } catch (UserDatabaseGateway.UserNotFoundException e) {
                     fail("UserNotFoundException thrown when user should exist.");
                 }
             }
 
             @Test
             void invalid() {
-                assertThrows(UserManager.UserNotFoundException.class,
+                assertThrows(UserDatabaseGateway.UserNotFoundException.class,
                         () -> db.addUserStatistics("greek letter", Set.of(stat)));
             }
         }
@@ -172,9 +191,14 @@ class SQLiteUserDatabaseTest {
 
             try {
                 db.setUserStatistics("alpha", this.alphaStat);
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
             }
+        }
+
+        @Test
+        void invalid() {
+            assertThrows(UserDatabaseGateway.UserNotFoundException.class, () -> db.getUserStatistics("greek letter"));
         }
 
         @Nested
@@ -184,18 +208,13 @@ class SQLiteUserDatabaseTest {
                 HashMap<String, Integer> resultStatistics;
                 try {
                     resultStatistics = db.getUserStatistics("alpha", alphaStat.keySet());
-                } catch (UserManager.UserNotFoundException e) {
+                } catch (UserDatabaseGateway.UserNotFoundException e) {
                     fail("UserNotFoundException thrown when user should exist.");
                     return;
                 }
 
                 assertEquals(resultStatistics, alphaStat);
             }
-        }
-
-        @Test
-        void invalid() {
-            assertThrows(UserManager.UserNotFoundException.class, () -> db.getUserStatistics("greek letter"));
         }
     }
 
@@ -211,7 +230,7 @@ class SQLiteUserDatabaseTest {
         void valid() {
             try {
                 db.removeUser("alpha");
-            } catch (UserManager.UserNotFoundException e) {
+            } catch (UserDatabaseGateway.UserNotFoundException e) {
                 fail("UserNotFoundException thrown when user should exist.");
             }
 
@@ -221,7 +240,7 @@ class SQLiteUserDatabaseTest {
 
         @Test
         void invalid() {
-            assertThrows(UserManager.UserNotFoundException.class, () -> db.removeUser("gamma"));
+            assertThrows(UserDatabaseGateway.UserNotFoundException.class, () -> db.removeUser("gamma"));
         }
     }
 

@@ -1,7 +1,7 @@
 package usecases;
 
 import entities.Card;
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.util.*;
 
@@ -17,13 +17,13 @@ public class War extends GameTemplate {
      * Constructor for War. Note that usernames must be a List of length 2
      *
      * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userDatabaseGateway a <code>UserDatabaseGateway</code> that manages the user entities
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      * @param random      a random object for the purposes of game seeding
      */
-    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random random) {
-        super(usernames, userManager, gameInput, gameOutput);
+    public War(List<String> usernames, UserDatabaseGateway userDatabaseGateway, Input gameInput, Output gameOutput, Random random) {
+        super(usernames, userDatabaseGateway, gameInput, gameOutput);
         this.GAME_INPUT = gameInput;
         this.GAME_OUTPUT = gameOutput;
         this.currPlayerIndex = 0;
@@ -39,12 +39,12 @@ public class War extends GameTemplate {
      * Instantiate a new War game instance.
      *
      * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userDatabaseGateway a <code>UserDatabaseGateway</code> that manages the user entities
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
-    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+    public War(List<String> usernames, UserDatabaseGateway userDatabaseGateway, Input gameInput, Output gameOutput) {
+        this(usernames, userDatabaseGateway, gameInput, gameOutput, new Random());
     }
 
     /**

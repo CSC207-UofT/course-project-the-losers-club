@@ -4,12 +4,9 @@ import java.io.Closeable;
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable {
+public class SQLiteUserDatabase implements UserDatabaseGateway, AutoCloseable, Closeable {
 
     private static final Set<String> STATISTICS_COLUMNS = Set.of("gamesPlayed", "gamesWon", "gamesTied");
     private final Connection CONN;
@@ -73,6 +70,29 @@ public class SQLiteUserDatabase implements UserManager, AutoCloseable, Closeable
         } catch (SQLException e) {
             throw new DatabaseConnectionError("Error creating tables for this SQLiteUserDatabase.");
         }
+    }
+
+    /**
+     * Return a set of all usernames in this user database
+     *
+     * @return all the usernames stored
+     */
+    @Override
+    public Set<String> getAllUsernames() {
+        Set<String> set = new HashSet<>();
+
+        String query = "SELECT username FROM users";
+        try (PreparedStatement stmt = this.CONN.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                set.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new UnexpectedSQLExceptionError("Could not retrieve all usernames: " + e.getMessage());
+        }
+
+        return set;
     }
 
     /**

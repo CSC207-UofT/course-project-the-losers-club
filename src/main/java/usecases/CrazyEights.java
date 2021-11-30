@@ -4,7 +4,7 @@ import entities.Card;
 import entities.Hand;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.util.List;
 import java.util.Random;
@@ -22,26 +22,26 @@ public class CrazyEights extends GameTemplate {
      * Instantiate a new CrazyEights game instance.
      *
      * @param usernames     the list of usernames of player that are playing the game
-     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param userDatabaseGateway   a <code>UserDatabaseGateway</code> that manages the user entities
      * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
      * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
      */
-    public CrazyEights(List<String> usernames, UserManager userManager, PlayerGUI playerGUI, SingleCardGUI singleCardGUI) {
-        this(usernames, userManager, playerGUI, singleCardGUI, new Random());
+    public CrazyEights(List<String> usernames, UserDatabaseGateway userDatabaseGateway, PlayerGUI playerGUI, SingleCardGUI singleCardGUI) {
+        this(usernames, userDatabaseGateway, playerGUI, singleCardGUI, new Random());
     }
 
     /**
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
      * @param usernames     the list of usernames of player that are playing the game
-     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param userDatabaseGateway   a <code>UserDatabaseGateway</code> that manages the user entities
      * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
      * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
      * @param rand          a Random object for creating deterministic behaviour
      */
-    public CrazyEights(List<String> usernames, UserManager userManager,
+    public CrazyEights(List<String> usernames, UserDatabaseGateway userDatabaseGateway,
                        PlayerGUI playerGUI, SingleCardGUI singleCardGUI, Random rand) {
-        super(usernames, userManager, playerGUI, singleCardGUI);
+        super(usernames, userDatabaseGateway, playerGUI, singleCardGUI);
         this.PLAYER_GUI = playerGUI;
         this.SINGLE_CARD_GUI = singleCardGUI;
         this.currPlayerIndex = 0;

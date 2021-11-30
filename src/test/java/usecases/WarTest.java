@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
 import userdata.SQLiteUserDatabase;
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class WarTest {
-    private UserManager userManager;
+    private UserDatabaseGateway userDatabaseGateway;
     public War war;
     String filePath;
 
     @BeforeEach
     void setUp() {
         this.filePath = "usermanager-" + (new Date()).getTime() + (new Random()).nextInt() + ".db";
-        this.userManager = new SQLiteUserDatabase(this.filePath);
+        this.userDatabaseGateway = new SQLiteUserDatabase(this.filePath);
 
         Input input = new Input();
         Output output = new Output();
@@ -35,13 +35,13 @@ public class WarTest {
         usernames.add("Daniel");
         usernames.add("Bradley");
         Random seed = new Random(12345);
-        this.war = new War(usernames, this.userManager, input, output, seed);
+        this.war = new War(usernames, this.userDatabaseGateway, input, output, seed);
     }
 
     @AfterEach
     void tearDown() {
         try {
-            this.userManager.close();
+            this.userDatabaseGateway.close();
         } catch (IOException e) {
             fail("Could not close manager connection.");
         }

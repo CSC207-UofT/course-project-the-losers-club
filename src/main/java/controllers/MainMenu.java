@@ -2,7 +2,7 @@ package controllers;
 
 import usecases.GameTemplate;
 import usecases.UserDisplay;
-import userdata.UserManager;
+import userdata.UserDatabaseGateway;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +50,9 @@ public class MainMenu {
      * <p>
      * MainMenu allows a user to select the game they wish to play and runs that game.
      *
-     * @param userManager storage manager for user information
+     * @param userDatabaseGateway storage manager for user information
      */
-    public void run(UserManager userManager) {
+    public void run(UserDatabaseGateway userDatabaseGateway) {
         while (true) {
             displayMenu();
 
@@ -65,13 +65,13 @@ public class MainMenu {
             if (sel == 0) {
                 return;
             } else if (sel == 9) {
-                UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
+                UserDisplay userDisplay = new UserDisplay(userDatabaseGateway, (UserDisplay.Input) this.SELECTOR_INPUT,
                         (UserDisplay.Output) this.SELECTOR_OUTPUT);
                 userDisplay.run();
             } else {
-                List<String> usernames = getUsernames(userManager, this.GAMES[sel - 1]);
+                List<String> usernames = getUsernames(userDatabaseGateway, this.GAMES[sel - 1]);
 
-                handleUserSelection(sel, usernames, userManager);
+                handleUserSelection(sel, usernames, userDatabaseGateway);
             }
         }
     }
@@ -99,15 +99,15 @@ public class MainMenu {
      *
      * @param sel         the user's selection. Must be greater than 0.
      * @param usernames   usernames that are playing the game
-     * @param userManager storage manager for user information
+     * @param userDatabaseGateway storage manager for user information
      */
-    private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
+    private void handleUserSelection(int sel, List<String> usernames, UserDatabaseGateway userDatabaseGateway) {
         String gameString = this.GAMES[sel - 1];
         this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n\n\n\n\n" + DASHES + "\n");
 
         this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
         this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
-        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.GAME_INPUT, this.GAME_OUTPUT);
+        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userDatabaseGateway, this.GAME_INPUT, this.GAME_OUTPUT);
         game.startGame();
         this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }
@@ -125,11 +125,11 @@ public class MainMenu {
     /**
      * Prompt the user for the usernames of the <code>User</code>s that playing the game
      *
-     * @param userManager <code>UserManager</code> to add users to
+     * @param userDatabaseGateway <code>UserDatabaseGateway</code> to add users to
      * @param game        the game that is to be played. Used to enforce minimum and maximum number of players
      * @return a list of usernames
      */
-    private List<String> getUsernames(UserManager userManager, String game) {
+    private List<String> getUsernames(UserDatabaseGateway userDatabaseGateway, String game) {
         List<String> usernames = new ArrayList<>();
 
         int maxPlayers = GameTemplate.getMaxPlayers(game);
@@ -151,7 +151,7 @@ public class MainMenu {
                 this.SELECTOR_OUTPUT.sendOutput("This username has already been added. Please enter a new username!\n");
             } else {
                 usernames.add(username);
-                userManager.addUser(username);
+                userDatabaseGateway.addUser(username);
             }
 
             if (usernames.size() != maxPlayers) {
