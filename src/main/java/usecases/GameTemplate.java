@@ -57,6 +57,8 @@ public abstract class GameTemplate {
      */
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return new Bura(usernames, userManager, input, output);
             case "CRAZY EIGHTS":
                 return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
             case "WAR":
@@ -76,6 +78,8 @@ public abstract class GameTemplate {
      */
     public static int getMaxPlayers(String name) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return Bura.getMaxPlayers();
             case "CRAZY EIGHTS":
                 return CrazyEights.getMaxPlayers();
             case "WAR":
@@ -95,6 +99,8 @@ public abstract class GameTemplate {
      */
     public static int getMinPlayers(String name) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return Bura.getMinPlayers();
             case "CRAZY EIGHTS":
                 return CrazyEights.getMinPlayers();
             case "WAR":
