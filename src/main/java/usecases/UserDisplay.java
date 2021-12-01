@@ -1,10 +1,8 @@
 package usecases;
 
-import usecases.usermanagement.UserDatabaseAccess;
 import usecases.usermanagement.UserManager;
 
 import java.text.DecimalFormat;
-import java.util.Map;
 
 /**
  * UserDisplay is a class that displays the stats for a given user
@@ -14,10 +12,10 @@ public class UserDisplay {
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private final UserDisplay.Input displayInput;
     private final UserDisplay.Output displayOutput;
-    private final UserManager userDatabaseAccess;
+    private final UserManager userManager;
 
-    public UserDisplay(UserManager userDatabaseAccess, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
-        this.userDatabaseAccess = userDatabaseAccess;
+    public UserDisplay(UserManager userManager, UserDisplay.Input displayInput, UserDisplay.Output displayOutput) {
+        this.userManager = userManager;
         this.displayInput = displayInput;
         this.displayOutput = displayOutput;
     }
@@ -33,14 +31,14 @@ public class UserDisplay {
         String username = this.displayInput.getUsername();
 
         while (!username.equalsIgnoreCase("exit")) {
-            int gamesPlayed = 0;
+            int gamesPlayed;
             int wins;
             int ties;
 
             try {
-                gamesPlayed = this.userDatabaseAccess.getGamesPlayed(username);
-                wins = this.userDatabaseAccess.getWins(username);
-                ties = this.userDatabaseAccess.getGamesTied(username);
+                gamesPlayed = this.userManager.getGamesPlayed(username);
+                wins = this.userManager.getWins(username);
+                ties = this.userManager.getGamesTied(username);
             } catch (UserManager.UserNotFoundException e) {
                 this.displayOutput.sendOutput("The user was not found. Please enter a existing user.\n");
                 username = this.displayInput.getUsername();
