@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
+import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
