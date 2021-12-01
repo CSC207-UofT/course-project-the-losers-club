@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Hand;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
+import usecases.usermanagement.UserManager;
 
 import java.util.List;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class CrazyEights extends GameTemplate {
      * Instantiate a new CrazyEights game instance.
      *
      * @param usernames     the list of usernames of player that are playing the game
-     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param userManager   user management vessel
      * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
      * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
      */
@@ -33,7 +34,7 @@ public class CrazyEights extends GameTemplate {
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
      * @param usernames     the list of usernames of player that are playing the game
-     * @param userManager   a <code>UserManager</code> that manages the user entities
+     * @param userManager   user management vessel
      * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
      * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
      * @param rand          a Random object for creating deterministic behaviour
@@ -119,11 +120,7 @@ public class CrazyEights extends GameTemplate {
                     }
                 }
 
-                if (card != null && !checkMove(card)) {
-                    looped = true;
-                } else {
-                    looped = false;
-                }
+                looped = card != null && !checkMove(card);
             } while (card != null && !checkMove(card));
             if (card == null) {
                 currPlayer.addToHand(deck.drawCard());

@@ -94,3 +94,6 @@ fabric.properties
 
 # Serialization Files
 *.ser
+
+# Database Files
+*.db

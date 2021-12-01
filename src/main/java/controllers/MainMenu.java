@@ -1,10 +1,11 @@
 package controllers;
 
-import usecases.*;
+import usecases.GameTemplate;
+import usecases.UserDisplay;
+import usecases.usermanagement.UserDatabaseAccess;
+import usecases.usermanagement.UserManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,12 +51,10 @@ public class MainMenu {
      * <p>
      * MainMenu allows a user to select the game they wish to play and runs that game.
      *
-     * @param userManagerInputFile  a String representing a file with a serialized <code>UserManager</code> to import
-     * @param userManagerOutputFile a String representing a file to serialize a <code>UserManager</code> to
+     * @param userDatabase user database
      */
-    public void run(String userManagerInputFile, String userManagerOutputFile) {
-
-        UserManager userManager = this.importUserManager(userManagerInputFile);
+    public void run(UserDatabaseAccess userDatabase) {
+        UserManager userManager = UserManager.importFromUserDatabase(userDatabase);
 
         while (true) {
             displayMenu();
@@ -67,7 +66,7 @@ public class MainMenu {
             }
 
             if (sel == 0) {
-                this.exportUserManager(userManager, userManagerOutputFile);
+                userManager.exportToUserDatabase(userDatabase);
                 return;
             } else if (sel == 9) {
                 UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
@@ -77,8 +76,9 @@ public class MainMenu {
                 List<String> usernames = getUsernames(userManager, this.GAMES[sel - 1]);
 
                 handleUserSelection(sel, usernames, userManager);
-                this.exportUserManager(userManager, userManagerOutputFile);
             }
+
+            userManager.exportToUserDatabase(userDatabase);
         }
     }
 
@@ -103,7 +103,9 @@ public class MainMenu {
      * <p>
      * This method will be the main runner of the selected Game.
      *
-     * @param sel the user's selection. Must be greater than 0.
+     * @param sel         the user's selection. Must be greater than 0.
+     * @param usernames   usernames that are playing the game
+     * @param userManager user management vessel
      */
     private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
         String gameString = this.GAMES[sel - 1];
@@ -129,7 +131,7 @@ public class MainMenu {
     /**
      * Prompt the user for the usernames of the <code>User</code>s that playing the game
      *
-     * @param userManager <code>UserManager</code> to add users to
+     * @param userManager user management vessel
      * @param game        the game that is to be played. Used to enforce minimum and maximum number of players
      * @return a list of usernames
      */
@@ -158,6 +160,7 @@ public class MainMenu {
                 try {
                     userManager.addUser(username);
                 } catch (UserManager.UserAlreadyExistsException ignored) {
+                    // normal to reach here, no exception handling necessary
                 }
             }
 
@@ -166,42 +169,6 @@ public class MainMenu {
             }
         }
         return usernames;
-    }
-
-    /**
-     * Import and return a <code>UserManager</code> serialized in the specified <code>inputFilePath</code>.
-     *
-     * @param inputFilePath file path to a serialized <code>UserManager</code>
-     * @return the deserialized <code>UserManager</code>
-     */
-    private UserManager importUserManager(String inputFilePath) {
-        UserManager userManager;
-        try {
-            userManager = UserManagerImporter.importUserManager(inputFilePath);
-        } catch (IOException | ClassNotFoundException ignored) {
-            userManager = new UserManager();  // ignore input file if exception thrown
-        }
-        return userManager;
-    }
-
-    /**
-     * Export the given <code>UserManager</code> to the specified <code>outputFilePath</code>
-     *
-     * @param userManager    the <code>UserManager</code> to serialize
-     * @param outputFilePath the file to serialize to
-     */
-    private void exportUserManager(UserManager userManager, String outputFilePath) {
-        try {
-            UserManagerExporter.exportUserManager(userManager, outputFilePath);
-        } catch (IOException e) {
-            // dump UserManager to a unique file (should be unique since using current system time)
-            Date currDate = new Date();
-            try {
-                UserManagerExporter.exportUserManager(userManager, "UserManager-" + currDate.getTime() + ".ser");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 
     /**

@@ -12,6 +12,7 @@ public class User implements Serializable {
 
     /**
      * Constructs a User with the given username.
+     *
      * @param username The username of the User displayed by the game
      */
     public User(String username) {
@@ -22,7 +23,23 @@ public class User implements Serializable {
     }
 
     /**
+     * Constructs a User with the given username and statistics.
+     *
+     * @param username    The username of the User displayed by the game
+     * @param gamesWon    number of games won
+     * @param gamesPlayed number of games played
+     * @param gamesTied   number of games tied
+     */
+    public User(String username, int gamesPlayed, int gamesWon, int gamesTied) {
+        this.username = username;
+        this.gamesWon = gamesWon;
+        this.gamesPlayed = gamesPlayed;
+        this.gamesTied = gamesTied;
+    }
+
+    /**
      * Returns this User's username
+     *
      * @return the username of the User
      */
     public String getUsername() {
@@ -31,6 +48,7 @@ public class User implements Serializable {
 
     /**
      * Add a win to the User's statistics
+     *
      * @return the current number of wins of the User
      */
     public int addWin() {
@@ -40,6 +58,7 @@ public class User implements Serializable {
 
     /**
      * Add a game played to the User's statistics
+     *
      * @return the current number of games played of the User
      */
     public int addPlayed() {
@@ -49,6 +68,7 @@ public class User implements Serializable {
 
     /**
      * Add a tie to the User's statistics
+     *
      * @return the current number of ties of the User
      */
     public int addTied() {
@@ -58,19 +78,28 @@ public class User implements Serializable {
 
     /**
      * Returns this User's games won
+     *
      * @return number of games won by the User
      */
-    public int getGamesWon() { return this.gamesWon; }
+    public int getGamesWon() {
+        return this.gamesWon;
+    }
 
     /**
      * Return this User's games played
+     *
      * @return number of games played by the User
      */
-    public int getGamesPlayed() { return this.gamesPlayed; }
+    public int getGamesPlayed() {
+        return this.gamesPlayed;
+    }
 
     /**
      * Returns this User's games tied
+     *
      * @return number of ties of the User
      */
-    public int getGamesTied() { return this.gamesTied; }
+    public int getGamesTied() {
+        return this.gamesTied;
+    }
 }

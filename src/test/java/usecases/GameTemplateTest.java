@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import usecases.usermanagement.UserManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +22,13 @@ class GameTemplateTest {
     @BeforeEach
     void setUp() {
         this.usernames = Arrays.asList("harrypotter", "hermionegranger", "ronweasley");
+
         this.userManager = new UserManager();
         for (String u : usernames) {
             try {
                 userManager.addUser(u);
             } catch (UserManager.UserAlreadyExistsException e) {
-                throw new IllegalArgumentException("User already exists. Check usernames used for test.");
+                fail("User already exists, check for duplicate test inputs.");
             }
         }
 

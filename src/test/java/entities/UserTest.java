@@ -2,6 +2,7 @@ package entities;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,5 +58,28 @@ class UserTest {
     @Test
     void getWon() {
         assertEquals(0, testUser.getGamesWon());
+    }
+
+    @Nested
+    class StatisticsConstructor {
+        @Test
+        void zeroes() {
+            User user = new User("alpha", 0, 0, 0);
+            assertAll(
+                    () -> assertEquals(0, user.getGamesPlayed()),
+                    () -> assertEquals(0, user.getGamesWon()),
+                    () -> assertEquals(0, user.getGamesTied())
+            );
+        }
+
+        @Test
+        void otherNumbers() {
+            User user = new User("alpha", 123, 456, 789);
+            assertAll(
+                    () -> assertEquals(123, user.getGamesPlayed()),
+                    () -> assertEquals(456, user.getGamesWon()),
+                    () -> assertEquals(789, user.getGamesTied())
+            );
+        }
     }
 }

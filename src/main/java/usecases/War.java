@@ -1,6 +1,8 @@
 package usecases;
 
 import entities.Card;
+import usecases.usermanagement.UserDatabaseAccess;
+import usecases.usermanagement.UserManager;
 
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class War extends GameTemplate {
      * Constructor for War. Note that usernames must be a List of length 2
      *
      * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userManager user management vessel
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      * @param random      a random object for the purposes of game seeding
@@ -38,7 +40,7 @@ public class War extends GameTemplate {
      * Instantiate a new War game instance.
      *
      * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userManager user management vessel
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
