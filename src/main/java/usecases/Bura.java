@@ -4,6 +4,7 @@ import java.util.*;
 
 import entities.Card;
 import entities.Deck;
+import usecases.usermanagement.UserManager;
 
 public class Bura extends GameTemplate {
     protected static final String[] RANKS = {"A", "6", "7", "8", "9", "10", "J", "Q", "K"};
