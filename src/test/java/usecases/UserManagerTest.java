@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import usecases.usermanagement.UserDatabaseAccess;
 import usecases.usermanagement.UserManager;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -133,66 +132,6 @@ class UserManagerTest {
 
     @Nested
     class DatabaseImport {
-        class FakeDatabase implements UserDatabaseAccess {
-
-            @Override
-            public Set<String> getAllUsernames() {
-                return Set.of("alpha", "beta");
-            }
-
-            @Override
-            public boolean addUser(String username) {
-                return false;
-            }
-
-            @Override
-            public boolean userExists(String username) {
-                return false;
-            }
-
-            @Override
-            public void removeUser(String username) throws UserNotFoundException {
-
-            }
-
-            @Override
-            public void setUserStatistics(String username, Map<String, Integer> statistics) throws UserNotFoundException {
-
-            }
-
-            @Override
-            public void addUserStatistics(String username, Map<String, Integer> statistics) throws UserNotFoundException {
-
-            }
-
-            @Override
-            public void addUserStatistics(String username, Collection<String> statistics) throws UserNotFoundException {
-
-            }
-
-            @Override
-            public HashMap<String, Integer> getUserStatistics(String username, Collection<String> statistics) throws UserNotFoundException {
-                return null;
-            }
-
-            @Override
-            public HashMap<String, Integer> getUserStatistics(String username) throws UserNotFoundException {
-                switch (username) {
-                    case "alpha":
-                        return new HashMap<>(Map.of("gamesPlayed", 123, "gamesWon", 456, "gamesTied", 789));
-                    case "beta":
-                        return new HashMap<>(Map.of("gamesPlayed", 987, "gamesWon", 654, "gamesTied", 321));
-                }
-
-                return new HashMap<>();
-            }
-
-            @Override
-            public void close() throws IOException {
-
-            }
-        }
-
         UserDatabaseAccess udb;
 
         @BeforeEach
@@ -218,6 +157,184 @@ class UserManagerTest {
                             () -> assertEquals(321, userManager.getGamesTied("beta"))
                     )
             );
+        }
+
+        class FakeDatabase implements UserDatabaseAccess {
+
+            @Override
+            public Set<String> getAllUsernames() {
+                return Set.of("alpha", "beta");
+            }
+
+            @Override
+            public boolean addUser(String username) {
+                return false;
+            }
+
+            @Override
+            public boolean userExists(String username) {
+                return false;
+            }
+
+            @Override
+            public void removeUser(String username) {
+
+            }
+
+            @Override
+            public void setUserStatistics(String username, Map<String, Integer> statistics) {
+
+            }
+
+            @Override
+            public void addUserStatistics(String username, Map<String, Integer> statistics) {
+
+            }
+
+            @Override
+            public void addUserStatistics(String username, Collection<String> statistics) {
+
+            }
+
+            @Override
+            public HashMap<String, Integer> getUserStatistics(String username, Collection<String> statistics) {
+                return null;
+            }
+
+            @Override
+            public HashMap<String, Integer> getUserStatistics(String username) {
+                switch (username) {
+                    case "alpha":
+                        return new HashMap<>(Map.of("gamesPlayed", 123, "gamesWon", 456, "gamesTied", 789));
+                    case "beta":
+                        return new HashMap<>(Map.of("gamesPlayed", 987, "gamesWon", 654, "gamesTied", 321));
+                }
+
+                return new HashMap<>();
+            }
+
+            @Override
+            public void close() {
+
+            }
+        }
+    }
+
+    @Nested
+    class DatabaseExport {
+        UserManager userManager;
+
+        @BeforeEach
+        void setUp() {
+            this.userManager = new UserManager(new HashMap<>(Map.of(
+                    "alpha", new User("alpha", 123, 456, 789),
+                    "beta", new User("beta", 987, 654, 321))
+            ));
+        }
+
+        @Test
+        void export() {
+            UserDatabaseAccess db = new FakeDatabase();
+            this.userManager.exportToUserDatabase(db);
+
+            Map<String, Integer> alphaStats;
+            try {
+                alphaStats = db.getUserStatistics("alpha");
+            } catch (UserDatabaseAccess.UserNotFoundException e) {
+                fail("Could not get alpha's statistics");
+                return;
+            }
+
+            Map<String, Integer> betaStats;
+            try {
+                betaStats = db.getUserStatistics("beta");
+            } catch (UserDatabaseAccess.UserNotFoundException e) {
+                fail("Could not get beta's statistics");
+                return;
+            }
+
+            assertAll(
+                    // alpha
+                    () -> assertAll(
+                            () -> assertEquals(123, alphaStats.get("gamesPlayed")),
+                            () -> assertEquals(456, alphaStats.get("gamesWon")),
+                            () -> assertEquals(789, alphaStats.get("gamesTied"))
+                    ),
+                    // beta
+                    () -> assertAll(
+                            () -> assertEquals(987, betaStats.get("gamesPlayed")),
+                            () -> assertEquals(654, betaStats.get("gamesWon")),
+                            () -> assertEquals(321, betaStats.get("gamesTied"))
+                    )
+            );
+        }
+
+        class FakeDatabase implements UserDatabaseAccess {
+
+            Map<String, HashMap<String, Integer>> users;
+
+            FakeDatabase() {
+                this.users = new HashMap<>();
+            }
+
+            @Override
+            public Set<String> getAllUsernames() {
+                return null;
+            }
+
+            @Override
+            public boolean addUser(String username) {
+                if (this.userExists(username)) {
+                    return false;
+                } else {
+                    this.users.put(username, new HashMap<>());
+                    return true;
+                }
+            }
+
+            @Override
+            public boolean userExists(String username) {
+                return this.users.containsKey(username);
+            }
+
+            @Override
+            public void removeUser(String username) {
+
+            }
+
+            @Override
+            public void setUserStatistics(String username, Map<String, Integer> statistics) throws UserNotFoundException {
+                if (this.userExists(username)) {
+                    this.users.put(username, (HashMap<String, Integer>) statistics);
+                } else {
+                    throw new UserNotFoundException("User of " + username + " not found.");
+                }
+            }
+
+            @Override
+            public void addUserStatistics(String username, Map<String, Integer> statistics) {
+
+            }
+
+            @Override
+            public void addUserStatistics(String username, Collection<String> statistics) {
+
+            }
+
+            @Override
+            public HashMap<String, Integer> getUserStatistics(String username, Collection<String> statistics) {
+                return null;
+            }
+
+            @Override
+            public HashMap<String, Integer> getUserStatistics(String username) {
+                return this.users.get(username);
+            }
+
+            @Override
+            public void close() {
+
+            }
         }
     }
 }

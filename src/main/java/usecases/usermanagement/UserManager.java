@@ -30,7 +30,7 @@ public class UserManager implements Serializable {
     /**
      * Import users from the user database and construct a UserManager.
      *
-     * @param databaseAccessor database accessor
+     * @param databaseAccessor user database gateway
      * @return constructed <code>UserManager</code> from the provided database accessor
      */
     public static UserManager importFromUserDatabase(UserDatabaseAccess databaseAccessor) {
@@ -54,6 +54,42 @@ public class UserManager implements Serializable {
         }
 
         return new UserManager(users);
+    }
+
+    /**
+     * Export this <code>UserManager</code> to the database.
+     *
+     * @param databaseAccessor user database gateway
+     */
+    public void exportToUserDatabase(UserDatabaseAccess databaseAccessor) {
+        for (Map.Entry<String, User> entry : this.users.entrySet()) {
+            String username = entry.getKey();
+            User user = entry.getValue();
+
+            if (databaseAccessor.userExists(username)) {
+                try {
+                    databaseAccessor.setUserStatistics(username, Map.of(
+                            "gamesPlayed", user.getGamesPlayed(),
+                            "gamesWon", user.getGamesWon(),
+                            "gamesTIed", user.getGamesTied()));
+                } catch (UserDatabaseAccess.UserNotFoundException e) {
+                    // should never reach here, but if it does
+                    throw new AssertionError("User found to exist, but no longer does when setting statistics");
+                }
+
+            } else {
+                databaseAccessor.addUser(username);
+                try {
+                    databaseAccessor.setUserStatistics(username, new HashMap<>(Map.of(
+                            "gamesPlayed", user.getGamesPlayed(),
+                            "gamesWon", user.getGamesWon(),
+                            "gamesTied", user.getGamesTied())));
+                } catch (UserDatabaseAccess.UserNotFoundException e) {
+                    // should never reach here, but if it does
+                    throw new AssertionError("User just created, but no longer exists when setting statistics");
+                }
+            }
+        }
     }
 
     /**
