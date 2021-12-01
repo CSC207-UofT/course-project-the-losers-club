@@ -66,6 +66,7 @@ public class MainMenu {
             }
 
             if (sel == 0) {
+                userManager.exportToUserDatabase(userDatabase);
                 return;
             } else if (sel == 9) {
                 UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
@@ -76,6 +77,8 @@ public class MainMenu {
 
                 handleUserSelection(sel, usernames, userManager);
             }
+
+            userManager.exportToUserDatabase(userDatabase);
         }
     }
 
@@ -156,9 +159,8 @@ public class MainMenu {
                 usernames.add(username);
                 try {
                     userManager.addUser(username);
-                } catch (UserManager.UserAlreadyExistsException e) {
-                    // should never reach here, but if it does
-                    throw new AssertionError("Username was already added, duplicate code?");
+                } catch (UserManager.UserAlreadyExistsException ignored) {
+                    // normal to reach here, no exception handling necessary
                 }
             }
 
