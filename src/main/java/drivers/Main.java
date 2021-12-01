@@ -7,6 +7,8 @@ import usecases.GameTemplate;
 import usecases.usermanagement.UserDatabaseAccess;
 import userdatabases.SQLiteUserDatabase;
 
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
         MainMenu.Input selectorInput = new Input();
@@ -15,7 +17,10 @@ public class Main {
         MainMenu selector = new MainMenu(selectorInput, selectorOutput, new String[]{"Crazy Eights", "War", "Go Fish"},
                 (GameTemplate.Input) selectorInput, (GameTemplate.Output) selectorOutput);
 
-        UserDatabaseAccess db = new SQLiteUserDatabase("db/users.db");
-        selector.run(db);
+        try (UserDatabaseAccess db = new SQLiteUserDatabase("db/users.db")) {
+            selector.run(db);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
