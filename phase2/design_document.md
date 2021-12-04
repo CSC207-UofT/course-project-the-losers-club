@@ -33,6 +33,7 @@
 
 
 ## Major Design Decisions
+
 * As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the dependency rule since methods of the GUI are directly being called from `CrazyEights`. In Phase 2, we are planning to fix this problem either by redesigning the output interface to be less vague or to use the Façade design pattern to the fix the problem by creating a class that takes the object that is trying to be outputted and decide how to display that using the GUI. 
 * The input and output interfaces are separate for the games and for the main menu. This was done to avoid forcing an implementer to implement both interfaces. It may be necessary to have a more unified input/output interface in the future, since having these multiple interfaces requires these IO objects to be passed lower than may be necessary.
 
@@ -121,7 +122,7 @@ We primarily considered the packaging by component and the packaging by layer st
 
 ### Work Since Phase 1
 
-* Raymond: 
+* Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, improved design document, coordinated GitHub activities.
 * Teddy: 
 * Brian: 
 * Bradley: 
