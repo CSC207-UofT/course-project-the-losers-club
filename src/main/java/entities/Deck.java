@@ -72,4 +72,14 @@ public class Deck {
         cards.add(card);
     }
 
+
+    /**
+     * Returns the number of cards in the deck
+     *
+     * @return the size of the instance attribute 'cards'
+     */
+    public int getSize() {
+        return cards.size();
+    }
+
 }

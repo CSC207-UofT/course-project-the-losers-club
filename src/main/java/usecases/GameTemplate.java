@@ -4,6 +4,7 @@ import entities.Card;
 import entities.Deck;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
+import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,14 @@ public abstract class GameTemplate {
     protected List<String> usernames;
     protected int currPlayerIndex;
 
+    /**
+     * Construct a <code>GameTemplate</code>.
+     *
+     * @param usernames   usernames of those playing the game
+     * @param userManager manager for storing user information
+     * @param gameInput   an object implementing <code>GameTemplate.Input</code>
+     * @param gameOutput  an object implementing <code>GameTemplate.output</code>
+     */
     protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this.userManager = userManager;
         this.usernames = usernames;
@@ -50,13 +59,15 @@ public abstract class GameTemplate {
      *
      * @param name        the game to create
      * @param usernames   list of usernames to play the game
-     * @param userManager <code>UserManager</code> that has users for each of the given usernames
+     * @param userManager user management vessel
      * @param input       an object implementing <code>GameTemplate.Input</code>
      * @param output      an object implementing <code>GameTemplate.output</code>
      * @return the requested game instance
      */
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return new Bura(usernames, userManager, input, output);
             case "CRAZY EIGHTS":
                 return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
             case "WAR":
@@ -76,6 +87,8 @@ public abstract class GameTemplate {
      */
     public static int getMaxPlayers(String name) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return Bura.getMaxPlayers();
             case "CRAZY EIGHTS":
                 return CrazyEights.getMaxPlayers();
             case "WAR":
@@ -95,6 +108,8 @@ public abstract class GameTemplate {
      */
     public static int getMinPlayers(String name) {
         switch (name.toUpperCase()) {
+            case "BURA":
+                return Bura.getMinPlayers();
             case "CRAZY EIGHTS":
                 return CrazyEights.getMinPlayers();
             case "WAR":

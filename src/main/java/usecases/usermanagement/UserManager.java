@@ -1,13 +1,15 @@
-package usecases;
+package usecases.usermanagement;
 
 import entities.User;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class UserManager implements Serializable {
 
-    private final HashMap<String, User> users;
+    private final Map<String, User> users;
 
     /**
      * Constructs a UserManager with an empty hashmap of users
@@ -21,8 +23,73 @@ public class UserManager implements Serializable {
      *
      * @param users hashmap that maps a username to an instance of User
      */
-    public UserManager(HashMap<String, User> users) {
+    public UserManager(Map<String, User> users) {
         this.users = users;
+    }
+
+    /**
+     * Import users from the user database and construct a UserManager.
+     *
+     * @param databaseAccessor user database gateway
+     * @return constructed <code>UserManager</code> from the provided database accessor
+     */
+    public static UserManager importFromUserDatabase(UserDatabaseAccess databaseAccessor) {
+        Set<String> usernames = databaseAccessor.getAllUsernames();
+
+        Map<String, User> users = new HashMap<>();
+        for (String username : usernames) {
+            Map<String, Integer> statistics;
+            try {
+                statistics = databaseAccessor.getUserStatistics(username);
+            } catch (UserDatabaseAccess.UserNotFoundException e) {
+                // should never happen, but if it does
+                throw new AssertionError("User was removed from database between all username query and retrieving statistics for said user");
+            }
+
+            users.put(username, new User(username,
+                    statistics.get("gamesPlayed"),
+                    statistics.get("gamesWon"),
+                    statistics.get("gamesTied"))
+            );
+        }
+
+        return new UserManager(users);
+    }
+
+    /**
+     * Export this <code>UserManager</code> to the database.
+     *
+     * @param databaseAccessor user database gateway
+     */
+    public void exportToUserDatabase(UserDatabaseAccess databaseAccessor) {
+        for (Map.Entry<String, User> entry : this.users.entrySet()) {
+            String username = entry.getKey();
+            User user = entry.getValue();
+
+            if (databaseAccessor.userExists(username)) {
+                try {
+                    databaseAccessor.setUserStatistics(username, Map.of(
+                            "gamesPlayed", user.getGamesPlayed(),
+                            "gamesWon", user.getGamesWon(),
+                            "gamesTIed", user.getGamesTied()));
+                } catch (UserDatabaseAccess.UserNotFoundException e) {
+                    // should never reach here, but if it does
+                    throw new AssertionError("User found to exist, but no longer does when setting statistics");
+                }
+
+            } else {
+                databaseAccessor.addUser(username);
+                try {
+                    databaseAccessor.setUserStatistics(username, new HashMap<>(Map.of(
+                            "gamesPlayed", user.getGamesPlayed(),
+                            "gamesWon", user.getGamesWon(),
+                            "gamesTied", user.getGamesTied())));
+                } catch (UserDatabaseAccess.UserNotFoundException e) {
+                    // should never reach here, but if it does
+                    throw new AssertionError("User just created, but no longer exists when setting statistics");
+                }
+            }
+        }
     }
 
     /**

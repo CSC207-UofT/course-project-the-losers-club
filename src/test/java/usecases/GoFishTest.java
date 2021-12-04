@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
+import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,46 +19,20 @@ public class GoFishTest {
     List<String> usernames;
     UserManager usermanager;
 
-    protected class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
-        String[] getRankSequence = {"8", "8", "6", "6", "Q", "Q", "Q", "4", "4", "5", "5", "5", "J", "J", "7", "7","10",
-                "10", "10", "2", "2", "2", "K", "K", "K", "9", "9", "3", "3", "3", "A", "A"};
-        int currRankIndex = 0;
-        protected static final String p1 = "Test User-1";
-        protected static final String p2 = "Test User-2";
-        protected static final String p3 = "Test User-3";
-        protected static final String p4 = "Test User-4";
-        protected static final String p5 = "Test User-5";
-        protected static final String p6 = "Test User-6";
-        protected static final String p7 = "Test User-7";
-        String[] getUsernameSequence = {p5, p6, p4, p5, p3, p6, p7, p2, p4, p3, p5, p6, p7, p2, p4, p7, p4, p5, p6, p3,
-                p4, p7, p3, p7, p1, p4, p7, p5, p6, p7, p5, p6};
-        int currUsernameSequence = 0;
-
-        @Override
-        public String getRank() {
-            String chosenRank = getRankSequence[currRankIndex];
-            currRankIndex += 1;
-            return chosenRank;
-        }
-
-        @Override
-        public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
-            String chosenUsername = getUsernameSequence[currUsernameSequence];
-            currUsernameSequence += 1;
-            return chosenUsername;
-        }
-
-    }
-
     @BeforeEach
-    void setUp() throws UserManager.UserAlreadyExistsException {
+    void setUp() {
         usernames = new ArrayList<>();
         for (int i = 1; i <= 7; i++) {
             usernames.add("Test User-" + i);
         }
+
         usermanager = new UserManager();
         for (String username : usernames) {
-            usermanager.addUser(username);
+            try {
+                usermanager.addUser(username);
+            } catch (UserManager.UserAlreadyExistsException e) {
+                fail("User already exists, check test inputs");
+            }
         }
         game = new GoFish(usernames, usermanager, new TestInput(), new Output(), new Random(12345));
     }
@@ -85,5 +60,36 @@ public class GoFishTest {
             scoreSum += score;
         }
         assertEquals(13, scoreSum);
+    }
+
+    protected static class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
+        protected static final String p1 = "Test User-1";
+        protected static final String p2 = "Test User-2";
+        protected static final String p3 = "Test User-3";
+        protected static final String p4 = "Test User-4";
+        protected static final String p5 = "Test User-5";
+        protected static final String p6 = "Test User-6";
+        protected static final String p7 = "Test User-7";
+        String[] getRankSequence = {"8", "8", "6", "6", "Q", "Q", "Q", "4", "4", "5", "5", "5", "J", "J", "7", "7", "10",
+                "10", "10", "2", "2", "2", "K", "K", "K", "9", "9", "3", "3", "3", "A", "A"};
+        int currRankIndex = 0;
+        String[] getUsernameSequence = {p5, p6, p4, p5, p3, p6, p7, p2, p4, p3, p5, p6, p7, p2, p4, p7, p4, p5, p6, p3,
+                p4, p7, p3, p7, p1, p4, p7, p5, p6, p7, p5, p6};
+        int currUsernameSequence = 0;
+
+        @Override
+        public String getRank() {
+            String chosenRank = getRankSequence[currRankIndex];
+            currRankIndex += 1;
+            return chosenRank;
+        }
+
+        @Override
+        public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
+            String chosenUsername = getUsernameSequence[currUsernameSequence];
+            currUsernameSequence += 1;
+            return chosenUsername;
+        }
+
     }
 }

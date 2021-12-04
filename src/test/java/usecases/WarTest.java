@@ -1,27 +1,37 @@
 package usecases;
 
 import entities.Card;
-import presenters.console.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import presenters.console.Input;
+import presenters.console.Output;
+import usecases.usermanagement.UserManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WarTest {
-    private final UserManager userManager = new UserManager();
     public War war;
 
     @BeforeEach
     void setUp() {
+        UserManager userManager = new UserManager();
+
         Input input = new Input();
         Output output = new Output();
         List<String> usernames = new ArrayList<>();
         usernames.add("Daniel");
         usernames.add("Bradley");
         Random seed = new Random(12345);
-        this.war = new War(usernames, this.userManager, input, output, seed);
+        this.war = new War(usernames, userManager, input, output, seed);
+    }
+
+    @AfterEach
+    void tearDown() {
     }
 
     @Test
