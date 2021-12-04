@@ -1,6 +1,7 @@
 package usecases;
 
 import entities.Card;
+import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class GoFish extends GameTemplate {
      * Instantiate a new GoFish game instance.
      *
      * @param usernames   the list of usernames of players that are playing the game.
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userManager user management vessel
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
@@ -29,7 +30,7 @@ public class GoFish extends GameTemplate {
      * Instantiate a new GoFish game instance. This constructor allows the deck to be seeded with a state.
      *
      * @param usernames   the list of usernames of players that are playing the game.
-     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param userManager user management vessel
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      * @param rand        a Random object for creating deterministic behaviour.
