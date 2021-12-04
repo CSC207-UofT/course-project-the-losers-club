@@ -7,19 +7,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class implements the CrazyEightsIO interface using Swing to create a GUI to play the game.
+ */
 public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener {
 
-    private final JLabel topCard;
-    private JButton [] buttons = new JButton[0];
+    private final JLabel topCard = new JLabel();
+    private JButton[] buttons = new JButton[0];
     private volatile boolean card_selected;
     private String selected_card = "";
 
-    public CrazyEightsGUI(String topCard){
+    /**
+     * Creates a new instance of CrazyEights GUI. This will cause a GUI window to open. All implemented methods will do
+     * user interaction through this window or popups.
+     */
+    public CrazyEightsGUI() {
         super();
         this.frame.setTitle("Crazy Eights");
 
 
-        this.topCard = new JLabel(new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(topCard)));
         this.topCard.setText("Top Card");
         this.topCard.setFont(new Font("Serif", Font.PLAIN, 24));
         this.topCard.setVerticalTextPosition(SwingConstants.TOP);
@@ -57,7 +63,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
      */
     @Override
     public void changePlayer(String username) {
-        this.sendPopup("It is now " + username +"'s turn");
+        this.sendPopup("It is now " + username + "'s turn");
     }
 
     /**
