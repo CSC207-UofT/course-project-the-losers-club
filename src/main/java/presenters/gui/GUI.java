@@ -13,6 +13,10 @@ public class GUI {
 
     protected final Map<String, String> stringToImage;
 
+    /**
+     * This creates a new instance of GUI. This will just make a blank window appear. For more detailed GUI's, see this
+     * classes subclasses.
+     */
     public GUI() {
 
         final String[] CARDS_STRINGS = {"as", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "js", "qs", "ks",
@@ -37,6 +41,10 @@ public class GUI {
         update();
     }
 
+    /**
+     * This method updates the window and redraws everything on the screen. This should be called whenever you want
+     * changes to be seen by the user.
+     */
     protected void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
