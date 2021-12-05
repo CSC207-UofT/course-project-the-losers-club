@@ -1,5 +1,7 @@
 package usecases.IOInterfaces;
 
+public interface GoFishIO {
+
 import java.util.List;
 
 public interface GoFishIO {
