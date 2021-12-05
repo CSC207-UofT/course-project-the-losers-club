@@ -8,11 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * This class implements the UserDisplayIO interface using Swing to create a GUI to display stats to the user.
+ */
 public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener {
 
     private final JTextField input = new JTextField(20);
     private volatile boolean ready = false;
 
+    /**
+     * This creates a new UserDisplayGUI object. This creates a new window with the user will interact with.
+     */
     public UserDisplayGUI(){
         super();
 
