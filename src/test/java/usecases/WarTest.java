@@ -16,44 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WarTest {
     public War war;
 
-    static class FakeWarGUI implements WarIO {
-
-        @Override
-        public void changePlayer(String username) {
-            System.out.println("Player changed to: " + username);
-        }
-
-        @Override
-        public void displayBoard(String card1, String card2, int pileSize, String username1, String username2) {
-            System.out.println("BOARD DISPLAY");
-            System.out.println("card1 = " + card1);
-            System.out.println("card2 = " + card2);
-            System.out.println("pileSize = " + pileSize);
-            System.out.println("username1 = " + username1);
-            System.out.println("username2 = " + username2);
-        }
-
-        @Override
-        public void stall() {
-            System.out.println("STALL");
-        }
-
-        @Override
-        public void sendPopup(String message) {
-            System.out.println("POPUP: " + message);
-        }
-
-        @Override
-        public void close() {
-            System.out.println("CLOSE");
-        }
-
-        @Override
-        public void closeMessage(String message) {
-            System.out.println("CLOSE w/ message = " + message);
-        }
-    }
-
     @BeforeEach
     void setUp() {
         UserManager userManager = new UserManager();
@@ -132,5 +94,43 @@ public class WarTest {
         Card actual = this.war.returnTopCard(1);
         assert (!(expected.equals(actual)));
 
+    }
+
+    static class FakeWarGUI implements WarIO {
+
+        @Override
+        public void changePlayer(String username) {
+            System.out.println("Player changed to: " + username);
+        }
+
+        @Override
+        public void displayBoard(String card1, String card2, int pileSize, String username1, String username2) {
+            System.out.println("BOARD DISPLAY");
+            System.out.println("card1 = " + card1);
+            System.out.println("card2 = " + card2);
+            System.out.println("pileSize = " + pileSize);
+            System.out.println("username1 = " + username1);
+            System.out.println("username2 = " + username2);
+        }
+
+        @Override
+        public void stall() {
+            System.out.println("STALL");
+        }
+
+        @Override
+        public void sendPopup(String message) {
+            System.out.println("POPUP: " + message);
+        }
+
+        @Override
+        public void close() {
+            System.out.println("CLOSE");
+        }
+
+        @Override
+        public void closeMessage(String message) {
+            System.out.println("CLOSE w/ message = " + message);
+        }
     }
 }
