@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
 import presenters.gui.BuraGUI;
+import usecases.IOInterfaces.BuraIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class BuraTest {
     Bura game;
     List<String> usernames;
     UserManager usermanager;
+    private BuraIO buraIO;
 
     private static class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
         final String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
@@ -43,7 +45,7 @@ public class BuraTest {
         for (String username : usernames) {
             usermanager.addUser(username);
         }
-        game = new Bura(usernames, usermanager, new BuraGUI(), new Random(12345));
+        game = new Bura(usernames, usermanager, buraIO, new Random(12345));
     }
 
     @Test

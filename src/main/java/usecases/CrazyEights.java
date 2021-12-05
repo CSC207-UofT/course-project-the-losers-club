@@ -2,9 +2,7 @@ package usecases;
 
 import entities.Card;
 import entities.Hand;
-import presenters.gui.CrazyEightsGUI;
-import presenters.gui.PlayerGUI;
-import presenters.gui.SingleCardGUI;
+import usecases.IOInterfaces.CrazyEightsIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.List;
@@ -15,18 +13,18 @@ public class CrazyEights extends GameTemplate {
     private static final int MAX_PLAYERS = 5;
     private static final int MIN_PLAYERS = 2;
     private final Stack<Card> PLAYING_FIELD;
-    private final CrazyEightsGUI CRAZY_GUI;
+    private final CrazyEightsIO CRAZY_IO;
     private char suitTracker;
 
     /**
      * Instantiate a new CrazyEights game instance.
      *
-     * @param usernames         the list of usernames of player that are playing the game
-     * @param userManager       user management vessel
-     * @param crazyEightsGUI    A CrazyEightsGUI object allowing for player input and hand visualization.
+     * @param usernames     the list of usernames of player that are playing the game
+     * @param userManager   user management vessel
+     * @param crazyEightsIO A CrazyEightsIO object allowing for player input and hand visualization.
      */
-    public CrazyEights(List<String> usernames, UserManager userManager, CrazyEightsGUI crazyEightsGUI) {
-        this(usernames, userManager, crazyEightsGUI, new Random());
+    public CrazyEights(List<String> usernames, UserManager userManager, CrazyEightsIO crazyEightsIO) {
+        this(usernames, userManager, crazyEightsIO, new Random());
     }
 
     /**
@@ -34,13 +32,13 @@ public class CrazyEights extends GameTemplate {
      *
      * @param usernames     the list of usernames of player that are playing the game
      * @param userManager   user management vessel
-     * @param crazyEightsGUI    A CrazyEightsGUI object allowing for player input and hand visualization.
+     * @param crazyEightsIO A CrazyEightsIO object allowing for player input and hand visualization.
      * @param rand          a Random object for creating deterministic behaviour
      */
     public CrazyEights(List<String> usernames, UserManager userManager,
-                       CrazyEightsGUI crazyEightsGUI, Random rand) {
-        super(usernames, userManager, crazyEightsGUI);
-        this.CRAZY_GUI = crazyEightsGUI;
+                       CrazyEightsIO crazyEightsIO, Random rand) {
+        super(usernames, userManager, crazyEightsIO);
+        this.CRAZY_IO = crazyEightsIO;
         this.currPlayerIndex = 0;
         this.PLAYING_FIELD = new Stack<>();
         this.deck.shuffle(rand);
@@ -95,25 +93,25 @@ public class CrazyEights extends GameTemplate {
 //            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
 //            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
 //            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
-            this.CRAZY_GUI.changePlayer(currPlayer.getUsername());
-            this.CRAZY_GUI.showTopCard((this.PLAYING_FIELD.peek().getRank() + this.suitTracker));
-            this.CRAZY_GUI.showHand(this.currPlayer.getHandStringFormatted());
+            this.CRAZY_IO.changePlayer(currPlayer.getUsername());
+            this.CRAZY_IO.showTopCard((this.PLAYING_FIELD.peek().getRank() + this.suitTracker));
+            this.CRAZY_IO.showHand(this.currPlayer.getHandStringFormatted());
 //            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
 //            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped) {
-                    this.CRAZY_GUI.sendPopup("This is not a valid move.");
+                    this.CRAZY_IO.sendPopup("This is not a valid move.");
                     card = null;
                 }
 
                 if (!hasValidMove(currPlayer.getHand())) {
-                    this.CRAZY_GUI.sendPopup("Card drawn from Deck because there are no cards to play.");
-                } else if (!this.CRAZY_GUI.drawCard()) {
-                    crd = this.CRAZY_GUI.getCard().toUpperCase();
+                    this.CRAZY_IO.sendPopup("Card drawn from Deck because there are no cards to play.");
+                } else if (!this.CRAZY_IO.drawCard()) {
+                    crd = this.CRAZY_IO.getCard().toUpperCase();
                     card = new Card(crd.substring(0, crd.length() - 1), crd.charAt(crd.length() - 1));
                     if (card.getRank().equals("8")) {
-                        this.suitTracker = Character.toUpperCase(this.CRAZY_GUI.getSuit());
+                        this.suitTracker = Character.toUpperCase(this.CRAZY_IO.getSuit());
                     }
                 }
 
@@ -128,7 +126,7 @@ public class CrazyEights extends GameTemplate {
         }
 
         this.addUserStats(this.currPlayer.getUsername());
-        this.CRAZY_GUI.closeMessage(this.currPlayer.getUsername() + " Wins!!!");
+        this.CRAZY_IO.closeMessage(this.currPlayer.getUsername() + " Wins!!!");
     }
 
     /**

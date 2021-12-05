@@ -2,7 +2,10 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
-import presenters.gui.*;
+import usecases.IOInterfaces.BuraIO;
+import usecases.IOInterfaces.CrazyEightsIO;
+import usecases.IOInterfaces.GameIO;
+import usecases.IOInterfaces.GoFishIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ public abstract class GameTemplate {
     protected Player currPlayer;
     protected UserManager userManager;
     protected List<String> usernames;
-    protected GUI gui;
+    protected GameIO gameIO;
     protected int currPlayerIndex;
 
     /**
@@ -26,11 +29,11 @@ public abstract class GameTemplate {
      * @param usernames   usernames of those playing the game
      * @param userManager manager for storing user information
      */
-    protected GameTemplate(List<String> usernames, UserManager userManager, GUI gui) {
+    protected GameTemplate(List<String> usernames, UserManager userManager, GameIO gameIO) {
         this.userManager = userManager;
         this.usernames = usernames;
 
-        this.gui = gui;
+        this.gameIO = gameIO;
 
         this.players = new Player[usernames.size()];
         for (int i = 0; i < players.length; i++) {
@@ -57,16 +60,16 @@ public abstract class GameTemplate {
      * @param userManager user management vessel
      * @return the requested game instance
      */
-    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager) {
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, GameIO gameIO) {
         switch (name.toUpperCase()) {
             case "BURA":
-                return new Bura(usernames, userManager, new BuraGUI());
+                return new Bura(usernames, userManager, (BuraIO) gameIO);
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, new CrazyEightsGUI());
+                return new CrazyEights(usernames, userManager, (CrazyEightsIO) gameIO);
 //            case "WAR":
 //                return new War(usernames, userManager, input, output);
             case "GO FISH":
-                return new GoFish(usernames, userManager, new GoFishGUI());
+                return new GoFish(usernames, userManager, (GoFishIO) gameIO);
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }

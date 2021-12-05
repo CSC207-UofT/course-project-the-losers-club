@@ -4,7 +4,7 @@ import java.util.*;
 
 import entities.Card;
 import entities.Deck;
-import presenters.gui.BuraGUI;
+import usecases.IOInterfaces.BuraIO;
 import usecases.usermanagement.UserManager;
 
 public class Bura extends GameTemplate {
@@ -14,7 +14,7 @@ public class Bura extends GameTemplate {
     private final Stack<Card> PLAYING_FIELD = new Stack<>();
     protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
     private static char TRUMP_SUIT;
-    private final BuraGUI BURA_GUI;
+    private final BuraIO BURA_IO;
     protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
             "J", 2, "9", 0, "8", 0, "7", 0, "6", 0);
 
@@ -26,11 +26,11 @@ public class Bura extends GameTemplate {
      *
      * @param usernames   the list of usernames of players that are playing the game
      * @param userManager a <code>UserManager</code> that manages the user entities
-     * @param buraGUI   A BuraGUI object allowing for player input/output and game visualization.
+     * @param buraIO      A BuraIO object allowing for player input/output and game visualization.
      */
 
-    public Bura(List<String> usernames, UserManager userManager, BuraGUI buraGUI) {
-        this(usernames, userManager, buraGUI, new Random());
+    public Bura(List<String> usernames, UserManager userManager, BuraIO buraIO) {
+        this(usernames, userManager, buraIO, new Random());
     }
 
     /**
@@ -38,13 +38,13 @@ public class Bura extends GameTemplate {
      *
      * @param usernames   the list of usernames of players that are playing the game.
      * @param userManager a <code>UserManager</code> that manages the user entities
-     * @param buraGUI   A BuraGUI object allowing for player input/output and game visualization.
+     * @param buraIO      A BuraIO object allowing for player input/output and game visualization.
      * @param rand        a Random object for creating deterministic behaviour.
      */
 
-    public Bura(List<String> usernames, UserManager userManager, BuraGUI buraGUI, Random rand) {
-        super(usernames, userManager, buraGUI);
-        this.BURA_GUI = buraGUI;
+    public Bura(List<String> usernames, UserManager userManager, BuraIO buraIO, Random rand) {
+        super(usernames, userManager, buraIO);
+        this.BURA_IO = buraIO;
         this.currPlayerIndex = 0;
         List<Card> cardList = new ArrayList<>();
         for (String i : RANKS) {
@@ -123,23 +123,23 @@ public class Bura extends GameTemplate {
 
         do {
             this.currPlayer = this.players[this.currPlayerIndex];
-            this.BURA_GUI.changePlayer(this.currPlayer.getUsername() + "'s Turn\n");
+            this.BURA_IO.changePlayer(this.currPlayer.getUsername() + "'s Turn\n");
 
             if (PLAYING_FIELD.empty()) {
-                this.BURA_GUI.sendPopup("New round started. Play the first card.\n");
+                this.BURA_IO.sendPopup("New round started. Play the first card.\n");
             } else {
-                this.BURA_GUI.showCardToBeat(this.PLAYING_FIELD.peek().toString());
+                this.BURA_IO.showCardToBeat(this.PLAYING_FIELD.peek().toString());
             }
 
-            this.BURA_GUI.showTrumpSuit(TRUMP_SUIT);
-            this.BURA_GUI.showHand(this.currPlayer.getHandString());
+            this.BURA_IO.showTrumpSuit(TRUMP_SUIT);
+            this.BURA_IO.showHand(this.currPlayer.getHandString());
 
             do {
                 if (loopedRankChoice) {
-                    this.BURA_GUI.sendPopup("Invalid card chosen. Try again.");
+                    this.BURA_IO.sendPopup("Invalid card chosen. Try again.");
                 }
 
-                crd = this.BURA_GUI.getCard();
+                crd = this.BURA_IO.getCard();
                 if (invalidMove(crd)) {
                     loopedRankChoice = true;
                 }
@@ -153,7 +153,7 @@ public class Bura extends GameTemplate {
 
         } while (currPlayerIndex != startIndex);
 
-        this.BURA_GUI.sendPopup(this.players[winningPlayerIndex].getUsername() + " wins the round! \n");
+        this.BURA_IO.sendPopup(this.players[winningPlayerIndex].getUsername() + " wins the round! \n");
         this.currPlayerIndex = winningPlayerIndex;
     }
 
@@ -196,7 +196,7 @@ public class Bura extends GameTemplate {
      * to equally distribute, the hands are not restocks.
      */
     private void restockHands() {
-        this.BURA_GUI.sendPopup("Round ended! Restocking every player's hand.\n");
+        this.BURA_IO.sendPopup("Round ended! Restocking every player's hand.\n");
         while (this.currPlayer.getHand().getSize() < 3 && this.deck.getSize() >= this.players.length) {
             for (Player player : this.players) {
                 player.addToHand(this.deck.drawCard());
@@ -264,7 +264,7 @@ public class Bura extends GameTemplate {
         }
         assert winner != null;
         this.addUserStats(winner.getUsername());
-        this.BURA_GUI.closeMessage(String.format("Winner is %s with %s points!\n", winner.getUsername(), currMaxScore));
+        this.BURA_IO.closeMessage(String.format("Winner is %s with %s points!\n", winner.getUsername(), currMaxScore));
     }
 
 }

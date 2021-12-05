@@ -4,7 +4,7 @@ package usecases.IOInterfaces;
  * This class defines an interface for Bura. Any class that implements this interface can be given to the Bura
  * constructor and be used to play Bura.
  */
-public interface BuraIO {
+public interface BuraIO extends GameIO {
 
     /**
      * This method should change the current user to <>username</> and then informers the user of this change.
