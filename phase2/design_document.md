@@ -1,14 +1,67 @@
 # Design Document
 
-## Updated Specification
+## Specification
 
-* The specification remains mostly the same, except for an additional game Go Fish that was added in this phase. 
-* Main additions for phase 1 are:
-  * Added a main menu (previously, launching the project launched straight into Crazy Eights)
-  * Added "user" functionality&mdash;tracking users and their game statistics through their username
-  * Added serialization of users (users' statistics are stored between program runs)
-  * Added a basic GUI (only implemented in Crazy Eights for now, other games and design improvements are to be done in phase 2)
-* The rules of Go Fish are as follows:
+* Main idea: collection of various card games in a *pass-and-play* type format
+* When running: 
+  * A GUI will be used to interact with the program allowing players to click on menu items, select cards, etc.
+  * The main menu should allow users to select which game they wish to play, and check on their game statistics
+  * During gameplay, users should be able to 
+    * See their own cards
+    * See the state of the table (e.g. the user should see which cards are on the stack in Crazy Eights)
+    * Play cards from their hand
+    * Get feedback if an invalid card has been played (e.g. in Crazy Eights, the played card must match the top card on the stack's rank or suit)
+  * At the end of a game, an appropriate end-game screen should be shown, with options allowing the user to play the same game again or return to the main menu
+  * Users will get the opportunity to select a username as a way to track their own statistics
+    * Statistics that should be tracked are: games played, games won, games tied
+	* These user profiles will persist between application runs
+* Supported games (rules in section below)
+  * Crazy Eights
+  * War
+  * Go Fish
+  * Bura
+
+
+
+
+## Game Rules
+
+(Sourced from [Bicycle Cards](https://bicyclecards.com/rules/) with minor modifications)
+
+### Crazy Eights
+
+* 2+ players, 52 cards
+* Start:
+  * Deal 5 cards to each player
+  * Rest of cards placed face down in middle (deck)
+  * Top most card on deck is flipped to form a starter pile
+* Play:
+  * Each player take turns placing cards from their hand into the starter pile
+    * Cards must match suit or number (exception: 8s)
+      * 8s can be played on at any time in turn, on play, player must specify suit (but not a rank)
+      * The next player must follow the specified suit (or play an 8)
+    * If no valid cards to play: draw one card from deck 
+    * If the deck is empty, the current player must pass their turn
+    * Even if there's a valid move, player can still draw from deck
+* Win condition:
+  * Player with no cards left wins
+
+### War
+
+* 2 players, 52 cards
+* Start: 
+  * Deal half deck to each player
+* Play:
+  * Each player puts down top card of their stack (players cannot choose the card to put down)
+  * Compare cards, player with higher card takes both cards into bottom of their stack
+  * If they're the same, 
+    * Take top two cards from own stack (one face up, one face down)
+    * Compare face up card, player with higher one takes all cards in play
+    * If tie, take another card, place face down
+    * Flip over original face down and compare
+    * Continue until one person has a higher card
+* Win condition: 
+  * Player who has all the cards
 
 ### Go Fish
 
@@ -32,10 +85,15 @@
   * the winner is the player with the most set of cards
 
 
+
+
 ## Major Design Decisions
 
 * As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the dependency rule since methods of the GUI are directly being called from `CrazyEights`. In Phase 2, we are planning to fix this problem either by redesigning the output interface to be less vague or to use the Façade design pattern to the fix the problem by creating a class that takes the object that is trying to be outputted and decide how to display that using the GUI. 
 * The input and output interfaces are separate for the games and for the main menu. This was done to avoid forcing an implementer to implement both interfaces. It may be necessary to have a more unified input/output interface in the future, since having these multiple interfaces requires these IO objects to be passed lower than may be necessary.
+
+
+
 
 ## Clean Architecture
 
@@ -93,6 +151,9 @@ depend on the entity class `Card`. However, we are unsure if this violates clean
 Since `Hand`s and `Deck`s are made up of `Card`s, it makes sense for them to be dependent, but if this is found to be against
 clean architecture then other solutions will be found.
 
+
+
+
 ## SOLID Design Principles.
 
 * Single Responsibility
@@ -106,9 +167,14 @@ clean architecture then other solutions will be found.
 * Dependency Inversion
   * Each game (subclasses of `GameTemplate`) must depend on an interface between the game and the user running the code. An interface was used to specify the ways a user could interact with the game, and the subclasses of `GameTemplate` only depended on there being given some implementation of the interface, but did not directly depend on the implementation.
 
+
+
 ## Packaging Strategy
 
 We primarily considered the packaging by component and the packaging by layer strategies. We decided on the packaging by layer strategy to make our layers more clear and make it easy to tell whether the dependency rule is violated. However, as our project expands in scope, it might be worth reconsidering our use of packaging by layer since each of the packages have low cohesion.
+
+
+
 
 ## Design Patterns
 
@@ -116,6 +182,8 @@ We primarily considered the packaging by component and the packaging by layer st
   * `GameTemplate.gameFactory()` is used to create the various games. When games are added/removed from the pool of available games, `GameTemplate` must be changed, but not the menu implementation in `GameSelector`. `GameSelector` remains independent of the actual available games.
 * Dependency Inversion
   * `GameTemplate` and `GameSelector` define input and output interfaces. These classes have parameters in their constructors for implementations of these interfaces. This allows classes in the layers above them to choose which implementation they wish to use. Additionally, having these interfaces defined means testing is much easier. For example, in `GoFishTest`, a class that emulates the behaviour of a user is used to test the `GoFish` game functionality.
+
+
 
 
 ## Progress Report
@@ -141,6 +209,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Azamat: 
 * Luke: 
 * Nitish: 
+
 
 
 
