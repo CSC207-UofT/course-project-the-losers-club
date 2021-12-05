@@ -45,7 +45,7 @@ public class War extends GameTemplate {
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
     public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+        this(usernames, userManager, gameInput, gameOutput, new Random(4444));
     }
 
     /**
@@ -119,6 +119,7 @@ public class War extends GameTemplate {
             if (winner == 2) {
                 inWar = true;
             } else if (winner < 2) {
+                inWar = false;
                 for (int j = 0; j < 2; j++) {
                     while (!PLAYING_FIELD.get(j).empty()) {
                         players[winner].addToHand(PLAYING_FIELD.get(j).pop());
