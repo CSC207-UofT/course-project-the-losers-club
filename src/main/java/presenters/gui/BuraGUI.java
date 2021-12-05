@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class implements the BuraIO interface using Swing to create a GUI to play the game.
+ */
 public class BuraGUI extends GUI implements BuraIO, ActionListener {
 
     private final JLabel cardToBeat = new JLabel();
