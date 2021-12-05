@@ -40,12 +40,6 @@ public class GoFish extends GameTemplate {
         this.SCORE_TRACKER = new HashMap<>();
         this.currPlayerIndex = 0;
         this.deck.shuffle(rand);
-        int handSize;
-        if (usernames.size() <= 3) {
-            handSize = 7;
-        } else {
-            handSize = 5;
-        }
         for (Player player : this.players) {
             for (int i = 0; i < 7; i++) {
                 player.addToHand(this.deck.drawCard());
