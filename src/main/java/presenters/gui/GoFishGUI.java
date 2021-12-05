@@ -136,4 +136,9 @@ public class GoFishGUI extends GUI implements GoFishIO {
 
         return userArray[n];
     }
+
+    @Override
+    public void closeMessage(String message) {
+
+    }
 }
