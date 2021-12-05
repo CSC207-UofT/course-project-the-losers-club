@@ -1,33 +1,31 @@
 package usecases;
 
-import java.util.*;
-
 import entities.Card;
 import entities.Deck;
 import usecases.usermanagement.UserManager;
+
+import java.util.*;
 
 public class Bura extends GameTemplate {
     protected static final String[] RANKS = {"A", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private final static int MIN_PLAYERS = 2;
     private final static int MAX_PLAYERS = 6;
-    private final Stack<Card> PLAYING_FIELD = new Stack<>();
-    protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
     private static char TRUMP_SUIT;
+    protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
     protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
             "J", 2, "9", 0, "8", 0, "7", 0, "6", 0);
-
+    private final Stack<Card> PLAYING_FIELD = new Stack<>();
     private final Map<String, Integer> rankToPoint = Map.of("A", 9, "K", 8, "10", 5, "Q", 7,
             "J", 6, "9", 4, "8", 3, "7", 2, "6", 1);
 
     /**
-     * Instantiate a new Bura game instance
+     * Instantiate a new Bura game instance.
      *
      * @param usernames   the list of usernames of players that are playing the game
      * @param userManager a <code>UserManager</code> that manages the user entities
      * @param gameInput   A GameTemplate.Input object allowing for player input.
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
-
     public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this(usernames, userManager, gameInput, gameOutput, new Random());
     }
@@ -41,7 +39,6 @@ public class Bura extends GameTemplate {
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      * @param rand        a Random object for creating deterministic behaviour.
      */
-
     public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
         super(usernames, userManager, gameInput, gameOutput);
         this.currPlayerIndex = 0;
