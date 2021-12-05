@@ -2,10 +2,7 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
-import usecases.IOInterfaces.BuraIO;
-import usecases.IOInterfaces.CrazyEightsIO;
-import usecases.IOInterfaces.GameIO;
-import usecases.IOInterfaces.GoFishIO;
+import usecases.IOInterfaces.*;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -66,8 +63,8 @@ public abstract class GameTemplate {
                 return new Bura(usernames, userManager, (BuraIO) gameIO);
             case "CRAZY EIGHTS":
                 return new CrazyEights(usernames, userManager, (CrazyEightsIO) gameIO);
-//            case "WAR":
-//                return new War(usernames, userManager, input, output);
+            case "WAR":
+                return new War(usernames, userManager, (WarIO) gameIO);
             case "GO FISH":
                 return new GoFish(usernames, userManager, (GoFishIO) gameIO);
             default:

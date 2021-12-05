@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
+import presenters.gui.WarGUI;
+import usecases.IOInterfaces.WarIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -21,13 +23,11 @@ public class WarTest {
     void setUp() {
         UserManager userManager = new UserManager();
 
-        Input input = new Input();
-        Output output = new Output();
         List<String> usernames = new ArrayList<>();
         usernames.add("Daniel");
         usernames.add("Bradley");
         Random seed = new Random(12345);
-        this.war = new War(usernames, userManager, input, output, seed);
+        this.war = new War(usernames, userManager, new WarGUI(), seed);
     }
 
     @AfterEach
