@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * This class defines an interface for the user statistics display. Any class that implements this interface should be
- * able to be seamlessly swapped out in the crazy eights game code, and it should work perfectly.
+ * able to be seamlessly swapped out in the user display code, and it should work perfectly.
  */
 public interface UserDisplayIO {
 
