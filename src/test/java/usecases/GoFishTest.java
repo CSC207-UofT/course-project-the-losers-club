@@ -1,12 +1,9 @@
 package usecases;
 
-import controllers.MainMenu;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import presenters.console.Input;
-import presenters.console.Output;
-import presenters.gui.GoFishGUI;
+import usecases.IOInterfaces.GoFishIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class GoFishTest {
                 fail("User already exists, check test inputs");
             }
         }
-        game = new GoFish(usernames, usermanager, new GoFishGUI(), new Random(12345));
+        game = new GoFish(usernames, usermanager, new FakeGoFishGUI(), new Random(12345));
     }
 
     @AfterEach
@@ -63,7 +60,8 @@ public class GoFishTest {
         assertEquals(13, scoreSum);
     }
 
-    protected static class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
+    static class FakeGoFishGUI implements GoFishIO {
+
         protected static final String p1 = "Test User-1";
         protected static final String p2 = "Test User-2";
         protected static final String p3 = "Test User-3";
@@ -79,6 +77,21 @@ public class GoFishTest {
         int currUsernameSequence = 0;
 
         @Override
+        public void changePlayer(String username) {
+            System.out.println("CHANGE PLAYER username = " + username);
+        }
+
+        @Override
+        public void sendPopup(String message) {
+            System.out.println("POPUP message = " + message);
+        }
+
+        @Override
+        public void showHand(String hand) {
+            System.out.println("SHOW HAND hand = " + hand);
+        }
+
+        @Override
         public String getRank() {
             String chosenRank = getRankSequence[currRankIndex];
             currRankIndex += 1;
@@ -86,11 +99,16 @@ public class GoFishTest {
         }
 
         @Override
-        public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
+        public String getPlayerUsername(String currPlayer, List<String> usernames) {
             String chosenUsername = getUsernameSequence[currUsernameSequence];
             currUsernameSequence += 1;
             return chosenUsername;
         }
 
+        @Override
+        public void closeMessage(String message) {
+            System.out.println("CLOSE w/ message = " + message);
+        }
     }
+
 }
