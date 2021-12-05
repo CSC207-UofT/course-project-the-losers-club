@@ -47,7 +47,7 @@ public class GoFish extends GameTemplate {
             handSize = 5;
         }
         for (Player player : this.players) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < handSize; i++) {
                 player.addToHand(this.deck.drawCard());
             }
             this.SCORE_TRACKER.put(player, 0);
