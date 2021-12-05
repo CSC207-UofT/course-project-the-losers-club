@@ -15,9 +15,9 @@ public interface WarIO {
     /**
      * This method should display the top of both of the War piles.
      *
-     * @param card1 a string representation of the card on the first War pile to be displayed.
-     * @param card2 a string representation of the card on the second War pile to be displayed.
-     * @param pileSize an int representation of the size of the War piles.
+     * @param card1     a string representation of the card on the first War pile to be displayed.
+     * @param card2     a string representation of the card on the second War pile to be displayed.
+     * @param pileSize  an int representation of the size of the War piles.
      * @param username1 a string representation of the one of the player's username.
      * @param username2 a string representation of the other player's username.
      */
