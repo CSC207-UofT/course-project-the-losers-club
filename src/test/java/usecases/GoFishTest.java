@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
+import presenters.gui.GoFishGUI;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class GoFishTest {
                 fail("User already exists, check test inputs");
             }
         }
-        game = new GoFish(usernames, usermanager, new TestInput(), new Output(), new Random(12345));
+        game = new GoFish(usernames, usermanager, new GoFishGUI(), new Random(12345));
     }
 
     @AfterEach

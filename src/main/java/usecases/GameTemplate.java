@@ -2,8 +2,7 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
-import presenters.gui.PlayerGUI;
-import presenters.gui.SingleCardGUI;
+import presenters.gui.*;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -13,13 +12,12 @@ public abstract class GameTemplate {
 
     protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
-    protected final Input GAME_INPUT;
-    protected final Output GAME_OUTPUT;
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
     protected UserManager userManager;
     protected List<String> usernames;
+    protected GUI gui;
     protected int currPlayerIndex;
 
     /**
@@ -27,15 +25,12 @@ public abstract class GameTemplate {
      *
      * @param usernames   usernames of those playing the game
      * @param userManager manager for storing user information
-     * @param gameInput   an object implementing <code>GameTemplate.Input</code>
-     * @param gameOutput  an object implementing <code>GameTemplate.output</code>
      */
-    protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+    protected GameTemplate(List<String> usernames, UserManager userManager, GUI gui) {
         this.userManager = userManager;
         this.usernames = usernames;
 
-        this.GAME_INPUT = gameInput;
-        this.GAME_OUTPUT = gameOutput;
+        this.gui = gui;
 
         this.players = new Player[usernames.size()];
         for (int i = 0; i < players.length; i++) {
@@ -60,20 +55,18 @@ public abstract class GameTemplate {
      * @param name        the game to create
      * @param usernames   list of usernames to play the game
      * @param userManager user management vessel
-     * @param input       an object implementing <code>GameTemplate.Input</code>
-     * @param output      an object implementing <code>GameTemplate.output</code>
      * @return the requested game instance
      */
-    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager) {
         switch (name.toUpperCase()) {
             case "BURA":
-                return new Bura(usernames, userManager, input, output);
+                return new Bura(usernames, userManager, new BuraGUI());
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
-            case "WAR":
-                return new War(usernames, userManager, input, output);
+                return new CrazyEights(usernames, userManager, new CrazyEightsGUI());
+//            case "WAR":
+//                return new War(usernames, userManager, input, output);
             case "GO FISH":
-                return new GoFish(usernames, userManager, input, output);
+                return new GoFish(usernames, userManager, new GoFishGUI());
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import presenters.console.Input;
 import presenters.console.Output;
+import presenters.gui.BuraGUI;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class BuraTest {
         for (String username : usernames) {
             usermanager.addUser(username);
         }
-        game = new Bura(usernames, usermanager, new BuraTest.TestInput(), new Output(), new Random(12345));
+        game = new Bura(usernames, usermanager, new BuraGUI(), new Random(12345));
     }
 
     @Test

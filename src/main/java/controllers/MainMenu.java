@@ -113,7 +113,7 @@ public class MainMenu {
 
         this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
         this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
-        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.GAME_INPUT, this.GAME_OUTPUT);
+        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager);
         game.startGame();
         this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }

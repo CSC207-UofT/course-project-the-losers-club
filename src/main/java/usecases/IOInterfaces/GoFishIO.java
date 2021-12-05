@@ -44,4 +44,11 @@ public interface GoFishIO {
      * @return a string representation of the username selected by the user
      */
     String getPlayerUsername(String currPlayer, List<String> usernames);
+
+    /**
+     * This method should display a <>message</> to the user and then close the GUI.
+     *
+     * @param message a string that is to be sent to the user.
+     */
+    void closeMessage(String message);
 }
