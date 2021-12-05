@@ -9,11 +9,18 @@ import java.util.Map;
 public interface UserDisplayIO {
 
     /**
-     * Prompt the user for a username to get the statistics for.
+     * Retrieve a username to get the statistics for.
      *
      * @return a valid username to retrieve various gameplay statistics for
      */
     String getUsername();
+
+    /**
+     * Show a popup telling the user that they have entered an invalid username.
+     *
+     * @param username the invalid username
+     */
+    void invalidUsername(String username);
 
     /**
      * Display the specified statistics.
