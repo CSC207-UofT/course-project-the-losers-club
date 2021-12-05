@@ -2,6 +2,10 @@ package usecases.IOInterfaces;
 
 import java.util.List;
 
+/**
+ * This class defines an interface for Go Fish. Any class that implements this interface can be given to the GoFish
+ * constructor and be used to play Go Fish.
+ */
 public interface GoFishIO {
 
     /**
