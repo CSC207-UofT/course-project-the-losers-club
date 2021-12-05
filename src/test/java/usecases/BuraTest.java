@@ -1,12 +1,8 @@
 package usecases;
 
 import entities.Card;
-import controllers.MainMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import presenters.console.Input;
-import presenters.console.Output;
-import presenters.gui.BuraGUI;
 import usecases.IOInterfaces.BuraIO;
 import usecases.usermanagement.UserManager;
 
@@ -20,20 +16,6 @@ public class BuraTest {
     Bura game;
     List<String> usernames;
     UserManager usermanager;
-    private BuraIO buraIO;
-
-    private static class TestInput extends Input implements MainMenu.Input, GameTemplate.Input {
-        final String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
-                "S7", "S9", "HA", "SA", "C8"};
-        int currCardIndex = 0;
-
-        @Override
-        public String getCard() {
-            String chosenRank = getCardSequence[currCardIndex];
-            currCardIndex += 1;
-            return chosenRank;
-        }
-    }
 
     @BeforeEach
     void setUp() throws UserManager.UserAlreadyExistsException {
@@ -45,7 +27,7 @@ public class BuraTest {
         for (String username : usernames) {
             usermanager.addUser(username);
         }
-        game = new Bura(usernames, usermanager, buraIO, new Random(12345));
+        game = new Bura(usernames, usermanager, new FakeBuraGUI(), new Random(12345));
     }
 
     @Test
@@ -95,5 +77,54 @@ public class BuraTest {
         Card card1 = new Card("6", 'D');
         Card card2 = new Card("J", 'D');
         assertFalse(game.beatsCard(card1, card2));
+    }
+
+    static class FakeBuraGUI implements BuraIO {
+
+        final String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
+                "S7", "S9", "HA", "SA", "C8"};
+        int currCardIndex = 0;
+
+        @Override
+        public void changePlayer(String username) {
+            System.out.println("CHANGE PLAYER username = " + username);
+        }
+
+        @Override
+        public void sendPopup(String message) {
+            System.out.println("POPUP message = " + message);
+        }
+
+        @Override
+        public void showCardToBeat(String card) {
+            System.out.println("CARD TO BEAT card = " + card);
+        }
+
+        @Override
+        public void showTrumpSuit(char trump) {
+            System.out.println("TRUMP SUIT trump = " + trump);
+        }
+
+        @Override
+        public void showHand(String hand) {
+            System.out.println("hand = " + hand);
+        }
+
+        @Override
+        public String getCard() {
+            String chosenRank = getCardSequence[currCardIndex];
+            currCardIndex += 1;
+            return chosenRank;
+        }
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public void closeMessage(String message) {
+
+        }
     }
 }
