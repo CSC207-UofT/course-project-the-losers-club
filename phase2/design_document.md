@@ -131,9 +131,15 @@ We can see a more in depth example of how games interact with the entity classes
 #### User Creation and Storage
 
 When user operations like creating a new user or checking the stats of an existing user are selected in `MainMenu`,
-this system activates. The requests from `MainMenu` are processed through the `UserManager` class, and assisted by 
-`UserManagerImporter`, `UserManagerExporter`, and `UserDisplay`. These allow us to interact with and create new instances
-of our custom entity class User, and use them to play games with. 
+this system activates. The requests from `MainMenu` and `UserDisplay` are processed through the `UserManager` class, allowing users to be added and 
+user statistics to be retrieved/modified. These allow us to interact with and create new instances
+of our custom entity class `User`, and use them to play games with. 
+
+Serialization of users are done through the `UserDatabaseAccess` interface. This interface defines methods and exceptions used to communicate with any 
+type of user database gateway. Currently, an SQLite database is used to serialize user data, but having a `UserDatabaseAccess` interface allows
+database implementations to be swapped at will. One example of this is in the test classes for 
+[`UserManager`](https://github.com/CSC207-UofT/course-project-the-losers-club/blob/main/src/test/java/usecases/UserManagerTest.java). A fake database is used
+to simulate the storage of user information for the purposes of testing.
 
 <img src="UMLs/User_Flow.png" width=600>
 
