@@ -13,11 +13,21 @@ public interface WarIO {
     void changePlayer(String username);
 
     /**
-     * This method should display the new top card to the user.
+     * This method should display the top of both of the War piles.
      *
-     * @param card a string representation of the card to be displayed.
+     * @param card1 a string representation of the card on the first War pile to be displayed.
+     * @param card2 a string representation of the card on the second War pile to be displayed.
+     * @param pileSize an int representation of the size of the War piles.
+     * @param username1 a string representation of the one of the player's username.
+     * @param username2 a string representation of the other player's username.
      */
-    void showTopCard(String card);
+    void displayBoard(String card1, String card2, int pileSize, String username1, String username2);
+
+    /**
+     * This method takes a keyboard or mouse input from the user and continues the game once the input is received.
+     * Acts to stall the game so that the players can look at the current state of the game.
+     */
+    void stall();
 
     /**
      * This method should send a popup to the user containing a <>message</>.
