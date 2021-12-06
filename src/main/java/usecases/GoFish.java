@@ -23,7 +23,23 @@ public class GoFish extends GameTemplate {
      * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
      */
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+        this(usernames, userManager, gameInput, gameOutput, new Random(), "ALL");
+    }
+
+
+
+    /**
+     * Instantiate a new GoFish game instance.
+     *
+     * @param usernames   the list of usernames of players that are playing the game.
+     * @param userManager user management vessel
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, String deckSubset) {
+        this(usernames, userManager, gameInput, gameOutput, new Random(), deckSubset);
     }
 
     /**
@@ -36,7 +52,22 @@ public class GoFish extends GameTemplate {
      * @param rand        a Random object for creating deterministic behaviour.
      */
     public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
-        super(usernames, userManager, gameInput, gameOutput);
+        this(usernames, userManager, gameInput, gameOutput, rand, "ALL");
+    }
+
+    /**
+     * Instantiate a new GoFish game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param usernames   the list of usernames of players that are playing the game.
+     * @param userManager user management vessel
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param rand        a Random object for creating deterministic behaviour.
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public GoFish(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand, String deckSubset) {
+        super(usernames, userManager, gameInput, gameOutput, deckSubset);
         this.SCORE_TRACKER = new HashMap<>();
         this.currPlayerIndex = 0;
         this.deck.shuffle(rand);

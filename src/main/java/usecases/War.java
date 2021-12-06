@@ -1,7 +1,6 @@
 package usecases;
 
 import entities.Card;
-import usecases.usermanagement.UserDatabaseAccess;
 import usecases.usermanagement.UserManager;
 
 import java.util.*;
@@ -15,28 +14,6 @@ public class War extends GameTemplate {
     private final Output GAME_OUTPUT;
 
     /**
-     * Constructor for War. Note that usernames must be a List of length 2
-     *
-     * @param usernames   the list of usernames of player that are playing the game
-     * @param userManager user management vessel
-     * @param gameInput   A GameTemplate.Input object allowing for player input.
-     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
-     * @param random      a random object for the purposes of game seeding
-     */
-    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random random) {
-        super(usernames, userManager, gameInput, gameOutput);
-        this.GAME_INPUT = gameInput;
-        this.GAME_OUTPUT = gameOutput;
-        this.currPlayerIndex = 0;
-        this.deck.shuffle(random);
-        for (Player player : this.players) {
-            for (int i = 0; i < 26; i++) {
-                player.addToHand(this.deck.drawCard());
-            }
-        }
-    }
-
-    /**
      * Instantiate a new War game instance.
      *
      * @param usernames   the list of usernames of player that are playing the game
@@ -46,6 +23,57 @@ public class War extends GameTemplate {
      */
     public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
         this(usernames, userManager, gameInput, gameOutput, new Random());
+    }
+
+    /**
+     * Constructor for War. Note that usernames must be a List of length 2
+     *
+     * @param usernames   the list of usernames of player that are playing the game
+     * @param userManager user management vessel
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param random      a random object for the purposes of game seeding
+     */
+    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random random) {
+        this(usernames, userManager, gameInput, gameOutput, random, "ALL");
+    }
+
+    /**
+     * Constructor for War. Note that usernames must be a List of length 2
+     *
+     * @param usernames   the list of usernames of player that are playing the game
+     * @param userManager user management vessel
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, String deckSubset) {
+        this(usernames, userManager, gameInput, gameOutput, new Random(), deckSubset);
+    }
+
+    /**
+     * Constructor for War. Note that usernames must be a List of length 2
+     *
+     * @param usernames   the list of usernames of player that are playing the game
+     * @param userManager user management vessel
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param random      a random object for the purposes of game seeding
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public War(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random random, String deckSubset) {
+        super(usernames, userManager, gameInput, gameOutput, deckSubset);
+        this.GAME_INPUT = gameInput;
+        this.GAME_OUTPUT = gameOutput;
+        this.currPlayerIndex = 0;
+        this.deck.shuffle(random);
+        for (Player player : this.players) {
+            for (int i = 0; i < 26; i++) {
+                player.addToHand(this.deck.drawCard());
+            }
+        }
     }
 
     /**

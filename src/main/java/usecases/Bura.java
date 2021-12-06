@@ -31,6 +31,20 @@ public class Bura extends GameTemplate {
     }
 
     /**
+     * Instantiate a new Bura game instance.
+     *
+     * @param usernames   the list of usernames of players that are playing the game
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, String deckSubset) {
+        this(usernames, userManager, gameInput, gameOutput, new Random(), deckSubset);
+    }
+
+    /**
      * Instantiate a new Bura game instance. This constructor allows the deck to be seeded with a state.
      *
      * @param usernames   the list of usernames of players that are playing the game.
@@ -40,15 +54,23 @@ public class Bura extends GameTemplate {
      * @param rand        a Random object for creating deterministic behaviour.
      */
     public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
-        super(usernames, userManager, gameInput, gameOutput);
+        this(usernames, userManager, gameInput, gameOutput, rand, "ALL");
+    }
+
+    /**
+     * Instantiate a new Bura game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param usernames   the list of usernames of players that are playing the game.
+     * @param userManager a <code>UserManager</code> that manages the user entities
+     * @param gameInput   A GameTemplate.Input object allowing for player input.
+     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param rand        a Random object for creating deterministic behaviour.
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand, String deckSubset) {
+        super(usernames, userManager, gameInput, gameOutput, deckSubset);
         this.currPlayerIndex = 0;
-        List<Card> cardList = new ArrayList<>();
-        for (String i : RANKS) {
-            for (char j : SUITS) {
-                cardList.add(new Card(i, j));
-            }
-        }
-        this.deck = new Deck(cardList);
         this.deck.shuffle(rand);
         for (Player player : this.players) {
             for (int i = 0; i < 3; i++) {

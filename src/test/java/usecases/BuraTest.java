@@ -42,7 +42,7 @@ public class BuraTest {
         for (String username : usernames) {
             usermanager.addUser(username);
         }
-        game = new Bura(usernames, usermanager, new BuraTest.TestInput(), new Output(), new Random(12345));
+        game = new Bura(usernames, usermanager, new BuraTest.TestInput(), new Output(), new Random(12345), "BURA");
     }
 
     @Test

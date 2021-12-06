@@ -31,6 +31,20 @@ public class CrazyEights extends GameTemplate {
     }
 
     /**
+     * Instantiate a new CrazyEights game instance.
+     *
+     * @param usernames     the list of usernames of player that are playing the game
+     * @param userManager   user management vessel
+     * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
+     * @param deckSubset    the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public CrazyEights(List<String> usernames, UserManager userManager, PlayerGUI playerGUI, SingleCardGUI singleCardGUI, String deckSubset) {
+        this(usernames, userManager, playerGUI, singleCardGUI, new Random(), deckSubset);
+    }
+
+    /**
      * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
      *
      * @param usernames     the list of usernames of player that are playing the game
@@ -41,7 +55,23 @@ public class CrazyEights extends GameTemplate {
      */
     public CrazyEights(List<String> usernames, UserManager userManager,
                        PlayerGUI playerGUI, SingleCardGUI singleCardGUI, Random rand) {
-        super(usernames, userManager, playerGUI, singleCardGUI);
+        this(usernames, userManager, playerGUI, singleCardGUI, rand, "ALL");
+    }
+
+    /**
+     * Instantiate a new CrazyEights game instance. This constructor allows the deck to be seeded with a state.
+     *
+     * @param usernames     the list of usernames of player that are playing the game
+     * @param userManager   user management vessel
+     * @param playerGUI     A PlayerGUI object allowing for player input and hand visualization.
+     * @param singleCardGUI A SingleCardGUI object allowing for the top card visualization.
+     * @param rand          a Random object for creating deterministic behaviour
+     * @param deckSubset    the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    public CrazyEights(List<String> usernames, UserManager userManager,
+                       PlayerGUI playerGUI, SingleCardGUI singleCardGUI, Random rand, String deckSubset) {
+        super(usernames, userManager, playerGUI, singleCardGUI, deckSubset);
         this.PLAYER_GUI = playerGUI;
         this.SINGLE_CARD_GUI = singleCardGUI;
         this.currPlayerIndex = 0;

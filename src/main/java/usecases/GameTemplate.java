@@ -2,11 +2,11 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
+import helpers.CardListGenerator;
 import presenters.gui.PlayerGUI;
 import presenters.gui.SingleCardGUI;
 import usecases.usermanagement.UserManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameTemplate {
@@ -31,6 +31,20 @@ public abstract class GameTemplate {
      * @param gameOutput  an object implementing <code>GameTemplate.output</code>
      */
     protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+        this(usernames, userManager, gameInput, gameOutput, "ALL");
+    }
+
+    /**
+     * Construct a <code>GameTemplate</code>.
+     *
+     * @param usernames   usernames of those playing the game
+     * @param userManager manager for storing user information
+     * @param gameInput   an object implementing <code>GameTemplate.Input</code>
+     * @param gameOutput  an object implementing <code>GameTemplate.output</code>
+     * @param deckSubset  the deck subset to use
+     * @see helpers.CardListGenerator
+     */
+    protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, String deckSubset) {
         this.userManager = userManager;
         this.usernames = usernames;
 
@@ -44,13 +58,7 @@ public abstract class GameTemplate {
         }
         this.currPlayer = this.players[0];
 
-        // Creates a deck with the cards created outside the Deck class
-        List<Card> cardList = new ArrayList<>();
-        for (String i : RANKS) {
-            for (char j : SUITS) {
-                cardList.add(new Card(i, j));
-            }
-        }
+        List<Card> cardList = CardListGenerator.getCards(deckSubset);
         this.deck = new Deck(cardList);
     }
 
@@ -67,13 +75,40 @@ public abstract class GameTemplate {
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
         switch (name.toUpperCase()) {
             case "BURA":
-                return new Bura(usernames, userManager, input, output);
+                return new Bura(usernames, userManager, input, output, "BURA");
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
+                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""), "ALL");
             case "WAR":
-                return new War(usernames, userManager, input, output);
+                return new War(usernames, userManager, input, output, "ALL");
             case "GO FISH":
-                return new GoFish(usernames, userManager, input, output);
+                return new GoFish(usernames, userManager, input, output, "ALL");
+            default:
+                throw new IllegalArgumentException("Illegal game selection of " + name + '.');
+        }
+    }
+
+    /**
+     * Create a new <code>GameTemplate</code> instance based on the given game name
+     *
+     * @param name        the game to create
+     * @param usernames   list of usernames to play the game
+     * @param userManager user management vessel
+     * @param input       an object implementing <code>GameTemplate.Input</code>
+     * @param output      an object implementing <code>GameTemplate.output</code>
+     * @param deckSubset  the deck subset to use
+     * @return the requested game instance
+     * @see helpers.CardListGenerator
+     */
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output, String deckSubset) {
+        switch (name.toUpperCase()) {
+            case "BURA":
+                return new Bura(usernames, userManager, input, output, deckSubset);
+            case "CRAZY EIGHTS":
+                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""), deckSubset);
+            case "WAR":
+                return new War(usernames, userManager, input, output, deckSubset);
+            case "GO FISH":
+                return new GoFish(usernames, userManager, input, output, deckSubset);
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
