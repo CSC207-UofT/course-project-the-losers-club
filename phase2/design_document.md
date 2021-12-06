@@ -225,7 +225,7 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Significant PRs
 
 * Raymond: 
-* Teddy: [Connected all games except War to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126), [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
+* Teddy: [Connected all games except War to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126), Created [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
 * Brian: 
 * Bradley: 
 * Daniel: 
