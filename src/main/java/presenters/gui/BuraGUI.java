@@ -1,6 +1,6 @@
 package presenters.gui;
 
-import usecases.IOInterfaces.CrazyEightsIO;
+import usecases.IOInterfaces.BuraIO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,29 +8,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * This class implements the CrazyEightsIO interface using Swing to create a GUI to play the game.
+ * This class implements the BuraIO interface using Swing to create a GUI to play the game.
  */
-public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener {
+public class BuraGUI extends GUI implements BuraIO, ActionListener {
 
-    private final JLabel topCard = new JLabel();
+    private final JLabel cardToBeat = new JLabel();
+    private final JLabel trumpSuit = new JLabel();
+
     private JButton[] buttons = new JButton[0];
     private volatile boolean card_selected;
     private String selected_card = "";
 
-    /**
-     * Creates a new instance of CrazyEights GUI. This will cause a GUI window to open. All implemented methods will do
-     * user interaction through this window or popups.
-     */
-    public CrazyEightsGUI() {
-        super();
-        this.frame.setTitle("Crazy Eights");
+    public BuraGUI(){
+        this.frame.setTitle("Bura");
+
+        this.panel.add(cardToBeat);
+        this.panel.add(trumpSuit);
 
 
-        this.topCard.setText("Top Card");
-        this.topCard.setFont(new Font("Serif", Font.PLAIN, 24));
-        this.topCard.setVerticalTextPosition(SwingConstants.TOP);
-        this.topCard.setHorizontalTextPosition(SwingConstants.CENTER);
-        this.panel.add(this.topCard);
+        this.trumpSuit.setText("Trump Suit");
+        this.trumpSuit.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.trumpSuit.setVerticalTextPosition(SwingConstants.TOP);
+        this.trumpSuit.setFont(new Font("Serif", Font.PLAIN, 24));
+
+
+        this.cardToBeat.setText("Card To Beat");
+        this.cardToBeat.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.cardToBeat.setVerticalTextPosition(SwingConstants.TOP);
+        this.cardToBeat.setFont(new Font("Serif", Font.PLAIN, 24));
+        ImageIcon icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+        this.cardToBeat.setIcon(icon);
 
 
         JButton send_card = new JButton("Send Card");
@@ -67,16 +74,37 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
     }
 
     /**
-     * This method should display the new top card to the user.
+     * This method should send a popup to the user containing a <>message</>.
      *
-     * @param card a string representation of the card to be displayed.
+     * @param message a string that is to be sent to the user
      */
     @Override
-    public void showTopCard(String card) {
-        card = card.toLowerCase();
+    public void sendPopup(String message) {
+        JOptionPane.showMessageDialog(new JFrame(), message);
+    }
 
+    /**
+     * This method should display the top card to the user and indicate that this is the card to beat.
+     *
+     * @param card a string representation of the card to beat.
+     */
+    @Override
+    public void showCardToBeat(String card) {
         ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
-        this.topCard.setIcon(icon);
+        this.cardToBeat.setIcon(icon);
+        this.update();
+    }
+
+    /**
+     * This method should display to the user which suit is the trump suit.
+     *
+     * @param trump a char representation of a suit
+     */
+    @Override
+    public void showTrumpSuit(char trump) {
+        String trumpString = "a" + String.valueOf(trump).toLowerCase();
+        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(trumpString));
+        this.trumpSuit.setIcon(icon);
         this.update();
     }
 
@@ -114,28 +142,6 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
     }
 
     /**
-     * This method should send a popup to the user containing a <>message</>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
-
-    /**
-     * This method prompts the user to see if they want to draw a new card from the deck.
-     *
-     * @return true if the user wants to draw a card, false if the user does not want to draw a card.
-     */
-    @Override
-    public boolean drawCard() {
-        int selection = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to draw a card?");
-
-        return selection == 0;
-    }
-
-    /**
      * This method should return a string representation of the card that is selected by the user.
      *
      * @return a string representation of the card selected by the user.
@@ -146,33 +152,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
             Thread.onSpinWait();
         }
         this.card_selected = false;
-        return this.selected_card;
-    }
-
-    /**
-     * This method should prompt the user to pick a suit
-     *
-     * @return a char representation of the chosen suit
-     */
-    @Override
-    public char getSuit() {
-        //Custom button text
-        Object[] options = {"Spades",
-                "Clubs",
-                "Diamond",
-                "Hearts"};
-        int n = JOptionPane.showOptionDialog(frame,
-                "Please Select A Suit",
-                "Suit Selection",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[2]);
-
-        char[] suits = {'s', 'c', 'd', 'h'};
-
-        return suits[n];
+        return this.selected_card.toUpperCase();
     }
 
     /**

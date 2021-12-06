@@ -59,7 +59,6 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
         while (!this.ready) {
             Thread.onSpinWait();
         }
-        System.out.println("test");
         this.ready = false;
         return this.input.getText();
     }

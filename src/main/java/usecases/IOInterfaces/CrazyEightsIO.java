@@ -4,7 +4,7 @@ package usecases.IOInterfaces;
  * This class defines an interface for the game crazy eights. Any class that implements this interface should be
  * able to be seamlessly swapped out in the crazy eights game code, and it should work perfectly.
  */
-public interface CrazyEightsIO {
+public interface CrazyEightsIO extends GameIO {
 
     /**
      * This method should change the current user to <>username</> and then informers the user of this change.

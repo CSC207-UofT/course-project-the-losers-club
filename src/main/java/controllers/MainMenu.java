@@ -1,7 +1,9 @@
 package controllers;
 
+import presenters.gui.GameGUIFactory;
 import presenters.gui.UserDisplayGUI;
 import usecases.GameTemplate;
+import usecases.IOInterfaces.GameIO;
 import usecases.usermanagement.UserDatabaseAccess;
 import usecases.usermanagement.UserManager;
 
@@ -17,8 +19,6 @@ public class MainMenu {
     private final String[] GAMES;
     private final MainMenu.Input SELECTOR_INPUT;
     private final MainMenu.Output SELECTOR_OUTPUT;
-    private final GameTemplate.Input GAME_INPUT;
-    private final GameTemplate.Output GAME_OUTPUT;
     private final String DASHES;
 
     /**
@@ -27,19 +27,12 @@ public class MainMenu {
      * @param selectorInput  implementor of MainMenu.Input used for gathering input from the user
      * @param selectorOutput implementor of MainMenu.Output used for sending output back to the user
      * @param games          Strings representing the Games to create
-     * @param gameInput      implementor of GameTemplate.Input used for gathering game specific input from the user
-     * @param gameOutput     implementor of GameTemplate.Output used for sending output back to the user
      */
     public MainMenu(MainMenu.Input selectorInput,
                     MainMenu.Output selectorOutput,
-                    String[] games,
-                    GameTemplate.Input gameInput,
-                    GameTemplate.Output gameOutput) {
+                    String[] games) {
         this.SELECTOR_INPUT = selectorInput;
         this.SELECTOR_OUTPUT = selectorOutput;
-
-        this.GAME_INPUT = gameInput;
-        this.GAME_OUTPUT = gameOutput;
 
         this.GAMES = games;
 
@@ -112,7 +105,8 @@ public class MainMenu {
 
         this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
         this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
-        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, this.GAME_INPUT, this.GAME_OUTPUT);
+        GameIO gameIO = GameGUIFactory.gameGUIFactory(gameString);
+        GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, gameIO);
         game.startGame();
         this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }
