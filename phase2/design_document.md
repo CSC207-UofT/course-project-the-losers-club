@@ -237,7 +237,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
 * Bradley: 
-* Daniel: 
+* Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `War GUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
 * Azamat: 
 * Luke: 
 * Nitish: 
@@ -257,6 +257,10 @@ We primarily considered the packaging by component and the packaging by layer st
 * Brian: 
 * Bradley: 
 * Daniel: 
+	* [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+		* Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
+	* [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
+		* This PR allows the program to play the game War, one of the four playable games that make up the project.  
 * Azamat: 
 * Luke: 
 * Nitish: 
