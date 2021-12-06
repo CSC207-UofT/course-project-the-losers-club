@@ -36,6 +36,8 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         this.cardToBeat.setHorizontalTextPosition(SwingConstants.CENTER);
         this.cardToBeat.setVerticalTextPosition(SwingConstants.TOP);
         this.cardToBeat.setFont(new Font("Serif", Font.PLAIN, 24));
+        ImageIcon icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+        this.cardToBeat.setIcon(icon);
 
 
         JButton send_card = new JButton("Send Card");
