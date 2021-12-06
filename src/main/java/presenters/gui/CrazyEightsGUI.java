@@ -73,6 +73,8 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
      */
     @Override
     public void showTopCard(String card) {
+        card = card.toLowerCase();
+
         ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
         this.topCard.setIcon(icon);
         this.update();
