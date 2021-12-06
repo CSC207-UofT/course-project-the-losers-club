@@ -23,6 +23,11 @@ public class Player {
         this.username = username;
     }
 
+    /**
+     * Returns the player's username
+     *
+     * @return String containing the username of the player
+     */
     public String getUsername() {
         return username;
     }

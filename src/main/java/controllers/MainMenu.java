@@ -100,9 +100,7 @@ public class MainMenu {
     }
 
     /**
-     * Handle the user's selection.
-     * <p>
-     * This method will be the main runner of the selected Game.
+     * Handle the user's selection. This method will be the main runner of the selected Game.
      *
      * @param sel         the user's selection. Must be greater than 0.
      * @param usernames   usernames that are playing the game
@@ -130,7 +128,7 @@ public class MainMenu {
     }
 
     /**
-     * Prompt the user for the usernames of the <code>User</code>s that playing the game
+     * Prompt the user for the usernames of the Users that are playing the game
      *
      * @param userManager user management vessel
      * @param game        the game that is to be played. Used to enforce minimum and maximum number of players

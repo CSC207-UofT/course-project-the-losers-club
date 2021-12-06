@@ -10,7 +10,7 @@ import java.util.*;
  * the game War in mind, such as the main game loop and sending and receiving input and output. The ruleset for
  * War can be found here: https://bicyclecards.com/how-to-play/war/
  *
- * The rules remain unchanged, as war never changes
+ * The rules remain unchanged, as war never changes.
  */
 public class War extends GameTemplate {
     private final static String[] HIERARCHY = new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
