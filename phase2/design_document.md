@@ -26,7 +26,7 @@
 
 ## Game Rules
 
-(Sourced from [Bicycle Cards](https://bicyclecards.com/rules/) with minor modifications)
+(Sourced from [Bicycle Cards](https://bicyclecards.com/rules/) and [Pagat.com](https://www.pagat.com/aceten/bura.html) with minor modifications)
 
 ### Crazy Eights
 
@@ -84,6 +84,29 @@
   * the game ends when all thirteen suits have been won
   * the winner is the player with the most set of cards
 
+### Bura
+* 2+ players, 36 card (4 suits; ranks A, 6-K)
+* Start:
+  * (Modified) Cards are dealt out singly until each player has one card
+    * each player is dealt 3 cards each originally
+  * Next card in the deck is turned face up to show the trump suit and the rest is placed face down in the middle
+* Play:
+  * Player to the left of the dealer leads the first trick
+  * (Modified) Player may choose a card in their hand to play
+    * originally given a choice to play 1, 2, or 3 cards of the same suit
+  * The next player can play any card they wish - no requirement to follow suit or rank
+  * The goal of each player is to then beat the card that was previously of the highest "value"
+  * A card can be beaten by a higher card of the same suit, and any non-trump card can be beaten by any trump
+  * Player that played the card of the highest "value" wins the trick
+  * The winning player of the trick takes all the cards that were played in the trick
+  * After the trick ends, one card is dealt to each player from the deck, and the next trick starts
+* Win condition:
+  * (Modified) the game ends when a player reaches 31 points
+    * each card is given a points-value
+      * Ace: 11pts, Ten: 10pts, King: 4pts, Queen: 3pts, Jack: 2pts, 9-6: 0 pts
+    * originally a player is allowed to "call the game" by claiming that they have 31 points. If the player does have 31 points, the player wins. If the player does not have 31 points, the game ends with that player losing.
+  * if the deck is exhausted before a player reaches 31 points, the player with the highest point wins 
+ 
 
 
 
@@ -198,7 +221,7 @@ We primarily considered the packaging by component and the packaging by layer st
 
 * Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, improved design document, coordinated GitHub activities.
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
-* Brian: 
+* Brian: Created the new Bura game
 * Bradley: 
 * Daniel: 
 * Azamat: 
