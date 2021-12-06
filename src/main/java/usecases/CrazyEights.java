@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Class that plays the game of Crazy Eights. Contains implemented versions of the methods found in GameTemplate with
+ * the game Crazy Eights in mind, such as the main game loop and sending and receiving input and output. The ruleset for
+ * Crazy Eights can be found here: https://bicyclecards.com/how-to-play/crazy-eights/
+ */
 public class CrazyEights extends GameTemplate {
     private static final int MAX_PLAYERS = 5;
     private static final int MIN_PLAYERS = 2;

@@ -1,9 +1,10 @@
 package entities;
 
-
-import java.io.Serializable;
-
-public class User implements Serializable {
+/**
+ * Class that represents a specific user. This object tracks the username and the stats associated with that username,
+ * such as the number of games they have won, tied, or lost.
+ */
+public class User {
 
     private final String username;
     private int gamesWon;

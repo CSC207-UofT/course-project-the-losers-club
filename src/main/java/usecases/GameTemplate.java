@@ -9,6 +9,10 @@ import usecases.usermanagement.UserManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class on which games are built. Contains methods that all games will need to use in their implementation
+ * and interacts with the stats of the Users who play the game.
+ */
 public abstract class GameTemplate {
 
     protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};

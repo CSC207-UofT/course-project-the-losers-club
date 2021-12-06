@@ -3,7 +3,7 @@ package helpers;
 import java.util.regex.Pattern;
 
 /**
- * UsernameCheck defines methods for checking the validity of a username.
+ * UsernameCheck defines a useful standalone method for checking the validity of a username.
  */
 public class UsernameCheck {
 

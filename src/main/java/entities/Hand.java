@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  * Represents a player's hand during a card game. Each hand contains a list of Card objects, which represent the
- * cards in such player's hand.
+ * cards in that player's hand.
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes

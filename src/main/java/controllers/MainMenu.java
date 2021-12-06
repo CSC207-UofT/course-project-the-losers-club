@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MainMenu is a class controlling the selection of games.
+ * MainMenu is a class controlling the selection of games. It interacts with the main menu IO as well as the game
+ * template IO to allow the user to select games and users, and displays game windows when they are played.
  */
 public class MainMenu {
 
