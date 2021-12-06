@@ -78,7 +78,6 @@ public class GoFishGUI extends GUI implements GoFishIO {
     @Override
     public String getRank() {
         String[] options = {
-                "1",
                 "2",
                 "3",
                 "4",
@@ -146,7 +145,8 @@ public class GoFishGUI extends GUI implements GoFishIO {
 
     @Override
     public void closeMessage(String message) {
-
+        this.sendPopup(message);
+        this.close();
     }
 
     /**

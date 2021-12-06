@@ -123,9 +123,10 @@ public class Bura extends GameTemplate {
 
         do {
             this.currPlayer = this.players[this.currPlayerIndex];
-            this.BURA_IO.changePlayer(this.currPlayer.getUsername() + "'s Turn\n");
+            this.BURA_IO.changePlayer(this.currPlayer.getUsername());
 
             if (PLAYING_FIELD.empty()) {
+                this.BURA_IO.showCardToBeat("");
                 this.BURA_IO.sendPopup("New round started. Play the first card.\n");
             } else {
                 this.BURA_IO.showCardToBeat(this.PLAYING_FIELD.peek().toString());

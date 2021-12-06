@@ -90,7 +90,17 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
      */
     @Override
     public void showCardToBeat(String card) {
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+        card = card.toLowerCase();
+
+        ImageIcon icon;
+
+        if(card.equals("")){
+            icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+        }
+        else{
+            icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+        }
+
         this.cardToBeat.setIcon(icon);
         this.update();
     }
