@@ -197,7 +197,7 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Work Since Phase 1
 
 * Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, improved design document, coordinated GitHub activities.
-* Teddy: 
+* Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: 
 * Bradley: 
 * Daniel: 
@@ -208,7 +208,7 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Significant PRs
 
 * Raymond: 
-* Teddy: 
+* Teddy: [Connected all games except War to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126), [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
 * Brian: 
 * Bradley: 
 * Daniel: 
