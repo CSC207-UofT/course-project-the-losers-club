@@ -1,7 +1,6 @@
 package usecases;
 
 import java.util.*;
-
 import entities.Card;
 import entities.Deck;
 import usecases.usermanagement.UserManager;
