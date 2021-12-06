@@ -19,6 +19,7 @@ public class GoFishGUI extends GUI implements GoFishIO {
      * interface.
      */
     public GoFishGUI() {
+
         super();
         this.frame.setTitle("Go Fish");
     }

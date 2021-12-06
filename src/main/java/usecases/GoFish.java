@@ -13,15 +13,15 @@ import java.util.Random;
 public class GoFish extends GameTemplate {
     private static final int MAX_PLAYERS = 7;
     private static final int MIN_PLAYERS = 2;
-    private final GoFishIO GO_FISH_IO;
     protected final HashMap<Player, Integer> SCORE_TRACKER;
+    private final GoFishIO GO_FISH_IO;
 
     /**
      * Instantiate a new GoFish game instance.
      *
      * @param usernames   the list of usernames of players that are playing the game.
      * @param userManager user management vessel
-     * @param goFishIO   A GoFishIO object allowing for player input/output and game visualization.
+     * @param goFishIO    A GoFishIO object allowing for player input/output and game visualization.
      */
     public GoFish(List<String> usernames, UserManager userManager, GoFishIO goFishIO) {
         this(usernames, userManager, goFishIO, new Random());
@@ -32,7 +32,7 @@ public class GoFish extends GameTemplate {
      *
      * @param usernames   the list of usernames of players that are playing the game.
      * @param userManager user management vessel
-     * @param goFishIO   A GoFishIO object allowing for player input/output and game visualization.
+     * @param goFishIO    A GoFishIO object allowing for player input/output and game visualization.
      * @param rand        a Random object for creating deterministic behaviour.
      */
     public GoFish(List<String> usernames, UserManager userManager, GoFishIO goFishIO, Random rand) {

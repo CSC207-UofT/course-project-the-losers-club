@@ -81,8 +81,6 @@ public class BuraTest {
 
     static class FakeBuraGUI implements BuraIO {
 
-//        final String[] getCardSequence = {"H6", "C7", "HK", "D9", "D8", "H8", "CA", "HQ", "C9", "H9", "H10", "S10", "CJ",
-//                "S7", "S9", "HA", "SA", "C8"};
         final String[] getCardSequence = {"6H", "7C", "KH", "9D", "8D", "8H", "AC", "QH", "9C", "9H", "10H", "10S", "JC", "7S", "9S", "AH", "AS", "8C"};
         int currCardIndex = 0;
 

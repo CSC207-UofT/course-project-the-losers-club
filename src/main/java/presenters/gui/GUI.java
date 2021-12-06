@@ -1,9 +1,9 @@
 package presenters.gui;
 
 import javax.swing.*;
-import java.util.Map;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GUI {
 
@@ -39,7 +39,7 @@ public class GUI {
         this.panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
         this.frame.setTitle("GUI");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.frame.setBounds(0,0, (int) (screenSize.width * 0.7) , (int) (screenSize.height * 0.7));
+        this.frame.setBounds(0, 0, (int) (screenSize.width * 0.9), (int) (screenSize.height * 0.9));
         update();
     }
 

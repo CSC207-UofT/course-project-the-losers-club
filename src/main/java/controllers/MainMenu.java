@@ -110,6 +110,7 @@ public class MainMenu {
         }
 
         String username = this.MM_IO.getUsername();
+
         while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
             if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
                 this.MM_IO.sendPopup("Please enter at least " + minPlayers + " usernames!\n");
