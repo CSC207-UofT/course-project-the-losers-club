@@ -97,12 +97,13 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
 
 
             this.pileSize.setFont(new Font("Serif", Font.PLAIN, 50));
-            this.pileSize.setText(String.valueOf(pileSize));
+            this.pileSize.setText("Pile Size: " + pileSize);
 
             this.panel.add(this.pileSize);
             this.panel.add(this.piles.get(username1));
-            this.panel.add(this.piles.get(username2));
             this.panel.add(flipButton);
+            this.panel.add(this.piles.get(username2));
+
         }
         else{
             ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card1));
@@ -112,7 +113,18 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
             this.piles.get(username2).setIcon(icon);
 
             this.pileSize.setText(String.valueOf(pileSize));
+
+            if(card1.equals("") && card2.equals("")){
+                icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+                this.piles.get(username1).setIcon(icon);
+
+                this.piles.get(username2).setIcon(icon);
+
+                this.pileSize.setText(String.valueOf(pileSize));
+            }
         }
+
+
         this.update();
     }
 
