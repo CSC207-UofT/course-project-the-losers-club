@@ -132,7 +132,7 @@ public class Bura extends GameTemplate {
             }
 
             this.BURA_IO.showTrumpSuit(TRUMP_SUIT);
-            this.BURA_IO.showHand(this.currPlayer.getHandString());
+            this.BURA_IO.showHand(this.currPlayer.getHandStringFormatted());
 
             do {
                 if (loopedRankChoice) {

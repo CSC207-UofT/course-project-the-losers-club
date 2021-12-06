@@ -100,7 +100,7 @@ public class GoFish extends GameTemplate {
             if (!this.deck.isEmpty()) {
                 this.currPlayer.addToHand(this.deck.drawCard());
                 this.GO_FISH_IO.sendPopup("Drawing a card from the deck.");
-                this.GO_FISH_IO.showHand(this.currPlayer.getHandString());
+                this.GO_FISH_IO.showHand(this.currPlayer.getHandStringFormatted());
             }
 
             checkForBook();
@@ -130,7 +130,7 @@ public class GoFish extends GameTemplate {
             if (loopedFish) {
                 this.GO_FISH_IO.sendPopup("Your turn continues.\n");
             }
-            this.GO_FISH_IO.showHand(this.currPlayer.getHandString());
+            this.GO_FISH_IO.showHand(this.currPlayer.getHandStringFormatted());
             do {
                 if (loopedRankChoice) {
                     this.GO_FISH_IO.sendPopup("Invalid rank chosen. Try again.");
