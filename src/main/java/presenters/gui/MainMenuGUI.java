@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,18 +100,22 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
     }
 
     /**
-     * Retrieve a list of unique usernames that are to be playing the selected game.
+     * Retrieve a username of a player that is to be playing the selected game.
      *
-     * @param minNum
-     * @param maxNum
-     * @return a valid username representation. The length must be between
-     * <code>minNum</code> (inclusive) and <code>maxNum</code> (inclusive)
+     * @return a valid username representation or "done" if the user does not want to enter another user name.
      * @see UsernameCheck
      */
     @Override
-    public List<String> getUsernames(int minNum, int maxNum) {
-        return null;
+    public String getUsername() {
+        String user = JOptionPane.showInputDialog("Please Enter A Username (Press cancel if you are done)");
+
+        if(user == null){
+            return "done";
+        }
+
+        return user;
     }
+
 
     /**
      * Send a popup to the user containing <code>message</code>.

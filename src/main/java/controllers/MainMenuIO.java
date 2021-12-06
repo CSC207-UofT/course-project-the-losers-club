@@ -17,13 +17,12 @@ public interface MainMenuIO {
     int getUserSelection(String[] games);
 
     /**
-     * Retrieve a list of unique usernames that are to be playing the selected game.
+     * Retrieve a username of a player that is to be playing the selected game.
      *
-     * @return a valid username representation. The length must be between
-     * <code>minNum</code> (inclusive) and <code>maxNum</code> (inclusive)
+     * @return a valid username representation or "done" if the user does not want to enter another user name.
      * @see helpers.UsernameCheck
      */
-    List<String> getUsernames(int minNum, int maxNum);
+    String getUsername();
 
     /**
      * Send a popup to the user containing <code>message</code>.
