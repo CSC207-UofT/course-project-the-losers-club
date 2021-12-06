@@ -29,6 +29,7 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
         JButton submit = new JButton();
         submit.setText("Submit");
         submit.setActionCommand("submit");
+        submit.addActionListener(this);
 
         this.panel.add(submit, BorderLayout.CENTER);
 
