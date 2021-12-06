@@ -119,7 +119,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
 
 
     /**
-     * Send a popup to the user containing <code>message</code>.
+     * Send a popup to the user containing the string inside message.
      *
      * @param message the message to send to the user
      */

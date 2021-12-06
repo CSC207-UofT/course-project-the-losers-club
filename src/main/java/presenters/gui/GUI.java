@@ -5,6 +5,10 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class that instanciates a basic GUI. Game specific GUIs extend this class and gain it's functionality. This class
+ * creates menus and windows which the users will view and interact with
+ * */
 public class GUI {
 
     protected final JFrame frame = new JFrame();
@@ -50,7 +54,6 @@ public class GUI {
     protected void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.frame.pack();
         this.frame.repaint();
         this.frame.setVisible(true);
     }

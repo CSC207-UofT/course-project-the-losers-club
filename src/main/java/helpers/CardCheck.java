@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
  */
 public class CardCheck {
 
-    //Produces a Pattern to check card strings against. If they follow the Pattern, it is a valid card.
+    /**
+     * Produces a Pattern to check card strings against. If they follow the Pattern, it is a valid card.
+     */
     private static final Pattern CARD_PATTERN = Pattern.compile("(?i)^(10|[2-9]|[ajqk])([cdhs])$");
 
     /**
