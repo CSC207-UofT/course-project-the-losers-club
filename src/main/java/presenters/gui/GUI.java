@@ -36,10 +36,10 @@ public class GUI {
             this.stringToImage.put(CARDS_STRINGS[i], CARD_IMAGES[i]);
         }
 
-        this.panel.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
+        this.panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
         this.frame.setTitle("GUI");
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        this.frame.setBounds(0,0,screenSize.width, screenSize.height);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.frame.setBounds(0,0, (int) (screenSize.width * 0.7) , (int) (screenSize.height * 0.7));
         update();
     }
 
@@ -50,7 +50,7 @@ public class GUI {
     protected void update() {
         this.frame.add(this.panel, BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.pack();
+//        this.frame.pack();
         this.frame.repaint();
         this.frame.setVisible(true);
     }

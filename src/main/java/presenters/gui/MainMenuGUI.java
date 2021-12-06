@@ -91,6 +91,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
             }
 
             this.panel.add(this.userStatButton, BorderLayout.PAGE_END);
+            this.update();
         }
 
         while (!this.ready) {

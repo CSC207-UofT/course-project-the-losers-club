@@ -18,7 +18,6 @@ public class MainMenu {
     private static final int WIDTH = 39;
     private final String[] GAMES;
     private final MainMenuIO MM_IO;
-//    private final String DASHES;
 
     /**
      * Instantiate a MainMenu.
@@ -29,10 +28,7 @@ public class MainMenu {
     public MainMenu(MainMenuIO mmIO,
                     String[] games) {
         this.MM_IO = mmIO;
-
         this.GAMES = games;
-
-//        this.DASHES = "=".repeat(WIDTH);
     }
 
     /**
@@ -46,8 +42,6 @@ public class MainMenu {
         UserManager userManager = UserManager.importFromUserDatabase(userDatabase);
 
         while (true) {
-//            displayMenu();
-
             int sel = this.MM_IO.getUserSelection(this.GAMES);
             while (!checkValidity(sel)) {
                 this.MM_IO.sendPopup("Invalid menu selection.\n");
@@ -67,22 +61,6 @@ public class MainMenu {
         }
     }
 
-//    /**
-//     * Display the game menu.
-//     */
-//    private void displayMenu() {
-//        this.SELECTOR_OUTPUT.sendOutput("" + this.DASHES + "\n              GAME SELECT              \n" + this.DASHES + "\n");
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = 0; i < this.GAMES.length; i++) {
-//            // [#] GAME NAME
-//            sb.append("[").append(i + 1).append("] ").append(this.GAMES[i]).append("\n");
-//        }
-//        this.SELECTOR_OUTPUT.sendOutput(sb.toString());
-//        this.SELECTOR_OUTPUT.sendOutput("\n[9] CHECK STATS\n");
-//        this.SELECTOR_OUTPUT.sendOutput("[0] EXIT\n");
-//        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n");
-//    }
-
     /**
      * Handle the user's selection.
      * <p>
@@ -94,14 +72,10 @@ public class MainMenu {
      */
     private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
         String gameString = this.GAMES[sel];
-//        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n\n\n\n\n" + DASHES + "\n");
 
-//        this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
-//        this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
         GameIO gameIO = GameGUIFactory.gameGUIFactory(gameString);
         GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, gameIO);
         game.startGame();
-//        this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }
 
     /**
@@ -111,7 +85,7 @@ public class MainMenu {
      * @return false when the selection is invalid or true when the selection is valid
      */
     private boolean checkValidity(int sel) {
-        return (sel == 0 || sel == 9) || (sel <= this.GAMES.length && sel > 0);
+        return (sel == 9 || (sel <= this.GAMES.length && sel >= 0));
     }
 
     /**
@@ -138,7 +112,7 @@ public class MainMenu {
         String username = this.MM_IO.getUsername();
         while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
             if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
-//                this.SELECTOR_OUTPUT.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
+                this.MM_IO.sendPopup("Please enter at least " + minPlayers + " usernames!\n");
             } else if (usernames.contains(username)) {
                 this.MM_IO.sendPopup("This username has already been added. Please enter a new username!");
             } else {
@@ -155,43 +129,5 @@ public class MainMenu {
             }
         }
         return usernames;
-    }
-
-    /**
-     * Input is an interface allowing this controller to retrieve input from a user.
-     */
-    public interface Input {
-
-        /**
-         * Implementations should return an integer representing the user's selection.
-         *
-         * @return an integer representing the selection
-         */
-        int getUserSelection();
-
-
-        /**
-         * Implementations should return a String representing the user's username selection
-         *
-         * @return a valid username representation
-         * @see helpers.UsernameCheck
-         */
-        String getUsername();
-
-    }
-
-    /**
-     * Output is an interface allowing this controller to output back to the user.
-     */
-    public interface Output {
-
-        /**
-         * Implementations should take the given Object s and handle it's output to the user.
-         * How this is done depends on the implementation.
-         *
-         * @param o An Object that is to be output to the user.
-         */
-        void sendOutput(Object o);
-
     }
 }
