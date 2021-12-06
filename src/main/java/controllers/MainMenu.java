@@ -1,9 +1,9 @@
 package controllers;
 
 import presenters.gui.GameGUIFactory;
+import presenters.gui.UserDisplayGUI;
 import usecases.GameTemplate;
 import usecases.IOInterfaces.GameIO;
-import usecases.UserDisplay;
 import usecases.usermanagement.UserDatabaseAccess;
 import usecases.usermanagement.UserManager;
 
@@ -62,8 +62,7 @@ public class MainMenu {
                 userManager.exportToUserDatabase(userDatabase);
                 return;
             } else if (sel == 9) {
-                UserDisplay userDisplay = new UserDisplay(userManager, (UserDisplay.Input) this.SELECTOR_INPUT,
-                        (UserDisplay.Output) this.SELECTOR_OUTPUT);
+                UserDisplay userDisplay = new UserDisplay(userManager, new UserDisplayGUI());
                 userDisplay.run();
             } else {
                 List<String> usernames = getUsernames(userManager, this.GAMES[sel - 1]);
