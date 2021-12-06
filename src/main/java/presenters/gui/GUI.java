@@ -17,7 +17,7 @@ public class GUI {
      * This creates a new instance of GUI. This will just make a blank window appear. For more detailed GUI's, see this
      * classes subclasses.
      */
-    public GUI() {
+    private GUI() {
 
         final String[] CARDS_STRINGS = {"as", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "js", "qs", "ks",
                 "ac", "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "10c", "jc", "qc", "kc",
