@@ -19,7 +19,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
     private volatile boolean card_selected;
     private String selected_card = "";
 
-    public BuraGUI(){
+    public BuraGUI() {
         this.frame.setTitle("Bura");
 
         this.panel.add(cardToBeat);
@@ -94,10 +94,9 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
 
         ImageIcon icon;
 
-        if(card.equals("")){
+        if (card.equals("")) {
             icon = new ImageIcon("src/main/resources/cards/back-blue.png");
-        }
-        else{
+        } else {
             icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
         }
 

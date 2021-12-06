@@ -1,7 +1,5 @@
 package controllers;
 
-import java.util.List;
-
 /**
  * This class defines an interface for the Main Menu. Any class that implements this interface can be given to the
  * <code>MainMenu</code> constructor and be used to interact with the menu.

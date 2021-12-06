@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,11 +16,11 @@ import java.util.List;
 public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
 
     private final JTextField input = new JTextField(20);
+    private final JButton userStatButton;
     private List<String> games;
     private volatile boolean ready = false;
     private JButton[] gameButtons;
     private int sel;
-    private final JButton userStatButton;
 
     /**
      * This creates a new UserDisplayGUI object. This creates a new window with the user will interact with.
@@ -111,7 +110,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
     public String getUsername() {
         String user = JOptionPane.showInputDialog("Please Enter A Username (Press cancel if you are done)");
 
-        if(user == null){
+        if (user == null) {
             return "done";
         }
 

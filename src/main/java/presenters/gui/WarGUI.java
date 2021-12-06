@@ -7,22 +7,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * This class implements the WarIO interface using Swing to create a GUI to play the game.
  */
 public class WarGUI extends GUI implements WarIO, ActionListener {
 
-    private volatile boolean flip = false;
     private final JButton flipButton = new JButton();
-    private HashMap<String, JLabel> piles = null;
     private final JLabel pileSize = new JLabel();
+    private volatile boolean flip = false;
+    private HashMap<String, JLabel> piles = null;
 
     /**
      * This creates a new GUI window through which the user will interact with to play War.
      */
-    public WarGUI(){
+    public WarGUI() {
         super();
 
         this.frame.setTitle("War");
@@ -36,7 +35,6 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
     }
 
 
-
     /**
      * Invoked when an action occurs.
      *
@@ -44,7 +42,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("flip")){
+        if (e.getActionCommand().equals("flip")) {
             this.flip = true;
         }
     }
@@ -73,7 +71,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
         card1 = card1.toLowerCase();
         card2 = card2.toLowerCase();
 
-        if(this.piles == null){
+        if (this.piles == null) {
             this.piles = new HashMap<>();
             Font font = new Font("Serif", Font.PLAIN, 24);
 
@@ -104,8 +102,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
             this.panel.add(flipButton);
             this.panel.add(this.piles.get(username2));
 
-        }
-        else{
+        } else {
             ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card1));
             this.piles.get(username1).setIcon(icon);
 
@@ -114,7 +111,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
 
             this.pileSize.setText(String.valueOf(pileSize));
 
-            if(card1.equals("") && card2.equals("")){
+            if (card1.equals("") && card2.equals("")) {
                 icon = new ImageIcon("src/main/resources/cards/back-blue.png");
                 this.piles.get(username1).setIcon(icon);
 
@@ -134,7 +131,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
      */
     @Override
     public void stall() {
-        while (!this.flip){
+        while (!this.flip) {
             Thread.onSpinWait();
         }
         this.flip = false;

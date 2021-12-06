@@ -32,15 +32,17 @@ public interface GoFishIO extends GameIO {
     /**
      * This method should ask the user which rank of card they would like to request from the other players.
      * The string must be one of {"A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K"}.
+     *
      * @return a string representation of the chosen rank
      */
     String getRank();
 
     /**
      * This method should ask the user to choose a player to request the chosen rank from.
+     *
      * @param currPlayer a string representation of the current player's username and is not in the list of usernames
      *                   displayed to the user
-     * @param usernames a list of all the player usernames in the game
+     * @param usernames  a list of all the player usernames in the game
      * @return a string representation of the username selected by the user
      */
     String getPlayerUsername(String currPlayer, List<String> usernames);

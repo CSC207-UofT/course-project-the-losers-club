@@ -1,17 +1,18 @@
 package usecases;
 
 
-import java.util.*;
 import entities.Card;
 import entities.Deck;
 import usecases.IOInterfaces.BuraIO;
 import usecases.usermanagement.UserManager;
 
+import java.util.*;
+
 /**
  * Class that plays the game of Bura. Contains implemented versions of the methods found in GameTemplate with
  * the game Bura in mind, such as the main game loop and sending and receiving input and output. A sample ruleset for
  * Bura can be found here: https://www.pagat.com/aceten/bura.html.
- *
+ * <p>
  * Note that rules have been modified from the original. Instead of being able to play any number of cards from your
  * hand that were the same rank, our implementation only allows you to play one card per trick. Also, game players are
  * not able to call an end to the game when they think they have 31 points. Instead, the game ends once a player has
@@ -23,9 +24,9 @@ public class Bura extends GameTemplate {
     private final static int MAX_PLAYERS = 6;
     private static char TRUMP_SUIT;
     protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
-    private final BuraIO BURA_IO;
     protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
             "J", 2, "9", 0, "8", 0, "7", 0, "6", 0);
+    private final BuraIO BURA_IO;
     private final Stack<Card> PLAYING_FIELD = new Stack<>();
     private final Map<String, Integer> rankToPoint = Map.of("A", 9, "K", 8, "10", 5, "Q", 7,
             "J", 6, "9", 4, "8", 3, "7", 2, "6", 1);
@@ -183,7 +184,7 @@ public class Bura extends GameTemplate {
      * @return true if the chosen card beats the highest card on the playing field; false otherwise.
      */
     private boolean addCard(String crd) {
-        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(0, crd.length()-1), crd.charAt(crd.length()-1));
+        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(0, crd.length() - 1), crd.charAt(crd.length() - 1));
         if (this.PLAYING_FIELD.empty()) {
             this.PLAYING_FIELD.push(chosenCard);
         } else {

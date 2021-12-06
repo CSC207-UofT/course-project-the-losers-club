@@ -16,7 +16,7 @@ public class Card {
      * @param rank the rank of the card
      * @param suit the suit of the card
      */
-    public Card(String rank, char suit){
+    public Card(String rank, char suit) {
         this.rank = rank;
         this.suit = suit;
         this.isFace = false;
@@ -30,12 +30,13 @@ public class Card {
             }
         }
     }
+
     /**
      * Returns the rank of the card
      *
      * @return the rank of the card
      */
-    public String getRank(){
+    public String getRank() {
         return this.rank;
     }
 
@@ -44,14 +45,18 @@ public class Card {
      *
      * @return the suit of the card
      */
-    public char getSuit() { return this.suit; }
+    public char getSuit() {
+        return this.suit;
+    }
 
     /**
      * Returns whether the card is a face card
      *
      * @return a boolean representing if the card is a face card or not
      */
-    public boolean isFace() { return this.isFace; }
+    public boolean isFace() {
+        return this.isFace;
+    }
 
     /**
      * Returns the card as a String
