@@ -283,9 +283,8 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
 
 ### Target Audience
 
-Write a paragraph about who you would market your program towards, if you were to sell or license your program to customers. This could be a specific category such as "students" or more vague, such as "people who like games". Try to give a bit more detail along with the category.
-
+This program is truly marketable to all audiences. Any individual that enjoys card games is a potential target audience. From students that want a break from studying to a family looking for some family-friendly fun, anyone can use our program and use it to its full extent. 
 
 ### Demographics
 
-Write a paragraph about whether or not your program is less likely to be used by certain demographics. For example, a program that converts txt files to files that can be printed by a braille printer are less likely to be used by people who do not read braille.
+Although our program has the potential to be used by all demographics, this program will most likely attract a younger audience. Card games tend to be more popular among children and teens. Regardless, we believe there will a fair amount of adults and elderly enjoying our program, albeit at a lesser degree.
