@@ -109,6 +109,11 @@ public class GoFishTest {
         public void closeMessage(String message) {
             System.out.println("CLOSE w/ message = " + message);
         }
+
+        @Override
+        public void close() {
+
+        }
     }
 
 }

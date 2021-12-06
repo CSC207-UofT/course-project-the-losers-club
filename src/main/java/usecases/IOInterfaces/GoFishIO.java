@@ -51,4 +51,9 @@ public interface GoFishIO extends GameIO {
      * @param message a string that is to be sent to the user.
      */
     void closeMessage(String message);
+
+    /**
+     * This method should close the GUI when called.
+     */
+    void close();
 }

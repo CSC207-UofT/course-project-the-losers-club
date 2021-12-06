@@ -90,14 +90,9 @@ public class CrazyEights extends GameTemplate {
             Card card = null;
             String crd;
             boolean looped = false;
-//            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
-//            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
-//            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
             this.CRAZY_IO.changePlayer(currPlayer.getUsername());
             this.CRAZY_IO.showTopCard((this.PLAYING_FIELD.peek().getRank() + this.suitTracker));
             this.CRAZY_IO.showHand(this.currPlayer.getHandStringFormatted());
-//            this.GAME_OUTPUT.sendOutput("Top card: " + this.PLAYING_FIELD.peek().getRank() + this.suitTracker + "\n");
-//            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
 
             do {
                 if (looped) {

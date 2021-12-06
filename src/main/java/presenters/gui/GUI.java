@@ -38,6 +38,8 @@ public class GUI {
 
         this.panel.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
         this.frame.setTitle("GUI");
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        this.frame.setBounds(0,0,screenSize.width, screenSize.height);
         update();
     }
 

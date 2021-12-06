@@ -168,68 +168,9 @@ public abstract class GameTemplate {
     public abstract void startGame();
 
     /**
-     * Input is an interface allowing Games to retrieve input from a user.
+     * <code>AbortGameException</code> should be thrown when a game is forcibly terminated.
      */
-    public interface Input {
+    public static class AbortGameException extends Exception {
 
-        /**
-         * Implementations should return a String corresponding to a picked card.
-         * <p>
-         * The first character of the String should be the suit (one of 'C', 'D', 'H', 'S'), while the
-         * second and possibly third characters should be
-         * the rank (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
-         *
-         * @return a 2-3 character String representing the picked card.
-         */
-        String getCard();
-
-        /**
-         * Implementations should return a boolean representing whether a card should be drawn from the deck.
-         *
-         * @return true if a card should be drawn, false otherwise
-         */
-        boolean drawCard();
-
-        /**
-         * Implementations should return a character corresponding to a picked suit.
-         * <p>
-         * The character must be one of {'C', 'D', 'H', 'S'} representing Clubs, Diamonds, Hearts, Spades respectively.
-         */
-        char getSuit();
-
-        /**
-         * Implementations should return a string corresponding to a picked rank.
-         * The string must be one of {"A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K"}.
-         */
-        String getRank();
-
-        /**
-         * Implementation should return a Player object corresponding to a picked player.
-         *
-         * @return a Player that is chosen by the user.
-         */
-        String getPlayerUsername(String currPlayerUsername, List<String> usernames);
-
-        /**
-         * Implementations should stall the output display. This can be used when the user needs to "click to continue"
-         * or in the case of a command line interface, "press enter to continue".
-         */
-        boolean stall();
-
-    }
-
-
-    /**
-     * Output is an interface allowing Games to output back to the user.
-     */
-    public interface Output {
-
-        /**
-         * Implementations should take the given Object s and handle it's output to the user.
-         * How this is done depends on the implementation.
-         *
-         * @param s An Object that can be somehow outputted to the user.
-         */
-        void sendOutput(Object s);
     }
 }
