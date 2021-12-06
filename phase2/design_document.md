@@ -240,7 +240,11 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Significant PRs
 
 * Raymond: 
-* Teddy: [Connected all games except War to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126), Created [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
+* Teddy: 
+  * [Connected all games to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126)
+    * This was a significant contribution because without this the game logic would not connect to the GUI
+  * Created [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
+    * Without these IO's we would violate Clean Architecture and dependency rules and would not be able to connect the games to the GUI
 * Brian: 
 * Bradley: 
 * Daniel: 
