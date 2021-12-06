@@ -54,6 +54,8 @@ public class GoFishGUI extends GUI implements GoFishIO {
             this.panel.remove(card);
         }
 
+        hand = hand.toLowerCase();
+
         String[] cardStrings = hand.split(" ");
 
         this.hand = new JLabel[cardStrings.length];
