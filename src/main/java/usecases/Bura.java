@@ -175,7 +175,7 @@ public class Bura extends GameTemplate {
      * @return true if the chosen card beats the highest card on the playing field; false otherwise.
      */
     private boolean addCard(String crd) {
-        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(1), crd.charAt(0));
+        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(0, crd.length()-1), crd.charAt(crd.length()-1));
         if (this.PLAYING_FIELD.empty()) {
             this.PLAYING_FIELD.push(chosenCard);
         } else {
@@ -223,12 +223,11 @@ public class Bura extends GameTemplate {
      * @return True if the move is valid, false otherwise
      */
     private boolean invalidMove(String crd) {
-        String formatted_crd = crd.substring(1) + crd.charAt(0);
         List<Card> cards = this.currPlayer.getHand().getCards();
         for (Card card : cards) {
             String str = card.toString();
 
-            if (str.equals(formatted_crd)) {
+            if (str.equals(crd)) {
                 return false;
             }
         }
