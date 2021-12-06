@@ -4,6 +4,7 @@ package usecases;
 import java.util.*;
 import entities.Card;
 import entities.Deck;
+import usecases.IOInterfaces.BuraIO;
 import usecases.usermanagement.UserManager;
 
 /**
@@ -22,6 +23,7 @@ public class Bura extends GameTemplate {
     private final static int MAX_PLAYERS = 6;
     private static char TRUMP_SUIT;
     protected final HashMap<Player, Integer> SCORE_TRACKER = new HashMap<>();
+    private final BuraIO BURA_IO;
     protected final Map<String, Integer> ranks = Map.of("A", 11, "K", 4, "10", 10, "Q", 3,
             "J", 2, "9", 0, "8", 0, "7", 0, "6", 0);
     private final Stack<Card> PLAYING_FIELD = new Stack<>();
@@ -33,11 +35,10 @@ public class Bura extends GameTemplate {
      *
      * @param usernames   the list of usernames of players that are playing the game
      * @param userManager a <code>UserManager</code> that manages the user entities
-     * @param gameInput   A GameTemplate.Input object allowing for player input.
-     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param buraIO      A BuraIO object allowing for player input/output and game visualization.
      */
-    public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-        this(usernames, userManager, gameInput, gameOutput, new Random());
+    public Bura(List<String> usernames, UserManager userManager, BuraIO buraIO) {
+        this(usernames, userManager, buraIO, new Random());
     }
 
     /**
@@ -45,12 +46,12 @@ public class Bura extends GameTemplate {
      *
      * @param usernames   the list of usernames of players that are playing the game.
      * @param userManager a <code>UserManager</code> that manages the user entities
-     * @param gameInput   A GameTemplate.Input object allowing for player input.
-     * @param gameOutput  A GameTemplate.Output object allowing for output to the player.
+     * @param buraIO      A BuraIO object allowing for player input/output and game visualization.
      * @param rand        a Random object for creating deterministic behaviour.
      */
-    public Bura(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput, Random rand) {
-        super(usernames, userManager, gameInput, gameOutput);
+    public Bura(List<String> usernames, UserManager userManager, BuraIO buraIO, Random rand) {
+        super(usernames, userManager, buraIO);
+        this.BURA_IO = buraIO;
         this.currPlayerIndex = 0;
         List<Card> cardList = new ArrayList<>();
         for (String i : RANKS) {
@@ -129,26 +130,24 @@ public class Bura extends GameTemplate {
 
         do {
             this.currPlayer = this.players[this.currPlayerIndex];
-            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
-            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Turn\n");
-            this.GAME_OUTPUT.sendOutput("---------------------------------------\n");
+            this.BURA_IO.changePlayer(this.currPlayer.getUsername());
 
             if (PLAYING_FIELD.empty()) {
-                this.GAME_OUTPUT.sendOutput("New round started. Play the first card.\n");
+                this.BURA_IO.showCardToBeat("");
+                this.BURA_IO.sendPopup("New round started. Play the first card.\n");
             } else {
-                this.GAME_OUTPUT.sendOutput("Card to beat: " + this.PLAYING_FIELD.peek().toString() + "\n");
+                this.BURA_IO.showCardToBeat(this.PLAYING_FIELD.peek().toString());
             }
 
-            this.GAME_OUTPUT.sendOutput("Trump Suit: " + TRUMP_SUIT + "\n");
-            this.GAME_OUTPUT.sendOutput(this.currPlayer.getUsername() + "'s Hand: " + this.currPlayer.getHandString() + "\n");
+            this.BURA_IO.showTrumpSuit(TRUMP_SUIT);
+            this.BURA_IO.showHand(this.currPlayer.getHandStringFormatted());
 
             do {
                 if (loopedRankChoice) {
-                    this.GAME_OUTPUT.sendOutput("Invalid card chosen. Try again.\n");
+                    this.BURA_IO.sendPopup("Invalid card chosen. Try again.");
                 }
 
-                this.GAME_OUTPUT.sendOutput("Which card would you like to play?\n");
-                crd = this.GAME_INPUT.getCard();
+                crd = this.BURA_IO.getCard();
                 if (invalidMove(crd)) {
                     loopedRankChoice = true;
                 }
@@ -162,7 +161,7 @@ public class Bura extends GameTemplate {
 
         } while (currPlayerIndex != startIndex);
 
-        this.GAME_OUTPUT.sendOutput(this.players[winningPlayerIndex].getUsername() + " wins the round! \n");
+        this.BURA_IO.sendPopup(this.players[winningPlayerIndex].getUsername() + " wins the round! \n");
         this.currPlayerIndex = winningPlayerIndex;
     }
 
@@ -184,7 +183,7 @@ public class Bura extends GameTemplate {
      * @return true if the chosen card beats the highest card on the playing field; false otherwise.
      */
     private boolean addCard(String crd) {
-        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(1), crd.charAt(0));
+        Card chosenCard = this.currPlayer.getHand().removeCard(crd.substring(0, crd.length()-1), crd.charAt(crd.length()-1));
         if (this.PLAYING_FIELD.empty()) {
             this.PLAYING_FIELD.push(chosenCard);
         } else {
@@ -205,7 +204,7 @@ public class Bura extends GameTemplate {
      * to equally distribute, the hands are not restocks.
      */
     private void restockHands() {
-        this.GAME_OUTPUT.sendOutput("Round ended! Restocking every player's hand.\n");
+        this.BURA_IO.sendPopup("Round ended! Restocking every player's hand.\n");
         while (this.currPlayer.getHand().getSize() < 3 && this.deck.getSize() >= this.players.length) {
             for (Player player : this.players) {
                 player.addToHand(this.deck.drawCard());
@@ -232,12 +231,11 @@ public class Bura extends GameTemplate {
      * @return True if the move is valid, false otherwise
      */
     private boolean invalidMove(String crd) {
-        String formatted_crd = crd.substring(1) + crd.charAt(0);
         List<Card> cards = this.currPlayer.getHand().getCards();
         for (Card card : cards) {
             String str = card.toString();
 
-            if (str.equals(formatted_crd)) {
+            if (str.equals(crd)) {
                 return false;
             }
         }
@@ -273,7 +271,7 @@ public class Bura extends GameTemplate {
         }
         assert winner != null;
         this.addUserStats(winner.getUsername());
-        this.GAME_OUTPUT.sendOutput(String.format("Winner is %s with %s points!\n", winner.getUsername(), currMaxScore));
+        this.BURA_IO.closeMessage(String.format("Winner is %s with %s points!\n", winner.getUsername(), currMaxScore));
     }
 
 }
