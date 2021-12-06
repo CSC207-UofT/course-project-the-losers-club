@@ -97,7 +97,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
 
 
             this.pileSize.setFont(new Font("Serif", Font.PLAIN, 50));
-            this.pileSize.setText("Pile Size: " + pileSize);
+            this.pileSize.setText(String.valueOf(pileSize));
 
             this.panel.add(this.pileSize);
             this.panel.add(this.piles.get(username1));
