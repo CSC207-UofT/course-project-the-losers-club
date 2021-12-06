@@ -11,9 +11,10 @@ public interface MainMenuIO {
     /**
      * Retrieve the user's selection.
      *
+     * @param games array of games for the menu
      * @return an integer representing the selection
      */
-    int getUserSelection();
+    int getUserSelection(String[] games);
 
     /**
      * Retrieve a list of unique usernames that are to be playing the selected game.
@@ -30,5 +31,10 @@ public interface MainMenuIO {
      * @param message the message to send to the user
      */
     void sendPopup(String message);
+
+    /**
+     * This method should close the GUI when called.
+     */
+    void close();
 
 }

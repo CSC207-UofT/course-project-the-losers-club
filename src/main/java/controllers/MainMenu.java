@@ -17,26 +17,22 @@ public class MainMenu {
 
     private static final int WIDTH = 39;
     private final String[] GAMES;
-    private final MainMenu.Input SELECTOR_INPUT;
-    private final MainMenu.Output SELECTOR_OUTPUT;
-    private final String DASHES;
+    private final MainMenuIO MM_IO;
+//    private final String DASHES;
 
     /**
      * Instantiate a MainMenu.
      *
-     * @param selectorInput  implementor of MainMenu.Input used for gathering input from the user
-     * @param selectorOutput implementor of MainMenu.Output used for sending output back to the user
-     * @param games          Strings representing the Games to create
+     * @param mmIO  main menu IO to retrieve user selections and output information
+     * @param games Strings representing the Games to create
      */
-    public MainMenu(MainMenu.Input selectorInput,
-                    MainMenu.Output selectorOutput,
+    public MainMenu(MainMenuIO mmIO,
                     String[] games) {
-        this.SELECTOR_INPUT = selectorInput;
-        this.SELECTOR_OUTPUT = selectorOutput;
+        this.MM_IO = mmIO;
 
         this.GAMES = games;
 
-        this.DASHES = "=".repeat(WIDTH);
+//        this.DASHES = "=".repeat(WIDTH);
     }
 
     /**
@@ -50,12 +46,12 @@ public class MainMenu {
         UserManager userManager = UserManager.importFromUserDatabase(userDatabase);
 
         while (true) {
-            displayMenu();
+//            displayMenu();
 
-            int sel = this.SELECTOR_INPUT.getUserSelection();
+            int sel = this.MM_IO.getUserSelection(this.GAMES);
             while (!checkValidity(sel)) {
-                this.SELECTOR_OUTPUT.sendOutput("Invalid menu selection.\n");
-                sel = this.SELECTOR_INPUT.getUserSelection();
+                this.MM_IO.sendPopup("Invalid menu selection.\n");
+                sel = this.MM_IO.getUserSelection(this.GAMES);
             }
 
             if (sel == 0) {
@@ -74,21 +70,21 @@ public class MainMenu {
         }
     }
 
-    /**
-     * Display the game menu.
-     */
-    private void displayMenu() {
-        this.SELECTOR_OUTPUT.sendOutput("" + this.DASHES + "\n              GAME SELECT              \n" + this.DASHES + "\n");
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.GAMES.length; i++) {
-            // [#] GAME NAME
-            sb.append("[").append(i + 1).append("] ").append(this.GAMES[i]).append("\n");
-        }
-        this.SELECTOR_OUTPUT.sendOutput(sb.toString());
-        this.SELECTOR_OUTPUT.sendOutput("\n[9] CHECK STATS\n");
-        this.SELECTOR_OUTPUT.sendOutput("[0] EXIT\n");
-        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n");
-    }
+//    /**
+//     * Display the game menu.
+//     */
+//    private void displayMenu() {
+//        this.SELECTOR_OUTPUT.sendOutput("" + this.DASHES + "\n              GAME SELECT              \n" + this.DASHES + "\n");
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < this.GAMES.length; i++) {
+//            // [#] GAME NAME
+//            sb.append("[").append(i + 1).append("] ").append(this.GAMES[i]).append("\n");
+//        }
+//        this.SELECTOR_OUTPUT.sendOutput(sb.toString());
+//        this.SELECTOR_OUTPUT.sendOutput("\n[9] CHECK STATS\n");
+//        this.SELECTOR_OUTPUT.sendOutput("[0] EXIT\n");
+//        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n");
+//    }
 
     /**
      * Handle the user's selection.
@@ -101,14 +97,14 @@ public class MainMenu {
      */
     private void handleUserSelection(int sel, List<String> usernames, UserManager userManager) {
         String gameString = this.GAMES[sel - 1];
-        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n\n\n\n\n" + DASHES + "\n");
+//        this.SELECTOR_OUTPUT.sendOutput(DASHES + "\n\n\n\n\n" + DASHES + "\n");
 
-        this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
-        this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
+//        this.SELECTOR_OUTPUT.sendOutput(String.format("%-" + (WIDTH / 2 - gameString.length() / 2) + "s", " ") + gameString + "\n");
+//        this.SELECTOR_OUTPUT.sendOutput(this.DASHES + "\n\n\n\n\n");
         GameIO gameIO = GameGUIFactory.gameGUIFactory(gameString);
         GameTemplate game = GameTemplate.gameFactory(gameString, usernames, userManager, gameIO);
         game.startGame();
-        this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
+//        this.SELECTOR_OUTPUT.sendOutput("\n\n\n\n\n");
     }
 
     /**
@@ -129,38 +125,38 @@ public class MainMenu {
      * @return a list of usernames
      */
     private List<String> getUsernames(UserManager userManager, String game) {
-        List<String> usernames = new ArrayList<>();
-
-        int maxPlayers = GameTemplate.getMaxPlayers(game);
-        int minPlayers = GameTemplate.getMinPlayers(game);
-
-        if (maxPlayers == minPlayers) {
-            this.SELECTOR_OUTPUT.sendOutput("Input " + maxPlayers + " usernames for " +
-                    "players playing the game. Enter 'done' to finish.\n");
-        } else {
-            this.SELECTOR_OUTPUT.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
-                    "players playing the game. Enter 'done' to finish.\n");
-        }
-
-        String username = this.SELECTOR_INPUT.getUsername();
-        while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
-            if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
-                this.SELECTOR_OUTPUT.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
-            } else if (usernames.contains(username)) {
-                this.SELECTOR_OUTPUT.sendOutput("This username has already been added. Please enter a new username!\n");
-            } else {
-                usernames.add(username);
-                try {
-                    userManager.addUser(username);
-                } catch (UserManager.UserAlreadyExistsException ignored) {
-                    // normal to reach here, no exception handling necessary
-                }
-            }
-
-            if (usernames.size() != maxPlayers) {
-                username = this.SELECTOR_INPUT.getUsername();
-            }
-        }
+        List<String> usernames = new ArrayList<>(List.of("alpha", "beta"));
+//
+//        int maxPlayers = GameTemplate.getMaxPlayers(game);
+//        int minPlayers = GameTemplate.getMinPlayers(game);
+//
+//        if (maxPlayers == minPlayers) {
+//            this.SELECTOR_OUTPUT.sendOutput("Input " + maxPlayers + " usernames for " +
+//                    "players playing the game. Enter 'done' to finish.\n");
+//        } else {
+//            this.SELECTOR_OUTPUT.sendOutput("Input at least " + minPlayers + " usernames and up to " + maxPlayers + " usernames for " +
+//                    "players playing the game. Enter 'done' to finish.\n");
+//        }
+//
+//        String username = this.SELECTOR_INPUT.getUsername();
+//        while ((!username.equalsIgnoreCase("done") && usernames.size() < maxPlayers) || usernames.size() < minPlayers) {
+//            if (username.equalsIgnoreCase("done") && usernames.size() < minPlayers) {
+//                this.SELECTOR_OUTPUT.sendOutput("Please enter at least " + minPlayers + " usernames!\n");
+//            } else if (usernames.contains(username)) {
+//                this.SELECTOR_OUTPUT.sendOutput("This username has already been added. Please enter a new username!\n");
+//            } else {
+//                usernames.add(username);
+//                try {
+//                    userManager.addUser(username);
+//                } catch (UserManager.UserAlreadyExistsException ignored) {
+//                    // normal to reach here, no exception handling necessary
+//                }
+//            }
+//
+//            if (usernames.size() != maxPlayers) {
+//                username = this.SELECTOR_INPUT.getUsername();
+//            }
+//        }
         return usernames;
     }
 
