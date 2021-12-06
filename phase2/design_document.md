@@ -228,7 +228,7 @@ We primarily considered the packaging by component and the packaging by layer st
 
 ### Work Since Phase 1
 
-* Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, improved design document, coordinated GitHub activities.
+* Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, assisted with GUI implementation, improved design document, coordinated GitHub activities.
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
 * Bradley: 
@@ -240,6 +240,10 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Significant PRs
 
 * Raymond: 
+  * [Added `MainMenu` controller](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/52)
+    * This PR defined the controller layer allowing us to switch between games and handle user serialization. It moved our project away from a single game into a more developed collection of games.
+  * [Migrated `User` serialization to SQLite](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/101)
+    * This PR included a more clean implementation of user serialization which defines interfaces and allows for future expansion. This new design allows different SQL databases to be used, which consequently allows for different statistics to be tracked through a more sophisticated database structure.
 * Teddy: 
   * [Connected all games to the GUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/126)
     * This was a significant contribution because without this the game logic would not connect to the GUI
