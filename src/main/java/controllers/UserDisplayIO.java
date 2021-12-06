@@ -1,6 +1,6 @@
-package usecases.IOInterfaces;
+package controllers;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * This class defines an interface for the user statistics display. Any class that implements this interface should be
@@ -25,7 +25,7 @@ public interface UserDisplayIO {
     /**
      * Display the specified statistics.
      * <p>
-     * Statistics to support (keys in the Map):
+     * Statistics to support (first elements in the arrays):
      * <ul>
      *     <li>"Games Played"</li>
      *     <li>"Games Won"</li>
@@ -33,7 +33,14 @@ public interface UserDisplayIO {
      *     <li>"Win Percentage"</li>
      * </ul>
      *
-     * @param statistics mapping of statistic names to their values. See description for supported statistics.
+     * @param statistics list containing arrays of statistic names to their values.
+     *                   The first element must be the statistic name, and the second element must be the statistic value.
+     *                   See description for supported statistics.
      */
-    void showStats(Map<String, String> statistics);
+    void showStats(List<String[]> statistics);
+
+    /**
+     * This method should close the GUI when called.
+     */
+    void close();
 }

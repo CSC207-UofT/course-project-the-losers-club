@@ -1,12 +1,12 @@
 package presenters.gui;
 
-import usecases.IOInterfaces.UserDisplayIO;
+import controllers.UserDisplayIO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This class implements the UserDisplayIO interface using Swing to create a GUI to display stats to the user.
@@ -19,7 +19,7 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
     /**
      * This creates a new UserDisplayGUI object. This creates a new window with the user will interact with.
      */
-    public UserDisplayGUI(){
+    public UserDisplayGUI() {
         super();
 
         this.frame.setTitle("User Stats");
@@ -44,7 +44,7 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         String event = e.getActionCommand();
-        if(event.equals("submit")){
+        if (event.equals("submit")) {
             this.ready = true;
         }
     }
@@ -56,9 +56,10 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
      */
     @Override
     public String getUsername() {
-        while(!this.ready){
+        while (!this.ready) {
             Thread.onSpinWait();
         }
+        System.out.println("test");
         this.ready = false;
         return this.input.getText();
     }
@@ -86,17 +87,27 @@ public class UserDisplayGUI extends GUI implements UserDisplayIO, ActionListener
      *     <li>"Win Percentage"</li>
      * </ul>
      *
-     * @param statistics mapping of statistic names to their values. See description for supported statistics.
+     * @param statistics list containing arrays of statistic names to their values.
+     *                   The first element must be the statistic name, and the second element must be the statistic value.
+     *                   See description for supported statistics.
      */
     @Override
-    public void showStats(Map<String, String> statistics) {
+    public void showStats(List<String[]> statistics) {
         StringBuilder message = new StringBuilder();
 
-        for(String key: statistics.keySet()){
-            message.append(key).append(": ").append(statistics.get(key)).append("\n");
+        for (String[] stat : statistics) {
+            message.append(stat[0]).append(": ").append(stat[1]).append("\n");
         }
 
         JOptionPane.showMessageDialog(new JFrame(), message.toString());
+    }
+
+    /**
+     * This method should close the GUI when called.
+     */
+    @Override
+    public void close() {
+        this.frame.dispose();
     }
 
 }

@@ -3,7 +3,7 @@ package presenters.console;
 import controllers.MainMenu;
 import helpers.CardCheck;
 import usecases.GameTemplate;
-import usecases.UserDisplay;
+import controllers.UserDisplay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import static helpers.UsernameCheck.checkUsername;
  * @see MainMenu.Input
  * @see GameTemplate.Input
  */
-public class Input implements MainMenu.Input, GameTemplate.Input, UserDisplay.Input {
+public class Input implements MainMenu.Input, GameTemplate.Input {
 
     private final Scanner inp;
 

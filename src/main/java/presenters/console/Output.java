@@ -2,7 +2,7 @@ package presenters.console;
 
 import controllers.MainMenu;
 import usecases.GameTemplate;
-import usecases.UserDisplay;
+import controllers.UserDisplay;
 
 
 /**
@@ -13,7 +13,7 @@ import usecases.UserDisplay;
  * @see MainMenu.Output
  * @see GameTemplate.Output
  */
-public class Output implements MainMenu.Output, GameTemplate.Output, UserDisplay.Output {
+public class Output implements MainMenu.Output, GameTemplate.Output {
 
     /**
      * Instantiate a new Output instance.
