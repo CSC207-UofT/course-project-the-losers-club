@@ -123,18 +123,12 @@
 Our code can be divided into 3 systems which work together to perform the task necessary to run our system.
 These 3 systems are:
 
-1. Console IO Flow: This system is used to pass input to and from the usecases of the application and the users
+1. GUI Flow
 2. Game Generation and Management: This system is used to create and play new games
 3. User Creation and Storage: This system is used to create users to be used as players in the games, saving their stats as well
 
-#### Console IO Flow
+#### GUI Flow
 
-This system is where the main method of our application is. When `Main` is run, it uses the `console.Input` and `console.Output` classes, 
-which communicate with `MainMenu`. `MainMenu` is where Games are selected and where users are verified to play in games.
-If user operations are selected, MainMenu will communicate with the User Creation and Storage systems. If a game is selected,
-`MainMenu` will communicate with the Game Generation and Management system.
-
-<img src="UMLs/ConsoleIO_Flow.png" width=600>
 
 
 
@@ -249,12 +243,27 @@ We primarily considered the packaging by component and the packaging by layer st
 For each Principle of Universal Design, write 2-5 sentences or point form notes explaining which features your program adhere to that principle. If you do not have any such features you can either: (a) describe features that you could implement in the future that would adhere to principle or (b) explain why the principle does not apply to a program like yours.
 
 1. Equitable Use
-1. Flexibility in Use
-1. Simple and Intuitive Use
-1. Perceptible Information 
-1. Tolerance for Error
-1. Low Physical Effort
-1. Size and Space for Approach and Use
+   * Our program is not designed to accommodate anyone with visual impairments. We could have added a text-to-speech functionality to accommodate those people.
+   * There is no significant concern for privacy in our program as users are not asked to store any sensitive information
+2. Flexibility in Use
+   * Our program allows for both right-handed and left-handed individuals as they are only required to make clicks
+   * ** However, user(s) are not able to customize any part of the program to suit their preferences. We could have added functionality to allow the user to change card face designs, change between light and dark themes, change fonts, etc.
+3. Simple and Intuitive Use
+   * GUI implementation of all games is very straight-forward and easy to follow for the user. There are no unnecessary or distracting buttons or backgrounds.
+   * Feedback is prompted to the user whenever an invalid card is chosen, a player wins the game, a player's turn is changed.
+   * All text used is extremely simple and easy to understand without much concentration needed.
+4. Perceptible Information 
+   * GUI implementation provides adequate contrast between the background, text, and buttons providing an easy to look at program.
+   * Instructions and important information is provided by popups which makes it easy to deliver information to the user.
+   * ** We did not have time to implement a GUI that is accommodating to those that are colour-blind. However, we could have added an option in the main menu to change the colours of the cards to accommodate those people.
+5. Tolerance for Error
+   * Whenever a player selects an invalid card or performs an action that is invalid, a message is sent to the user to try again.
+6. Low Physical Effort
+   * Each game requires very little effort to play, requiring user's to read simple instructions and click a few buttons.
+   * There are some repetitive actions as games occasionally take a long time to finish but there is nothing we could do about that.
+7. Size and Space for Approach and Use
+   * Using our program requires local interaction with a computer which allows for a clean light of sight to those that are standing or seated and additionally allows for space for a user, as they can set up the computer however they wish.
+   * By the same reasoning, the user(s) have the flexibility to allow themselves to have enough room to reach their computer
 
 
 ### Target Audience
