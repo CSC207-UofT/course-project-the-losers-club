@@ -34,6 +34,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
         this.userStatButton = new JButton();
         this.userStatButton.setText("USER STATISTICS");
         this.userStatButton.setActionCommand("userStat");
+        this.userStatButton.addActionListener(this);
 
         this.update();
     }

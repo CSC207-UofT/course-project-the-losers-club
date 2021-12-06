@@ -2,8 +2,6 @@ package drivers;
 
 import controllers.MainMenu;
 import controllers.MainMenuIO;
-import presenters.console.Input;
-import presenters.console.Output;
 import presenters.gui.MainMenuGUI;
 import usecases.usermanagement.UserDatabaseAccess;
 import userdatabases.SQLiteUserDatabase;

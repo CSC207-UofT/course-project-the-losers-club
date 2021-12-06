@@ -93,8 +93,12 @@ public class GoFish extends GameTemplate {
             this.currPlayer = this.players[this.currPlayerIndex];
             this.GO_FISH_IO.changePlayer(this.currPlayer.getUsername());
             if (!currPlayer.isHandEmpty()) {
-                if (!fish()) {
-                    this.GO_FISH_IO.sendPopup("Go Fish! No matches.");
+                try {
+                    if (!fish()) {
+                        this.GO_FISH_IO.sendPopup("Go Fish! No matches.");
+                    }
+                } catch (AbortGameException e) {
+                    return;
                 }
             }
             if (!this.deck.isEmpty()) {
@@ -117,7 +121,7 @@ public class GoFish extends GameTemplate {
      *
      * @return true if there is a catch and false if there is no catch.
      */
-    private boolean fish() {
+    private boolean fish() throws AbortGameException {
         String rank;
         Player chosenPlayer;
         ArrayList<Card> cardCatch;
@@ -137,6 +141,9 @@ public class GoFish extends GameTemplate {
                 }
 
                 rank = this.GO_FISH_IO.getRank();
+                if (rank.equals("")) {
+                    throw new AbortGameException();
+                }
 
                 if (!validRank(rank)) {
                     loopedRankChoice = true;

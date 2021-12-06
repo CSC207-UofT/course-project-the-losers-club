@@ -101,6 +101,11 @@ public class GoFishGUI extends GUI implements GoFishIO {
                 options,
                 options[2]);
 
+        if (n == -1) {
+            this.close();
+            return "";
+        }
+
         if (options[n].equals("10")) {
             return "10";
         } else {
@@ -142,5 +147,13 @@ public class GoFishGUI extends GUI implements GoFishIO {
     @Override
     public void closeMessage(String message) {
 
+    }
+
+    /**
+     * This method should close the GUI when called.
+     */
+    @Override
+    public void close() {
+        this.frame.dispose();
     }
 }
