@@ -134,11 +134,16 @@ In order to adhere to the SOLID principles, especially dependency inversion, we 
 creating the GUI. First, each game specifies an IO interface following the naming convention of $GAMENAME$IO so for
 example, the game of Crazy Eights specifies an interface called CrazyEightsIO. By doing this, we are able to decouple
 the games from the finer details of how the game will interact with the user, thus following clean architecture as well
-as the SOLID principles.
+as the SOLID principles. Each of these interfaces extends a master interface called GameIO.
 
 These interfaces are implemented by the subclasses of a class called GUI, which includes a lot of boilerplate code that
 is needed to get the graphics working in the first place. Implementations for the previously discussed interfaces follow
 the naming convention of $GAMENAME$GUI, e.g. the GUI implementation for Crazy Eights is called CrazyEightsGUI.
+
+Finally, we use a factory method to create the proper objects and pass them to the game. As can be seen in this UML
+Diagram:
+
+<img src="UMLs/GUI_IO_Flow.png" width=500>
 
 This is easily expandable. The group designing the new game would first specify an interface for their new game,
 including all the ways they would need the user to interact with their game. Then while the game code itself is being
