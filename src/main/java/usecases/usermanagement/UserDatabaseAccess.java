@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Manages a collection of users.
+ * Gives methods that allow objects interfacing to interact with the user database. Allows objects that implement to
+ * access and edit the users in the database, as well as changing statistics of users on the database.
  */
 public interface UserDatabaseAccess extends AutoCloseable, Closeable {
 

@@ -1,11 +1,21 @@
 package usecases;
 
+
+import java.util.*;
 import entities.Card;
 import entities.Deck;
 import usecases.usermanagement.UserManager;
 
-import java.util.*;
-
+/**
+ * Class that plays the game of Bura. Contains implemented versions of the methods found in GameTemplate with
+ * the game Bura in mind, such as the main game loop and sending and receiving input and output. A sample ruleset for
+ * Bura can be found here: https://www.pagat.com/aceten/bura.html.
+ *
+ * Note that rules have been modified from the original. Instead of being able to play any number of cards from your
+ * hand that were the same rank, our implementation only allows you to play one card per trick. Also, game players are
+ * not able to call an end to the game when they think they have 31 points. Instead, the game ends once a player has
+ * reached 31 points, or when the deck has been emptied.
+ */
 public class Bura extends GameTemplate {
     protected static final String[] RANKS = {"A", "6", "7", "8", "9", "10", "J", "Q", "K"};
     private final static int MIN_PLAYERS = 2;

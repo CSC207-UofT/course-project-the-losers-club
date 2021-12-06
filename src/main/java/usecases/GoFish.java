@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Random;
 
 
+/**
+ * Class that plays the game of Go Fish. Contains implemented versions of the methods found in GameTemplate with
+ * the game Go Fish in mind, such as the main game loop and sending and receiving input and output. The ruleset for
+ * Go Fish can be found here: https://bicyclecards.com/how-to-play/go-fish/
+ */
 public class GoFish extends GameTemplate {
     private static final int MAX_PLAYERS = 7;
     private static final int MIN_PLAYERS = 2;

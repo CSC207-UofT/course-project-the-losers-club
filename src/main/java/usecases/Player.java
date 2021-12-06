@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /***
- * Player class represents a player that plays implementations of Game. Each player contains a hand,
- * which is the cards the player holds at a given moment.
+ * Class which represents a player that plays implementations of Game. Each player contains a hand,
+ * which is the cards the player holds at a given moment. Player methods are used to interact with a player's hand, and
+ * to access a players usernames.
  */
 public class Player {
     private final Hand hand;
@@ -22,6 +23,11 @@ public class Player {
         this.username = username;
     }
 
+    /**
+     * Returns the player's username
+     *
+     * @return String containing the username of the player
+     */
     public String getUsername() {
         return username;
     }

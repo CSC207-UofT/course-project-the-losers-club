@@ -5,7 +5,7 @@ import usecases.usermanagement.UserManager;
 import java.text.DecimalFormat;
 
 /**
- * UserDisplay is a class that displays the stats for a given user
+ * Class that displays the stats for a given user.
  */
 public class UserDisplay {
 
