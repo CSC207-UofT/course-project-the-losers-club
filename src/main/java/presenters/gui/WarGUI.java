@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * This class implements the WarIO interface using Swing to create a GUI to play the game.
@@ -69,6 +70,9 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
      */
     @Override
     public void displayBoard(String card1, String card2, int pileSize, String username1, String username2) {
+        card1 = card1.toLowerCase();
+        card2 = card2.toLowerCase();
+
         if(this.piles == null){
             this.piles = new HashMap<>();
             Font font = new Font("Serif", Font.PLAIN, 24);

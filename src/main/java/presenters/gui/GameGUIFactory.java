@@ -18,8 +18,8 @@ public class GameGUIFactory {
                 return new CrazyEightsGUI();
             case "GO FISH":
                 return new GoFishGUI();
-//            case "WAR":
-//                return new WarGUI();
+            case "WAR":
+                return new WarGUI();
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + game + '.');
         }
