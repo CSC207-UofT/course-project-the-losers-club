@@ -127,8 +127,23 @@ These 3 systems are:
 2. Game Generation and Management: This system is used to create and play new games
 3. User Creation and Storage: This system is used to create users to be used as players in the games, saving their stats as well
 
-#### GUI Flow
 
+#### GUI IO Flow
+
+In order to adhere to the SOLID principles, especially dependency inversion, we created the following system for
+creating the GUI. First, each game specifies an IO interface following the naming convention of $GAMENAME$IO so for
+example, the game of Crazy Eights specifies an interface called CrazyEightsIO. By doing this, we are able to decouple
+the games from the finer details of how the game will interact with the user, thus following clean architecture as well
+as the SOLID principles.
+
+These interfaces are implemented by the subclasses of a class called GUI, which includes a lot of boilerplate code that
+is needed to get the graphics working in the first place. Implementations for the previously discussed interfaces follow
+the naming convention of $GAMENAME$GUI, e.g. the GUI implementation for Crazy Eights is called CrazyEightsGUI.
+
+This is easily expandable. The group designing the new game would first specify an interface for their new game,
+including all the ways they would need the user to interact with their game. Then while the game code itself is being
+written, another group responsible for the GUI would implement the interface by creating another subclass of the GUI
+parent class.
 
 
 
