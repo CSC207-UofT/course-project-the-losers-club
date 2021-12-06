@@ -152,7 +152,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
             Thread.onSpinWait();
         }
         this.card_selected = false;
-        return this.selected_card;
+        return this.selected_card.toUpperCase();
     }
 
     /**
