@@ -3,8 +3,8 @@ package entities;
 import java.util.*;
 
 /**
- * A standard 52-card playing deck containing 52 Card objects, each representing 1 of the 52 unique cards in a
- * standard deck.
+ * A collection of cards in a queue format. Usually initialized with 52 Card objects, each representing 1 of the 52 unique cards in a
+ * standard deck. However, can be initialized with other collections of cards
  */
 public class Deck {
 

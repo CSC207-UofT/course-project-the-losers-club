@@ -8,6 +8,10 @@ import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Class which interacts with the SQLite database containing user information. Interacts with the tables contained in
+ * the actual database, and is able to update statistics of specific users.
+ */
 public class SQLiteUserDatabase implements UserDatabaseAccess, AutoCloseable, Closeable {
 
     private static final Set<String> STATISTICS_COLUMNS = Set.of("gamesPlayed", "gamesWon", "gamesTied");

@@ -1,15 +1,13 @@
 package entities;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a player's hand during a card game. Each hand contains a list of Card objects, which represent the
- * cards in such player's hand.
+ * cards in that player's hand.
  */
 public class Hand implements Iterable<Card> {
     // Instance attributes
@@ -52,6 +50,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Adds all the cards in the given list to the hand.
+     *
      * @param cards ArrayList of Cards to be added to the hand.
      */
     public void addCard(ArrayList<Card> cards) {
@@ -97,6 +96,7 @@ public class Hand implements Iterable<Card> {
 
     /**
      * Remove and return all cards of the given rank.
+     *
      * @param rank the rank of the card
      * @return ArrayList of cards of the given rank.
      */

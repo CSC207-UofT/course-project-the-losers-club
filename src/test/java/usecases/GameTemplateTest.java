@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import usecases.IOInterfaces.GameIO;
 import usecases.usermanagement.UserManager;
 
 import java.util.Arrays;
@@ -16,8 +17,7 @@ class GameTemplateTest {
 
     List<String> usernames;
     UserManager userManager;
-    GameTemplate.Input input;
-    GameTemplate.Output output;
+    GameIO gameIO;
 
     @BeforeEach
     void setUp() {
@@ -32,55 +32,17 @@ class GameTemplateTest {
             }
         }
 
-        this.input = new Input();
-        this.output = new Output();
+        this.gameIO = new FakeGameIO();
     }
 
-    static class Input implements GameTemplate.Input {
+    static class FakeGameIO implements GameIO {
 
-        @Override
-        public String getCard() {
-            return null;
-        }
-
-        @Override
-        public boolean drawCard() {
-            return false;
-        }
-
-        @Override
-        public char getSuit() {
-            return 0;
-        }
-
-        @Override
-        public String getRank() {
-            return null;
-        }
-
-        @Override
-        public String getPlayerUsername(String currPlayerUsername, List<String> usernames) {
-            return null;
-        }
-
-        @Override
-        public boolean stall() {
-            return false;
-        }
-    }
-
-    static class Output implements GameTemplate.Output {
-
-        @Override
-        public void sendOutput(Object s) {
-
-        }
     }
 
     static class FakeGame extends GameTemplate {
 
-        protected FakeGame(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
-            super(usernames, userManager, gameInput, gameOutput);
+        protected FakeGame(List<String> usernames, UserManager userManager, GameIO gameIO) {
+            super(usernames, userManager, gameIO);
         }
 
         @Override
@@ -96,7 +58,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = new FakeGame(usernames, userManager, input, output);
+            this.game = new FakeGame(usernames, userManager, gameIO);
         }
 
         @Test
@@ -140,7 +102,7 @@ class GameTemplateTest {
 
         @BeforeEach
         void setUp() {
-            this.game = new FakeGame(usernames, userManager, input, output);
+            this.game = new FakeGame(usernames, userManager, gameIO);
         }
 
         @Test
