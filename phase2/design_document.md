@@ -236,7 +236,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, assisted with GUI implementation, improved design document, coordinated GitHub activities.
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
-* Bradley: 
+* Bradley: Worked on implementing the War IO interface with Daniel and connected War with the GUI alongside Teddy. Reviewed PRs and added javadocs to all the classes. Improved design document.
 * Daniel: 
 * Azamat: 
 * Luke: 
@@ -256,6 +256,12 @@ We primarily considered the packaging by component and the packaging by layer st
     * Without these IO's we would violate Clean Architecture and dependency rules and would not be able to connect the games to the GUI
 * Brian: 
 * Bradley: 
+  * [Created War](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
+    * This PR was where one of the 4 games, War, was created.
+  *[Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+    * Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were no
+    * dependency violations in our code
+    * 
 * Daniel: 
 * Azamat: 
 * Luke: 
