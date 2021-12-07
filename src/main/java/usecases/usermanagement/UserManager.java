@@ -2,12 +2,16 @@ package usecases.usermanagement;
 
 import entities.User;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class UserManager implements Serializable {
+/**
+ * Class that stores a hashmap mapping usernames to a User object. This class can add and keep track of users, and can
+ * communicate with the user database to import stored users and write and take away new users to and from the database.
+ * This class is also able to return the statistics of specific users by referencing their usernames.
+ */
+public class UserManager {
 
     private final Map<String, User> users;
 

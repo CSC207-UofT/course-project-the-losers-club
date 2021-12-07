@@ -2,24 +2,26 @@ package usecases;
 
 import entities.Card;
 import entities.Deck;
-import presenters.gui.PlayerGUI;
-import presenters.gui.SingleCardGUI;
+import usecases.IOInterfaces.*;
 import usecases.usermanagement.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class on which games are built. Contains methods that all games will need to use in their implementation
+ * and interacts with the stats of the Users who play the game.
+ */
 public abstract class GameTemplate {
 
     protected static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static final char[] SUITS = {'H', 'S', 'D', 'C'};
-    protected final Input GAME_INPUT;
-    protected final Output GAME_OUTPUT;
     protected Player[] players;
     protected Deck deck;
     protected Player currPlayer;
     protected UserManager userManager;
     protected List<String> usernames;
+    protected GameIO gameIO;
     protected int currPlayerIndex;
 
     /**
@@ -27,15 +29,12 @@ public abstract class GameTemplate {
      *
      * @param usernames   usernames of those playing the game
      * @param userManager manager for storing user information
-     * @param gameInput   an object implementing <code>GameTemplate.Input</code>
-     * @param gameOutput  an object implementing <code>GameTemplate.output</code>
      */
-    protected GameTemplate(List<String> usernames, UserManager userManager, Input gameInput, Output gameOutput) {
+    protected GameTemplate(List<String> usernames, UserManager userManager, GameIO gameIO) {
         this.userManager = userManager;
         this.usernames = usernames;
 
-        this.GAME_INPUT = gameInput;
-        this.GAME_OUTPUT = gameOutput;
+        this.gameIO = gameIO;
 
         this.players = new Player[usernames.size()];
         for (int i = 0; i < players.length; i++) {
@@ -60,20 +59,18 @@ public abstract class GameTemplate {
      * @param name        the game to create
      * @param usernames   list of usernames to play the game
      * @param userManager user management vessel
-     * @param input       an object implementing <code>GameTemplate.Input</code>
-     * @param output      an object implementing <code>GameTemplate.output</code>
      * @return the requested game instance
      */
-    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, Input input, Output output) {
+    public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, GameIO gameIO) {
         switch (name.toUpperCase()) {
             case "BURA":
-                return new Bura(usernames, userManager, input, output);
+                return new Bura(usernames, userManager, (BuraIO) gameIO);
             case "CRAZY EIGHTS":
-                return new CrazyEights(usernames, userManager, new PlayerGUI(""), new SingleCardGUI(""));
+                return new CrazyEights(usernames, userManager, (CrazyEightsIO) gameIO);
             case "WAR":
-                return new War(usernames, userManager, input, output);
+                return new War(usernames, userManager, (WarIO) gameIO);
             case "GO FISH":
-                return new GoFish(usernames, userManager, input, output);
+                return new GoFish(usernames, userManager, (GoFishIO) gameIO);
             default:
                 throw new IllegalArgumentException("Illegal game selection of " + name + '.');
         }
@@ -175,68 +172,9 @@ public abstract class GameTemplate {
     public abstract void startGame();
 
     /**
-     * Input is an interface allowing Games to retrieve input from a user.
+     * <code>AbortGameException</code> should be thrown when a game is forcibly terminated.
      */
-    public interface Input {
+    public static class AbortGameException extends Exception {
 
-        /**
-         * Implementations should return a String corresponding to a picked card.
-         * <p>
-         * The first character of the String should be the suit (one of 'C', 'D', 'H', 'S'), while the
-         * second and possibly third characters should be
-         * the rank (one of "A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K").
-         *
-         * @return a 2-3 character String representing the picked card.
-         */
-        String getCard();
-
-        /**
-         * Implementations should return a boolean representing whether a card should be drawn from the deck.
-         *
-         * @return true if a card should be drawn, false otherwise
-         */
-        boolean drawCard();
-
-        /**
-         * Implementations should return a character corresponding to a picked suit.
-         * <p>
-         * The character must be one of {'C', 'D', 'H', 'S'} representing Clubs, Diamonds, Hearts, Spades respectively.
-         */
-        char getSuit();
-
-        /**
-         * Implementations should return a string corresponding to a picked rank.
-         * The string must be one of {"A", "2", "3", "4", "5", "6", "7", "8', "9", "10", "J", "Q", "K"}.
-         */
-        String getRank();
-
-        /**
-         * Implementation should return a Player object corresponding to a picked player.
-         *
-         * @return a Player that is chosen by the user.
-         */
-        String getPlayerUsername(String currPlayerUsername, List<String> usernames);
-
-        /**
-         * Implementations should stall the output display. This can be used when the user needs to "click to continue"
-         * or in the case of a command line interface, "press enter to continue".
-         */
-        boolean stall();
-
-    }
-
-
-    /**
-     * Output is an interface allowing Games to output back to the user.
-     */
-    public interface Output {
-
-        /**
-         * Implementations should take the given Object s and handle it's output to the user.
-         * How this is done depends on the implementation.
-         *
-         * @param s An Object that can be somehow outputted to the user.
-         */
-        void sendOutput(Object s);
     }
 }

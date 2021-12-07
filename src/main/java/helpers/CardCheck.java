@@ -4,9 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * CardCheck defines methods for checking the validity of a card String.
- * <p>
  * This done by compiling a regular expression using the built-in Pattern class.
- * <p>
  * The string representations of cards are then considered valid if they are an element of the produced language.
  */
 public class CardCheck {
