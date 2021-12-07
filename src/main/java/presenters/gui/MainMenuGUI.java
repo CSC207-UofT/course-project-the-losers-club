@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
 
-    private final JTextField input = new JTextField(20);
     private final JButton userStatButton;
     private List<String> games;
     private volatile boolean ready = false;
@@ -103,7 +102,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
     /**
      * Retrieve a username of a player that is to be playing the selected game.
      *
-     * @return a valid username representation or "done" if the user does not want to enter another user name.
+     * @return a valid username representation or "done" if the user does not want to enter another username.
      * @see UsernameCheck
      */
     @Override
@@ -119,7 +118,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
 
 
     /**
-     * Send a popup to the user containing <code>message</code>.
+     * Send a popup to the user containing the string inside message.
      *
      * @param message the message to send to the user
      */

@@ -2,6 +2,9 @@ package presenters.gui;
 
 import usecases.IOInterfaces.GameIO;
 
+/**
+ * Class that makes game GUI objects for instances of game
+ */
 public class GameGUIFactory {
 
     /**

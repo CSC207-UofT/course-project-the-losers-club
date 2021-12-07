@@ -1,0 +1,10 @@
+controllers
+drivers
+entities
+entities.CardComparators
+helpers
+presenters.gui
+usecases
+usecases.IOInterfaces
+usecases.usermanagement
+userdatabases

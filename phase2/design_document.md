@@ -232,7 +232,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, assisted with GUI implementation, improved design document, coordinated GitHub activities.
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
-* Bradley: 
+* Bradley: Worked on implementing the War IO interface with Daniel and connected War with the GUI alongside Teddy. Reviewed PRs and added javadocs to all the classes. Improved design document.
 * Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `WarGUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
 * Azamat: 
 * Luke: 
@@ -252,6 +252,10 @@ We primarily considered the packaging by component and the packaging by layer st
     * Without these IO's we would violate Clean Architecture and dependency rules and would not be able to connect the games to the GUI
 * Brian: 
 * Bradley: 
+  * [Created War](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
+    * This PR was where one of the 4 games, War, was created.
+  * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+  	* Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
 * Daniel: 
 	* [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
 		* Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
@@ -275,7 +279,7 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
    * There is no significant concern for privacy in our program as users are not asked to store any sensitive information
 2. Flexibility in Use
    * Our program allows for both right-handed and left-handed individuals as they are only required to make clicks
-   * ** However, user(s) are not able to customize any part of the program to suit their preferences. We could have added functionality to allow the user to change card face designs, change between light and dark themes, change fonts, etc.
+   * However, user(s) are not able to customize any part of the program to suit their preferences. We could have added functionality to allow the user to change card face designs, change between light and dark themes, change fonts, etc.
 3. Simple and Intuitive Use
    * GUI implementation of all games is very straight-forward and easy to follow for the user. There are no unnecessary or distracting buttons or backgrounds.
    * Feedback is prompted to the user whenever an invalid card is chosen, a player wins the game, a player's turn is changed.
@@ -283,7 +287,7 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
 4. Perceptible Information 
    * GUI implementation provides adequate contrast between the background, text, and buttons providing an easy to look at program.
    * Instructions and important information is provided by popups which makes it easy to deliver information to the user.
-   * ** We did not have time to implement a GUI that is accommodating to those that are colour-blind. However, we could have added an option in the main menu to change the colours of the cards to accommodate those people.
+   * We did not have time to implement a GUI that is accommodating to those that are colour-blind. However, we could have added an option in the main menu to change the colours of the cards to accommodate those people.
 5. Tolerance for Error
    * Whenever a player selects an invalid card or performs an action that is invalid, a message is sent to the user to try again.
 6. Low Physical Effort

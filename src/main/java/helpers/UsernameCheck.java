@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
  */
 public class UsernameCheck {
 
+    /**
+     * Produces a Pattern to check username strings against. If they follow the Pattern, it is a valid username.
+     */
     private static final Pattern USERNAME_CHECK = Pattern.compile("^([a-zA-Z0-9][-_]?){0,15}[a-zA-Z0-9]$");
 
     /**

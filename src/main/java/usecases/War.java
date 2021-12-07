@@ -155,6 +155,7 @@ public class War extends GameTemplate {
      * Returns the top card of the player's pile
      *
      * @param playerIndex the index representing the player's pile we want to return
+     * @return return the top card
      */
     protected Card returnTopCard(int playerIndex) {
         return this.PLAYING_FIELD.get(playerIndex).peek();
@@ -163,6 +164,11 @@ public class War extends GameTemplate {
     /**
      * Uses Hierarchy to decide which player wins a round of War. returns which player has won (0 or 1) or a 2 if
      * the players tie. Outputs a message accordingly.
+     *
+     * @param topCard0 the top card of player 0s pile
+     * @param topCard1 the top card of player 1s pile
+     * @param inWar    a flag for whether the game is in a state of war
+     * @return which player is the winner (0 or 1), or 2 if the players have tied
      */
     protected int decideRoundWinner(Card topCard0, Card topCard1, boolean inWar) {
         int topCardHierarchy0 = java.util.Arrays.asList(HIERARCHY).indexOf(topCard0.getRank());

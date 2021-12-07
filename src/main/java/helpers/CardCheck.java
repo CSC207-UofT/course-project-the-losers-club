@@ -9,13 +9,15 @@ import java.util.regex.Pattern;
  */
 public class CardCheck {
 
-    //Produces a Pattern to check card strings against. If they follow the Pattern, it is a valid card.
+    /**
+     * Produces a Pattern to check card strings against. If they follow the Pattern, it is a valid card.
+     */
     private static final Pattern CARD_PATTERN = Pattern.compile("(?i)^(10|[2-9]|[ajqk])([cdhs])$");
 
     /**
      * A method that checks if a given string s is a valid representation of a card as a string.
      *
-     * @param s - The string that is being checked as a valid representation of a card as a string.
+     * @param s The string that is being checked as a valid representation of a card as a string.
      * @return True if the string is a valid representation of a card as a string, false otherwise.
      */
     public static boolean checkCard(String s) {
