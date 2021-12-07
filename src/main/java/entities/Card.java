@@ -5,7 +5,6 @@ package entities;
  * possible rank and suit combination in a standard 52-card playing deck.
  */
 public class Card {
-    // Instances attributes
     private final String rank;
     private final char suit;
     private boolean isFace;

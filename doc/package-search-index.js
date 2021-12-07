@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"controllers"},{"l":"drivers"},{"l":"entities"},{"l":"entities.CardComparators"},{"l":"helpers"},{"l":"presenters.gui"},{"l":"usecases"},{"l":"usecases.IOInterfaces"},{"l":"usecases.usermanagement"},{"l":"userdatabases"}]

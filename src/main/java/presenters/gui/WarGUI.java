@@ -48,9 +48,9 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
     }
 
     /**
-     * This method should change the current user to <>username</> and then informers the user of this change.
+     * This method should change the current user to <code>username</code> and then informers the user of this change.
      *
-     * @param username The <>username</> of the next player.
+     * @param username The <code>username</code> of the next player.
      */
     @Override
     public void changePlayer(String username) {
@@ -138,7 +138,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
     }
 
     /**
-     * This method should send a popup to the user containing a <>message</>.
+     * This method should send a popup to the user containing a <code>message</code>.
      *
      * @param message a string that is to be sent to the user
      */
@@ -156,7 +156,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
     }
 
     /**
-     * This method should display a <>message</> to the user and then close the GUI.
+     * This method should display a <code>message</code> to the user and then close the GUI.
      *
      * @param message a string that is to be sent to the user.
      */

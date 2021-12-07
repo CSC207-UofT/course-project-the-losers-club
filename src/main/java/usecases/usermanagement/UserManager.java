@@ -101,6 +101,7 @@ public class UserManager {
      *
      * @param username username of the User
      * @return returns true if the user has been added and returns false when a user with a same username already exists
+     * @throws UserAlreadyExistsException if the requested username already exists within this manager
      */
     public boolean addUser(String username) throws UserAlreadyExistsException {
         if (hasUser(username)) {

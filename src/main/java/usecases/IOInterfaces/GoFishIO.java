@@ -9,14 +9,14 @@ import java.util.List;
 public interface GoFishIO extends GameIO {
 
     /**
-     * This method should change the current user to <>username</> and then informer the user of this change.
+     * This method should change the current user to <code>username</code> and then informer the user of this change.
      *
-     * @param username The <>username</> of the next player.
+     * @param username The <code>username</code> of the next player.
      */
     void changePlayer(String username);
 
     /**
-     * This method should send a popup to the user containing a <>message</>.
+     * This method should send a popup to the user containing a <code>message</code>.
      *
      * @param message a string that is to be sent to the user
      */
@@ -48,7 +48,7 @@ public interface GoFishIO extends GameIO {
     String getPlayerUsername(String currPlayer, List<String> usernames);
 
     /**
-     * This method should display a <>message</> to the user and then close the GUI.
+     * This method should display a <code>message</code> to the user and then close the GUI.
      *
      * @param message a string that is to be sent to the user.
      */

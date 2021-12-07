@@ -10,7 +10,6 @@ import java.util.List;
  * cards in that player's hand.
  */
 public class Hand implements Iterable<Card> {
-    // Instance attributes
     private final List<Card> cards;
 
     /**
