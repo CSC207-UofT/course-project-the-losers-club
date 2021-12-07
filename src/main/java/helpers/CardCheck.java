@@ -17,7 +17,7 @@ public class CardCheck {
     /**
      * A method that checks if a given string s is a valid representation of a card as a string.
      *
-     * @param s - The string that is being checked as a valid representation of a card as a string.
+     * @param s The string that is being checked as a valid representation of a card as a string.
      * @return True if the string is a valid representation of a card as a string, false otherwise.
      */
     public static boolean checkCard(String s) {
