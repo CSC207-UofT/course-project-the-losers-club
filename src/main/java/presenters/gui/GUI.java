@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class that instanciates a basic GUI. Game specific GUIs extend this class and gain it's functionality. This class
+ * Class that instantiates a basic GUI. Game specific GUIs extend this class and gain its functionality. This class
  * creates menus and windows which the users will view and interact with
  * */
 public class GUI {

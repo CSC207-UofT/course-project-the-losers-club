@@ -16,7 +16,6 @@ import java.util.List;
  */
 public class MainMenu {
 
-    private static final int WIDTH = 39;
     private final String[] GAMES;
     private final MainMenuIO MM_IO;
 
