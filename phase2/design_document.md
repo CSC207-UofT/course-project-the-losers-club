@@ -258,10 +258,8 @@ We primarily considered the packaging by component and the packaging by layer st
 * Bradley: 
   * [Created War](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
     * This PR was where one of the 4 games, War, was created.
-  *[Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
-    * Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were no
-    * dependency violations in our code
-    * 
+  * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+  	* Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
 * Daniel: 
 * Azamat: 
 * Luke: 
