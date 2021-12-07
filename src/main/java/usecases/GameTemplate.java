@@ -29,6 +29,7 @@ public abstract class GameTemplate {
      *
      * @param usernames   usernames of those playing the game
      * @param userManager manager for storing user information
+     * @param gameIO      <code>gameIO</code> object for input to and output from the game
      */
     protected GameTemplate(List<String> usernames, UserManager userManager, GameIO gameIO) {
         this.userManager = userManager;
@@ -59,6 +60,7 @@ public abstract class GameTemplate {
      * @param name        the game to create
      * @param usernames   list of usernames to play the game
      * @param userManager user management vessel
+     * @param gameIO      <code>gameIO</code> object for input to and output from the game
      * @return the requested game instance
      */
     public static GameTemplate gameFactory(String name, List<String> usernames, UserManager userManager, GameIO gameIO) {
