@@ -192,7 +192,7 @@ Due to the refactoring and other code improvements done between phase 1 and phas
 
 
 
-## SOLID Design Principles.
+## SOLID Design Principles
 
 * Single Responsibility
   * The `SQLiteUserDatabase` only does one thing&mdash;connect with an SQLite database and query it. All database queries go through this class, and is the only class in our program that contains SQL. The users of this class do not need to know how the SQLite connection works, but can simply call methods to gather the required information.
@@ -233,7 +233,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
 * Bradley: 
-* Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `War GUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
+* Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `WarGUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
 * Azamat: 
 * Luke: 
 * Nitish: 
