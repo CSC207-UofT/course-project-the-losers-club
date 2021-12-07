@@ -24,11 +24,11 @@
 
 
 
-## Game Rules
+### Game Rules
 
 (Sourced from [Bicycle Cards](https://bicyclecards.com/rules/) and [Pagat.com](https://www.pagat.com/aceten/bura.html) with minor modifications)
 
-### Crazy Eights
+#### Crazy Eights
 
 * 2+ players, 52 cards
 * Start:
@@ -46,7 +46,7 @@
 * Win condition:
   * Player with no cards left wins
 
-### War
+#### War
 
 * 2 players, 52 cards
 * Start: 
@@ -63,7 +63,7 @@
 * Win condition: 
   * Player who has all the cards
 
-### Go Fish
+#### Go Fish
 
 * 2+ players, 52 cards
 * Start:
@@ -84,7 +84,8 @@
   * the game ends when all thirteen suits have been won
   * the winner is the player with the most set of cards
 
-### Bura
+#### Bura
+
 * 2+ players, 36 card (4 suits; ranks A, 6-K)
 * Start:
   * (Modified) Cards are dealt out singly until each player has one card
@@ -131,14 +132,14 @@ These 3 systems are:
 #### GUI IO Flow
 
 In order to adhere to the SOLID principles, especially dependency inversion, we created the following system for
-creating the GUI. First, each game specifies an IO interface following the naming convention of $GAMENAME$IO so for
-example, the game of Crazy Eights specifies an interface called CrazyEightsIO. By doing this, we are able to decouple
+creating the GUI. First, each game specifies an IO interface following the naming convention of `$GAMENAME$IO` so for
+example, the game of Crazy Eights specifies an interface called `CrazyEightsIO`. By doing this, we are able to decouple
 the games from the finer details of how the game will interact with the user, thus following clean architecture as well
-as the SOLID principles. Each of these interfaces extends a master interface called GameIO.
+as the SOLID principles. Each of these interfaces extends a master interface called `GameIO`.
 
 These interfaces are implemented by the subclasses of a class called GUI, which includes a lot of boilerplate code that
 is needed to get the graphics working in the first place. Implementations for the previously discussed interfaces follow
-the naming convention of $GAMENAME$GUI, e.g. the GUI implementation for Crazy Eights is called CrazyEightsGUI.
+the naming convention of `$GAMENAME$GUI`, e.g. the GUI implementation for Crazy Eights is called `CrazyEightsGUI`.
 
 Finally, we use a factory method to create the proper objects and pass them to the game. As can be seen in this UML
 Diagram:
@@ -172,27 +173,21 @@ this system activates. The requests from `MainMenu` and `UserDisplay` are proces
 user statistics to be retrieved/modified. These allow us to interact with and create new instances
 of our custom entity class `User`, and use them to play games with. 
 
-Serialization of users are done through the `UserDatabaseAccess` interface. This interface defines methods and exceptions used to communicate with any 
+Serialization of users is done through the `UserDatabaseAccess` interface. This interface defines methods and exceptions used to communicate with any 
 type of user database gateway. Currently, an SQLite database is used to serialize user data, but having a `UserDatabaseAccess` interface allows
-database implementations to be swapped at will. One example of this is in the test classes for 
+database implementations to be swapped at will in the main method. One example of this is in the test classes for 
 [`UserManager`](https://github.com/CSC207-UofT/course-project-the-losers-club/blob/main/src/test/java/usecases/UserManagerTest.java). A fake database is used
 to simulate the storage of user information for the purposes of testing.
 
-<img src="UMLs/User_Flow.png" width=600>
+<img src="UMLs/User_Flow.png" width=500>
+
+
 
 #### Violations Of Clean Architecture
 
-As a whole, our code has few violations of clean architecture. Our biggest violation comes from the fact that because of
-the implementation of our GUI, the games using it (as of now we've only implemented `CrazyEights` to work with the GUI) are
-dependent on it. This violates clean architecture, as changes in the GUI system will have to be reflected in `CrazyEights`.
-However, this violation is due to the fact that GUI systems have only started to be integrated. We are currently looking 
-in to creating some sort of façade class to allow for communication between the systems, or possibly changing the interfaces
-themselves. This issue is also touched on in the Major Design Decisions paragraph. 
+Compared to Phase 1, we've resolved our violations of clean architecture by carefully designing our GUI implementations and boundary crosses. Previously, `CrazyEights` directly depended on a GUI implementation, but that has since been refactored to our `GameIO` interface structure described above.
 
-The other potential violation of clean architecture present in our code is the fact that the entity classes `Deck` and `Hand`
-depend on the entity class `Card`. However, we are unsure if this violates clean architecture, and if so how to remedy it. 
-Since `Hand`s and `Deck`s are made up of `Card`s, it makes sense for them to be dependent, but if this is found to be against
-clean architecture then other solutions will be found.
+Due to the refactoring and other code improvements done between phase 1 and phase 2, we feel as though there are no major violations of clean architecture. 
 
 
 
@@ -200,21 +195,22 @@ clean architecture then other solutions will be found.
 ## SOLID Design Principles.
 
 * Single Responsibility
-  * The console input interface (`presenters.console.Input`) only does one thing&mdash;retrieve input from the user through the console. It retrieves input from the user, parses does very basic input validation ("10S" is a valid card string whereas "404W" is not), and then returns primitive representation of the desired input (for example the `String` "S10" to represent the 10 of spades).
+  * The `SQLiteUserDatabase` only does one thing&mdash;connect with an SQLite database and query it. All database queries go through this class, and is the only class in our program that contains SQL. The users of this class do not need to know how the SQLite connection works, but can simply call methods to gather the required information.
 * Open/Closed
   * The `GameTemplate` class defines common operations that are required between all games, such as the logic required for `User` management (adding wins, adding games played, etc.). New subclasses of `GameTemplate` will not need to change this code, but can depend on said code doing the right thing.
 * Liskov's Substitution
-  * All subclasses of `GameTemplate`, such as `CrazyEights`, all have common functionality like the `startGame()` entry method, or the `getMaxPlayers()` method. This means the `GameSelector` can depend on these methods existing and working correctly regardless of what subclass of `GameTemplate` is actually being used.
+  * All subclasses of `GameTemplate`, such as `CrazyEights`, all have common functionality like the `startGame()` entry method, or the `getMaxPlayers()` method. This means the `MainMenu` can depend on these methods existing and working correctly regardless of what subclass of `GameTemplate` is actually being used. In other words, substituting subclasses of `GameTemplate` does not change the behaviour of the game creation and run flow. 
+  * This also means that extending our program with new games is simple. By subclassing `GameTemplate` and adding it to the game creation factory, new games can be added with no changes to `MainMenu`.
 * Interface Segregation
-  * Rather than have one main input/output interface for both the `GameSelector` and each individual game, interfaces were separated allowing implementations to choose which interfaces to implement.
+  * Each game defines its own extension of the `GameIO` interface, and defines what input and output methods it requires. Then, the actual GUI implementation must implement this interface to support the game. Separating these interfaces means individual GUI implementations do not need to support methods and actions that are not needed by the actual game.
 * Dependency Inversion
-  * Each game (subclasses of `GameTemplate`) must depend on an interface between the game and the user running the code. An interface was used to specify the ways a user could interact with the game, and the subclasses of `GameTemplate` only depended on there being given some implementation of the interface, but did not directly depend on the implementation.
+  * `UserManager` depends on connecting to a database to serialize users. To avoid a dependency rule violation, the interface `UserDatabaseAccess` is defined. Then, `SQLiteUserDatabase` simply implements this interface. To then inject the depenency, an instance of `SQLiteUserDatabase` is instantiated in `Main` and passed into the `UserManager` to store. Defining an interface this way also allows different implementations of databases to be used; it would be very easy to switch to another relational databases like MySQL.
 
 
 
 ## Packaging Strategy
 
-We primarily considered the packaging by component and the packaging by layer strategies. We decided on the packaging by layer strategy to make our layers more clear and make it easy to tell whether the dependency rule is violated. However, as our project expands in scope, it might be worth reconsidering our use of packaging by layer since each of the packages have low cohesion.
+We primarily considered the packaging by component and the packaging by layer strategies. We decided on the packaging by layer strategy to make our layers more clear and make it easy to tell whether the dependency rule is violated. However, since our project has expanded in scope, we've begun introducing subpackages to further divide our code. For example, a `usecases.usermanagement` subpackage is used for the user related classes.
 
 
 
@@ -222,9 +218,9 @@ We primarily considered the packaging by component and the packaging by layer st
 ## Design Patterns
 
 * Factory Method
-  * `GameTemplate.gameFactory()` is used to create the various games. When games are added/removed from the pool of available games, `GameTemplate` must be changed, but not the menu implementation in `GameSelector`. `GameSelector` remains independent of the actual available games.
+  * `GameTemplate.gameFactory()` is used to create the various games. When games are added/removed from the pool of available games, `GameTemplate` must be changed, but not the menu implementation in `MainMenu`. This means `MainMenu` remains independent of the actual available games.
 * Dependency Inversion
-  * `GameTemplate` and `GameSelector` define input and output interfaces. These classes have parameters in their constructors for implementations of these interfaces. This allows classes in the layers above them to choose which implementation they wish to use. Additionally, having these interfaces defined means testing is much easier. For example, in `GoFishTest`, a class that emulates the behaviour of a user is used to test the `GoFish` game functionality.
+  * As described above, the games define input and output interfaces. This allows classes in the layers above them to choose which implementation they wish to use through dependency injection. Additionally, having these interfaces defined means testing is much easier. For example, in `GoFishTest`, a class that emulates the behaviour of a user by implementing `GoFishIO` is used to test the `GoFish` game functionality.
 
 
 
@@ -245,7 +241,7 @@ We primarily considered the packaging by component and the packaging by layer st
 ### Significant PRs
 
 * Raymond: 
-  * [Added `MainMenu` controller](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/52)
+  * [Added the `MainMenu` controller](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/52)
     * This PR defined the controller layer allowing us to switch between games and handle user serialization. It moved our project away from a single game into a more developed collection of games.
   * [Migrated `User` serialization to SQLite](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/101)
     * This PR included a more clean implementation of user serialization which defines interfaces and allows for future expansion. This new design allows different SQL databases to be used, which consequently allows for different statistics to be tracked through a more sophisticated database structure.
@@ -292,7 +288,7 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
    * Whenever a player selects an invalid card or performs an action that is invalid, a message is sent to the user to try again.
 6. Low Physical Effort
    * Each game requires very little effort to play, requiring user's to read simple instructions and click a few buttons.
-   * There are some repetitive actions as games occasionally take a long time to finish but there is nothing we could do about that.
+   * There are some repetitive actions as games occasionally take a long time to finish, so if we had more time we could have implemented a fast-forward action.
 7. Size and Space for Approach and Use
    * Using our program requires local interaction with a computer which allows for a clean light of sight to those that are standing or seated and additionally allows for space for a user, as they can set up the computer however they wish.
    * By the same reasoning, the user(s) have the flexibility to allow themselves to have enough room to reach their computer
