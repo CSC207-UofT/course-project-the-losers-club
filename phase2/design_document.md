@@ -279,7 +279,7 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
    * There is no significant concern for privacy in our program as users are not asked to store any sensitive information
 2. Flexibility in Use
    * Our program allows for both right-handed and left-handed individuals as they are only required to make clicks
-   * ** However, user(s) are not able to customize any part of the program to suit their preferences. We could have added functionality to allow the user to change card face designs, change between light and dark themes, change fonts, etc.
+   * However, user(s) are not able to customize any part of the program to suit their preferences. We could have added functionality to allow the user to change card face designs, change between light and dark themes, change fonts, etc.
 3. Simple and Intuitive Use
    * GUI implementation of all games is very straight-forward and easy to follow for the user. There are no unnecessary or distracting buttons or backgrounds.
    * Feedback is prompted to the user whenever an invalid card is chosen, a player wins the game, a player's turn is changed.
@@ -287,7 +287,7 @@ For each Principle of Universal Design, write 2-5 sentences or point form notes 
 4. Perceptible Information 
    * GUI implementation provides adequate contrast between the background, text, and buttons providing an easy to look at program.
    * Instructions and important information is provided by popups which makes it easy to deliver information to the user.
-   * ** We did not have time to implement a GUI that is accommodating to those that are colour-blind. However, we could have added an option in the main menu to change the colours of the cards to accommodate those people.
+   * We did not have time to implement a GUI that is accommodating to those that are colour-blind. However, we could have added an option in the main menu to change the colours of the cards to accommodate those people.
 5. Tolerance for Error
    * Whenever a player selects an invalid card or performs an action that is invalid, a message is sent to the user to try again.
 6. Low Physical Effort
