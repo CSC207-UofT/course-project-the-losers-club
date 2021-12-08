@@ -76,7 +76,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
             Font font = new Font("Serif", Font.PLAIN, 24);
 
 
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card1));
+            ImageIcon icon = new ImageIcon(this.stringToImage(card1));
             JLabel first = new JLabel(icon);
             first.setText(username1);
             first.setFont(font);
@@ -85,7 +85,7 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
             this.piles.put(username1, first);
 
 
-            icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card2));
+            icon = new ImageIcon(this.stringToImage(card2));
             JLabel second = new JLabel(icon);
             second.setFont(font);
             second.setText(username2);
@@ -103,22 +103,23 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
             this.panel.add(this.piles.get(username2));
 
         } else {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card1));
+            ImageIcon icon = new ImageIcon(this.stringToImage(card1));
             this.piles.get(username1).setIcon(icon);
 
-            icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card2));
+            icon = new ImageIcon(this.stringToImage(card2));
             this.piles.get(username2).setIcon(icon);
 
             this.pileSize.setText(String.valueOf(pileSize));
 
-            if (card1.equals("") && card2.equals("")) {
-                icon = new ImageIcon("src/main/resources/cards/back-blue.png");
-                this.piles.get(username1).setIcon(icon);
+        }
 
-                this.piles.get(username2).setIcon(icon);
+        if (card1.equals("") && card2.equals("")) {
+            ImageIcon icon = new ImageIcon(this.stringToImage("blank"));
+            this.piles.get(username1).setIcon(icon);
 
-                this.pileSize.setText(String.valueOf(pileSize));
-            }
+            this.piles.get(username2).setIcon(icon);
+
+            this.pileSize.setText(String.valueOf(pileSize));
         }
 
 

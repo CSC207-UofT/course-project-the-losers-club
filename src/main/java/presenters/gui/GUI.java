@@ -15,7 +15,7 @@ public class GUI {
 
     protected final JPanel panel = new JPanel();
 
-    protected final Map<String, String> stringToImage;
+    private final Map<String, String> stringToImage;
 
     /**
      * This creates a new instance of GUI. This will just make a blank window appear. For more detailed GUI's, see this
@@ -57,5 +57,20 @@ public class GUI {
         this.frame.repaint();
         this.frame.setVisible(true);
     }
+
+    /**
+     * Takes a string representation of a card and returns the address of the image for that card.
+     * @param cardString the String representation of the card you want an image of
+     * @return the address of a the image of that card.
+     */
+    protected String stringToImage(String cardString){
+        if(cardString.equals("blank")){
+            return "src/main/resources/cards/" + "back-blue.png";
+        }
+        else{
+            return "src/main/resources/cards/" + this.stringToImage.get(cardString);
+        }
+    }
+
 
 }

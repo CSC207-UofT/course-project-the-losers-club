@@ -62,7 +62,7 @@ public class GoFishGUI extends GUI implements GoFishIO {
         this.hand = new JLabel[cardStrings.length];
 
         for (int i = 0; i < cardStrings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cardStrings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cardStrings[i]));
             this.hand[i] = new JLabel(icon);
             this.panel.add(this.hand[i]);
         }

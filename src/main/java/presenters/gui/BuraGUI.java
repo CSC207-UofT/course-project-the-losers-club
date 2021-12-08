@@ -36,7 +36,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         this.cardToBeat.setHorizontalTextPosition(SwingConstants.CENTER);
         this.cardToBeat.setVerticalTextPosition(SwingConstants.TOP);
         this.cardToBeat.setFont(new Font("Serif", Font.PLAIN, 24));
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+        ImageIcon icon = new ImageIcon(this.stringToImage("blank"));
         this.cardToBeat.setIcon(icon);
 
 
@@ -95,9 +95,9 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         ImageIcon icon;
 
         if (card.equals("")) {
-            icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+            icon = new ImageIcon(this.stringToImage("blank"));
         } else {
-            icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+            icon = new ImageIcon(this.stringToImage(card));
         }
 
         this.cardToBeat.setIcon(icon);
@@ -112,7 +112,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
     @Override
     public void showTrumpSuit(char trump) {
         String trumpString = "a" + String.valueOf(trump).toLowerCase();
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(trumpString));
+        ImageIcon icon = new ImageIcon(this.stringToImage(trumpString));
         this.trumpSuit.setIcon(icon);
         this.update();
     }
@@ -137,7 +137,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
 
         //Create and add new buttons
         for (int i = 0; i < cards_strings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cards_strings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cards_strings[i]));
             this.buttons[i] = new JButton(icon);
 
             this.buttons[i].setActionCommand(cards_strings[i]);

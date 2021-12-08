@@ -75,7 +75,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
     public void showTopCard(String card) {
         card = card.toLowerCase();
 
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+        ImageIcon icon = new ImageIcon(this.stringToImage(card));
         this.topCard.setIcon(icon);
         this.update();
     }
@@ -100,7 +100,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
 
         //Create and add new buttons
         for (int i = 0; i < cards_strings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cards_strings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cards_strings[i]));
             this.buttons[i] = new JButton(icon);
 
             this.buttons[i].setActionCommand(cards_strings[i]);
