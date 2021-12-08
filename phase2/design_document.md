@@ -88,9 +88,9 @@
 
 * 2+ players, 36 card (4 suits; ranks A, 6-K)
 * Start:
-  * (Modified) Cards are dealt out singly until each player has one card
+  * Cards are dealt out until each player has the required number of cards.
     * each player is dealt 3 cards each originally
-  * Next card in the deck is turned face up to show the trump suit and the rest is placed face down in the middle
+  * The rest of the cards are placed face down in the middle, with the suit of the next card in the deck being the trump suit.
 * Play:
   * Player to the left of the dealer leads the first trick
   * (Modified) Player may choose a card in their hand to play
@@ -239,7 +239,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Brian: Created the new Bura game
 * Bradley: Worked on creating the War IO interface with Daniel and connected War with the GUI alongside Teddy. Reviewed PRs and added javadocs to all the classes. Improved design document.
 * Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `WarGUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
-* Azamat: 
+* Azamat: Added the new Bura game to the collection of existing games. Utilized the JUnit framework to ensure the game always reaches the desired postconditions of the game.
 * Luke: Designed the GUI IO flow for the project as well as implemented all IO interfaces with GUI's.
 * Nitish: 
 
@@ -269,6 +269,8 @@ We primarily considered the packaging by component and the packaging by layer st
     * [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
         * This PR allows the program to play the game War, one of the four playable games that make up the project.  
 * Azamat: 
+  * [Created `Bura`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/107)
+    * This PR added the new Bura game to our game collection as well as the corresponding testing to ensure the new game behaves as expected. This is a significant pull request as this allowed us to go beyond our initial specification of the project, where we planned on implementing 2-3 games. 
 * Luke: 
   * [Implemented CrazyEightsIO with CrazyEightsGUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/112)
     * This created the GUI CrazyEights uses in the finished product
