@@ -75,7 +75,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
     public void showTopCard(String card) {
         card = card.toLowerCase();
 
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+        ImageIcon icon = new ImageIcon(this.stringToImage(card));
         this.topCard.setIcon(icon);
         this.update();
     }
@@ -100,7 +100,7 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
 
         //Create and add new buttons
         for (int i = 0; i < cards_strings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cards_strings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cards_strings[i]));
             this.buttons[i] = new JButton(icon);
 
             this.buttons[i].setActionCommand(cards_strings[i]);
@@ -111,16 +111,6 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
 
         //This code sets up the window itself and should be done last
         this.update();
-    }
-
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
     }
 
     /**
@@ -173,24 +163,5 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
         char[] suits = {'s', 'c', 'd', 'h'};
 
         return suits[n];
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
-    }
-
-    /**
-     * This method should display a <code>message</code> to the user and then close the GUI.
-     *
-     * @param message a string that is to be sent to the user.
-     */
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
     }
 }

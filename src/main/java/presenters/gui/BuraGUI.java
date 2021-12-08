@@ -36,7 +36,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         this.cardToBeat.setHorizontalTextPosition(SwingConstants.CENTER);
         this.cardToBeat.setVerticalTextPosition(SwingConstants.TOP);
         this.cardToBeat.setFont(new Font("Serif", Font.PLAIN, 24));
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+        ImageIcon icon = new ImageIcon(this.stringToImage("blank"));
         this.cardToBeat.setIcon(icon);
 
 
@@ -73,15 +73,6 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         this.sendPopup("It is now " + username + "'s turn");
     }
 
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
 
     /**
      * This method should display the top card to the user and indicate that this is the card to beat.
@@ -95,9 +86,9 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         ImageIcon icon;
 
         if (card.equals("")) {
-            icon = new ImageIcon("src/main/resources/cards/back-blue.png");
+            icon = new ImageIcon(this.stringToImage("blank"));
         } else {
-            icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(card));
+            icon = new ImageIcon(this.stringToImage(card));
         }
 
         this.cardToBeat.setIcon(icon);
@@ -112,7 +103,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
     @Override
     public void showTrumpSuit(char trump) {
         String trumpString = "a" + String.valueOf(trump).toLowerCase();
-        ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(trumpString));
+        ImageIcon icon = new ImageIcon(this.stringToImage(trumpString));
         this.trumpSuit.setIcon(icon);
         this.update();
     }
@@ -137,7 +128,7 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
 
         //Create and add new buttons
         for (int i = 0; i < cards_strings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cards_strings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cards_strings[i]));
             this.buttons[i] = new JButton(icon);
 
             this.buttons[i].setActionCommand(cards_strings[i]);
@@ -162,24 +153,5 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         }
         this.card_selected = false;
         return this.selected_card.toUpperCase();
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
-    }
-
-    /**
-     * This method should display a <code>message</code> to the user and then close the GUI.
-     *
-     * @param message a string that is to be sent to the user.
-     */
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
     }
 }

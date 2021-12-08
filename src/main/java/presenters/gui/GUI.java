@@ -1,5 +1,7 @@
 package presenters.gui;
 
+import usecases.IOInterfaces.GameIO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -8,14 +10,14 @@ import java.util.Map;
 /**
  * Class that instantiates a basic GUI. Game specific GUIs extend this class and gain its functionality. This class
  * creates menus and windows which the users will view and interact with
- * */
-public class GUI {
+ */
+public class GUI implements GameIO {
 
     protected final JFrame frame = new JFrame();
 
     protected final JPanel panel = new JPanel();
 
-    protected final Map<String, String> stringToImage;
+    private final Map<String, String> stringToImage;
 
     /**
      * This creates a new instance of GUI. This will just make a blank window appear. For more detailed GUI's, see this
@@ -58,4 +60,44 @@ public class GUI {
         this.frame.setVisible(true);
     }
 
+    /**
+     * Takes a string representation of a card and returns the address of the image for that card.
+     *
+     * @param cardString the String representation of the card you want an image of
+     * @return the address of a the image of that card.
+     */
+    protected String stringToImage(String cardString) {
+        if (cardString.equals("blank")) {
+            return "src/main/resources/cards/" + "back-blue.png";
+        } else {
+            return "src/main/resources/cards/" + this.stringToImage.get(cardString);
+        }
+    }
+
+
+    /**
+     * This method should send a popup to the user containing a <code>message</code>.
+     *
+     * @param message a string that is to be sent to the user
+     */
+    public void sendPopup(String message) {
+        JOptionPane.showMessageDialog(new JFrame(), message);
+    }
+
+    /**
+     * This method should display a <code>message</code> to the user and then close the GUI.
+     *
+     * @param message a string that is to be sent to the user.
+     */
+    public void closeMessage(String message) {
+        this.sendPopup(message);
+        this.close();
+    }
+
+    /**
+     * This method should close the GUI when called.
+     */
+    public void close() {
+        this.frame.dispose();
+    }
 }

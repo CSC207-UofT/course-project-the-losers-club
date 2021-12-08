@@ -34,15 +34,6 @@ public class GoFishGUI extends GUI implements GoFishIO {
         this.sendPopup("It is now " + username + "'s turn");
     }
 
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
 
     /**
      * This method should display the user's hand.
@@ -62,7 +53,7 @@ public class GoFishGUI extends GUI implements GoFishIO {
         this.hand = new JLabel[cardStrings.length];
 
         for (int i = 0; i < cardStrings.length; i++) {
-            ImageIcon icon = new ImageIcon("src/main/resources/cards/" + this.stringToImage.get(cardStrings[i]));
+            ImageIcon icon = new ImageIcon(this.stringToImage(cardStrings[i]));
             this.hand[i] = new JLabel(icon);
             this.panel.add(this.hand[i]);
         }
@@ -142,19 +133,5 @@ public class GoFishGUI extends GUI implements GoFishIO {
                 0);
 
         return userArray[n];
-    }
-
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
     }
 }
