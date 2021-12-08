@@ -109,15 +109,7 @@
   * if the deck is exhausted before a player reaches 31 points, the player with the highest point wins 
  
 
-
-
-## Major Design Decisions
-
-* As of right now, the implementation of the GUI doesn't perfectly follow the SOLID design principles. It violates the dependency rule since methods of the GUI are directly being called from `CrazyEights`. In Phase 2, we are planning to fix this problem either by redesigning the output interface to be less vague or to use the Façade design pattern to the fix the problem by creating a class that takes the object that is trying to be outputted and decide how to display that using the GUI. 
-* The input and output interfaces are separate for the games and for the main menu. This was done to avoid forcing an implementer to implement both interfaces. It may be necessary to have a more unified input/output interface in the future, since having these multiple interfaces requires these IO objects to be passed lower than may be necessary.
-
-
-
+  
 
 ## Clean Architecture
 
@@ -190,12 +182,23 @@ Compared to Phase 1, we've resolved our violations of clean architecture by care
 Due to the refactoring and other code improvements done between phase 1 and phase 2, we feel as though there are no major violations of clean architecture. 
 
 
+## Major Design Decisions
+
+* The largest design decision we faced in phase 2 was overhauling the GUI we had created in phase 1. The GUI created for
+  phase 1 had several problems and as such we scrapped what we had and started fresh. We considered several solutions to
+  our GUI problems, such as implementing use of the facade design pattern to create a class as a go between for the games
+  and the GUI so that the GUI would know what kind of output to do for each game, but we eventually settled on the
+  system that was described in the GUI IO Flow section. We choose this setup because we felt it best followed the SOLID
+  principles, in particular Dependency Inversion, Single Responsibility Principle, and Interface Segregation Principle.   
+  For details of how those SOLID principles where taken into consideration, see the section on the SOLID Principles in
+  this design document.
 
 
 ## SOLID Design Principles
 
 * Single Responsibility
   * The `SQLiteUserDatabase` only does one thing&mdash;connect with an SQLite database and query it. All database queries go through this class, and is the only class in our program that contains SQL. The users of this class do not need to know how the SQLite connection works, but can simply call methods to gather the required information.
+  * Each GUI implementation is specific to the game it is creating a GUI for. 
 * Open/Closed
   * The `GameTemplate` class defines common operations that are required between all games, such as the logic required for `User` management (adding wins, adding games played, etc.). New subclasses of `GameTemplate` will not need to change this code, but can depend on said code doing the right thing.
 * Liskov's Substitution
@@ -203,9 +206,11 @@ Due to the refactoring and other code improvements done between phase 1 and phas
   * This also means that extending our program with new games is simple. By subclassing `GameTemplate` and adding it to the game creation factory, new games can be added with no changes to `MainMenu`.
 * Interface Segregation
   * Each game defines its own extension of the `GameIO` interface, and defines what input and output methods it requires. Then, the actual GUI implementation must implement this interface to support the game. Separating these interfaces means individual GUI implementations do not need to support methods and actions that are not needed by the actual game.
+  * Each game defines its own `$GAMENAME$IO` so that the methods can be specific to the game and it doesn't need to try
+    and figure out the details of how that interface will fit and work around the other games IO.
 * Dependency Inversion
   * `UserManager` depends on connecting to a database to serialize users. To avoid a dependency rule violation, the interface `UserDatabaseAccess` is defined. Then, `SQLiteUserDatabase` simply implements this interface. To then inject the depenency, an instance of `SQLiteUserDatabase` is instantiated in `Main` and passed into the `UserManager` to store. Defining an interface this way also allows different implementations of databases to be used; it would be very easy to switch to another relational databases like MySQL.
-
+  * Each game depends only on the IO interface that is specifies rather any ony particular implementation of the required IO.
 
 
 ## Packaging Strategy
@@ -232,10 +237,10 @@ We primarily considered the packaging by component and the packaging by layer st
 * Raymond: Migrated serialization of `User`s from Java's object input/output streams to a SQLite database, assisted with GUI implementation, improved design document, coordinated GitHub activities.
 * Teddy: Created IO interfaces for each of the games and helped connect each game to the GUI
 * Brian: Created the new Bura game
-* Bradley: Worked on implementing the War IO interface with Daniel and connected War with the GUI alongside Teddy. Reviewed PRs and added javadocs to all the classes. Improved design document.
+* Bradley: Worked on creating the War IO interface with Daniel and connected War with the GUI alongside Teddy. Reviewed PRs and added javadocs to all the classes. Improved design document.
 * Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `WarGUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
 * Azamat: 
-* Luke: 
+* Luke: Designed the GUI IO flow for the project as well as implemented all IO interfaces with GUI's.
 * Nitish: 
 
 ### Significant PRs
@@ -255,14 +260,20 @@ We primarily considered the packaging by component and the packaging by layer st
   * [Created War](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
     * This PR was where one of the 4 games, War, was created.
   * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
-  	* Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
+      * Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
 * Daniel: 
-	* [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
-		* Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
-	* [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
-		* This PR allows the program to play the game War, one of the four playable games that make up the project.  
+    * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+        * Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
+    * [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
+        * This PR allows the program to play the game War, one of the four playable games that make up the project.  
 * Azamat: 
 * Luke: 
+  * [Implemented CrazyEightsIO with CrazyEightsGUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/112)
+    * This created the GUI CrazyEights uses in the finished product
+  * [Implemented BuraIO with BuraGUI](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/125)
+    * This created the GUI Bura uses in the finished product
+  * [Created Master GUI Class](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/111)
+    * Added the parent class from which all GUI's took functionality from.
 * Nitish: 
 
 
