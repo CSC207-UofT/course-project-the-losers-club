@@ -251,16 +251,18 @@ We primarily considered the packaging by component and the packaging by layer st
   * Created [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
     * Without these IO's we would violate Clean Architecture and dependency rules and would not be able to connect the games to the GUI
 * Brian: 
+  * [Added `Bura` Game](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/107)
+    * This PR added a new game to the already existing collection of games. This new game extended the scope of the project, making it better fit the requirements of Phase 2
 * Bradley: 
   * [Created War](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
     * This PR was where one of the 4 games, War, was created.
   * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
-  	* Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
+      * Worked alongside Daniel and Teddy to creat this file through a discord call. Critical in making sure there were nodependency violations in our code and was able to work with the GUI
 * Daniel: 
-	* [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
-		* Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
-	* [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
-		* This PR allows the program to play the game War, one of the four playable games that make up the project.  
+    * [Created `WarIO`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/122)
+        * Without this IO we would have violated Clean Architecture and depedency rules and would not have been able to connect War to the GUI.
+    * [Helped create `War` and tests for `War`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/75)
+        * This PR allows the program to play the game War, one of the four playable games that make up the project.  
 * Azamat: 
 * Luke: 
 * Nitish: 
