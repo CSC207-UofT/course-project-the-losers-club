@@ -137,33 +137,4 @@ public class WarGUI extends GUI implements WarIO, ActionListener {
         }
         this.flip = false;
     }
-
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
-    }
-
-    /**
-     * This method should display a <code>message</code> to the user and then close the GUI.
-     *
-     * @param message a string that is to be sent to the user.
-     */
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
-    }
 }

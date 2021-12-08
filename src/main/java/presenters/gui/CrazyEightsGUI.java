@@ -114,16 +114,6 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
     }
 
     /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
-
-    /**
      * This method prompts the user to see if they want to draw a new card from the deck.
      *
      * @return true if the user wants to draw a card, false if the user does not want to draw a card.
@@ -173,24 +163,5 @@ public class CrazyEightsGUI extends GUI implements CrazyEightsIO, ActionListener
         char[] suits = {'s', 'c', 'd', 'h'};
 
         return suits[n];
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
-    }
-
-    /**
-     * This method should display a <code>message</code> to the user and then close the GUI.
-     *
-     * @param message a string that is to be sent to the user.
-     */
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
     }
 }

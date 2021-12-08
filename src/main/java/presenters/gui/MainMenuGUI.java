@@ -22,7 +22,7 @@ public class MainMenuGUI extends GUI implements MainMenuIO, ActionListener {
     private int sel;
 
     /**
-     * This creates a new UserDisplayGUI object. This creates a new window with the user will interact with.
+     * This creates a new MainMenuGUI object. This creates a new window with the user will interact with.
      */
     public MainMenuGUI() {
         super();

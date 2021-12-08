@@ -73,15 +73,6 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         this.sendPopup("It is now " + username + "'s turn");
     }
 
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
 
     /**
      * This method should display the top card to the user and indicate that this is the card to beat.
@@ -162,24 +153,5 @@ public class BuraGUI extends GUI implements BuraIO, ActionListener {
         }
         this.card_selected = false;
         return this.selected_card.toUpperCase();
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
-    }
-
-    /**
-     * This method should display a <code>message</code> to the user and then close the GUI.
-     *
-     * @param message a string that is to be sent to the user.
-     */
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
     }
 }

@@ -34,15 +34,6 @@ public class GoFishGUI extends GUI implements GoFishIO {
         this.sendPopup("It is now " + username + "'s turn");
     }
 
-    /**
-     * This method should send a popup to the user containing a <code>message</code>.
-     *
-     * @param message a string that is to be sent to the user
-     */
-    @Override
-    public void sendPopup(String message) {
-        JOptionPane.showMessageDialog(new JFrame(), message);
-    }
 
     /**
      * This method should display the user's hand.
@@ -142,19 +133,5 @@ public class GoFishGUI extends GUI implements GoFishIO {
                 0);
 
         return userArray[n];
-    }
-
-    @Override
-    public void closeMessage(String message) {
-        this.sendPopup(message);
-        this.close();
-    }
-
-    /**
-     * This method should close the GUI when called.
-     */
-    @Override
-    public void close() {
-        this.frame.dispose();
     }
 }
