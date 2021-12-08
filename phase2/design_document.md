@@ -276,7 +276,9 @@ We primarily considered the packaging by component and the packaging by layer st
     * This created the GUI Bura uses in the finished product
   * [Created Master GUI Class](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/111)
     * Added the parent class from which all GUI's took functionality from.
-* Nitish: 
+* Nitish:
+  * [Helped create `Bura`](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/107)
+    * Worked alongside Azamat and Brian to create the game Bura using Code with Me while working together in person allowing us to work on it collaboratively at the same time.
 
 
 
