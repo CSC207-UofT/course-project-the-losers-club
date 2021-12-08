@@ -255,6 +255,8 @@ We primarily considered the packaging by component and the packaging by layer st
   * Created [Crazy IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/109), [GoFish IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/113), [Bura IO](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/115/files)
     * Without these IO's we would violate Clean Architecture and dependency rules and would not be able to connect the games to the GUI
 * Brian: 
+  * [Added `Bura` Game](https://github.com/CSC207-UofT/course-project-the-losers-club/pull/107)
+    * This PR added a new game to the already existing collection of games. This new game extended the scope of the project, making it better fit the requirements of Phase 2 
 * Bradley: 
 * Daniel: 
 * Azamat: 
