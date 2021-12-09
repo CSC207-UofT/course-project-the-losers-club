@@ -241,7 +241,7 @@ We primarily considered the packaging by component and the packaging by layer st
 * Daniel: Worked alongside Bradley and Teddy to create the `WarIO` interface and connect War to `WarGUI`. Wrote tests for `Card`, `Hand`, and `Player` classes. 
 * Azamat: Added the new Bura game to the collection of existing games. Utilized the JUnit framework to ensure the game always reaches the desired postconditions of the game.
 * Luke: Designed the GUI IO flow for the project as well as implemented all IO interfaces with GUI's.
-* Nitish: 
+* Nitish: Worked alongside Brian and Azamat on creating the new Bura Game.
 
 ### Significant PRs
 
